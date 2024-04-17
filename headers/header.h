@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/15 19:30:30 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/17 03:21:16 by parinder         ###   ########.fr       */
+/*   Created: 2024/04/17 00:07:13 by parinder          #+#    #+#             */
+/*   Updated: 2024/04/17 00:10:44 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#pragma once
+
 #include <iostream>
-#include "../headers/header.h"
-#include "../headers/Irc.hpp"
 
-int	main(int ac, char **av){
+//	-	print colors
 
-	if (ac == 3)
-	{
-		Irc	server(av[1], av[2]);
-		std::cout << "server instance up\n";
-		return (0);
-	}
-	std::cerr << PRED << "Error, invalid format\n";
-	std::cerr << "format: ./ircserv <port> <password>" << PRESET << std::endl;
-	return (-1);
-}
+# define PRED		"\033[0;31m"
+# define PRESET		"\033[0m"

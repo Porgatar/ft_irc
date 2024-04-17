@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/16 00:53:09 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/16 23:57:20 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ class Irc {
 
 private:
 
-	int	_socket;
+	Irc(void);
+
+	int			_socket;
+	std::string	_password;
 public:
 
-	Irc(void);
 	Irc(const Irc &src);
-	Irc(const std::string port);
-	Irc(const int port);
+	Irc(const std::string port, const std::string password);
 	~Irc(void);
 
 	Irc	&operator=(const Irc &rhs);
