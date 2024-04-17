@@ -6,13 +6,13 @@
 #    By: parinder <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/04/15 20:30:52 by parinder         ###   ########.fr        #
+#    Updated: 2024/04/16 23:43:34 by parinder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 MAKEFLAGS=	--silent
 
-NAME=		server_irc
+NAME=		ircserv
 
 CC=			c++
 
