@@ -6,11 +6,12 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/16 23:57:20 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/17 17:10:27 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+#include <sys/select.h>
 
 class Irc {
 
