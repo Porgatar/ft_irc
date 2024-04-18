@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/18 10:56:07 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/18 14:30:40 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ class User
 
         ~User();
 
-        int getsocket() const;
+        int     getsocket() const;
+        void    setsocket(int fd);
 
 };
 
