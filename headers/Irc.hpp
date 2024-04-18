@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/18 12:14:16 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/18 14:53:18 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,6 @@ public:
 	int			getport() const;
 
 	int			create_server(int port);
+	void		loop_for_connection();
+	int			set_sockets(fd_set *set);
 };
