@@ -6,55 +6,37 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:05:07 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/17 18:54:19 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/18 12:14:02 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <netinet/in.h>
-#include <netdb.h>
-// #include <iostream>
-#include <stdlib.h>
+#include <iostream>
 #include <stdio.h>
+#include <netdb.h>
+#include <stdlib.h>
 #include <unistd.h>  
 #include <sys/types.h> 
 #include <sys/socket.h>  
 #include <string.h> 
-#include <stdio.h> 
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <fcntl.h>
+#include "../headers/Irc.hpp"
 
-#define NB_CLIENTS 5
 
-int create_server(int port)
+int    set_sockets(int sock, int client_fd[], fd_set *set)
 {
-    int                 sock;
-    struct protoent     *proto;
-    struct sockaddr_in  sin;
+    int max = sock;
     
-    proto = getprotobyname("tcp");
-    if (proto == 0)
+    for (int i = 0; i < NB_CLIENTS; i++)
     {
-        printf("proto failed\n");
-        return (-1);
+        if (client_fd[i] > 0) {
+            FD_SET(client_fd[i], set);
+            if (client_fd[i] > max)
+                max = client_fd[i];
+        }
     }
-    sock = socket(PF_INET, SOCK_STREAM, proto->p_proto);
-    if (sock == -1)
-    {
-        printf("socket failed\n");
-        return (-1);
-    }
-    fcntl(sock, F_SETFL, O_NONBLOCK); /* Passe la socket en mode non bloquant: fortement deconseillé ça bouffe le CPU*/
-    sin.sin_family = AF_INET;
-    sin.sin_port = htons(port);
-    sin.sin_addr.s_addr = inet_addr("127.0.0.1"); /* inet return : network bytes order */
-    if (bind(sock, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
-    {
-        // std::cout << "bind failed\n";
-        return (-2);
-    }
-    listen(sock, 5);
-    return (sock);    
+    return (max);
 }
 
 void    loop_for_connection(int sock)
@@ -62,15 +44,12 @@ void    loop_for_connection(int sock)
     int client_fd[NB_CLIENTS];
     struct sockaddr_in addr;
     int     size;
-    fd_set  test;
+    fd_set  set;
     int     readed;
     char    buf[1024];
-    struct timeval timeout;
     int     max;
     
     bzero(buf, 1024);
-    timeout.tv_sec = 5;
-    timeout.tv_usec = 0;
     size = sizeof(struct sockaddr_in);
     
     for (int i = 0; i < NB_CLIENTS; i++)
@@ -78,28 +57,18 @@ void    loop_for_connection(int sock)
         
     while (1)
     {
-        FD_ZERO(&test);
-        FD_SET(sock, &test);
-        max = sock;
-        
-        // Add child sockets to set
-        for (int i = 0; i < NB_CLIENTS; i++)
-        {
-            if (client_fd[i] > 0) {
-                FD_SET(client_fd[i], &test);
-                if (client_fd[i] > max)
-                    max = client_fd[i];
-            }
-        }
-        int ready_to_read = select(max + 1, &test, NULL, NULL, &timeout);
+        FD_ZERO(&set);
+        FD_SET(sock, &set);
+        max = set_sockets(sock, client_fd, &set);
+        int ready_to_read = select(max + 1, &set, NULL, NULL, NULL);
         if (ready_to_read < 0)
             printf("select error");
-        if (FD_ISSET(sock, &test))
+        if (FD_ISSET(sock, &set))
         {
             int new_fd = accept(sock, (struct sockaddr *)&addr, (socklen_t *)&size);
             if (new_fd == -1)
             {
-                printf("accept failed\n");
+                std::cerr << "accept failed\n";
                 exit(EXIT_FAILURE);
             }
             for (int i = 0; i < NB_CLIENTS; i++)
@@ -113,7 +82,7 @@ void    loop_for_connection(int sock)
         }
         for (int i = 0; i < NB_CLIENTS; i++)
         {
-            if (FD_ISSET(client_fd[i], &test))
+            if (FD_ISSET(client_fd[i], &set))
             {
                 if ((readed = read(client_fd[i], buf, 1024)) == 0)
                 {
@@ -126,7 +95,7 @@ void    loop_for_connection(int sock)
                     for (int j = 0; client_fd[j]; j++)
                     {
                         if (client_fd[i] != client_fd[j])
-                            send(client_fd[j], buf, strlen(buf), 0);
+                            send(client_fd[j], buf, readed, 0);
                     }
                 }
             }
@@ -136,18 +105,20 @@ void    loop_for_connection(int sock)
 
 int main(int argc, char *argv[])
 {
-    int                 port;
-    int                 sock;
-    
     if (argc != 2)
     {
-        // std::cout << "usage :./exe <port> <password>\n";
-        printf("usage :./exe <port> <password>\n");
+        std::cerr << "usage :./exe <port> <password>\n";
         return (-1);
-    }    
-    port = atoi(argv[1]);
-    sock = create_server(port);
-    loop_for_connection(sock);
-    close(sock);
+    }
+    
+    Irc irc(argv[1], "password");
+    
+    if (irc.create_server(irc.getport()) == -1)
+    {
+        std::cerr << "server failed\n";   
+        return (-1);
+    }
+    loop_for_connection(irc.getsocket());
+    // close(sock);
     return (0);
 }

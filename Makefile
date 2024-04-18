@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: parinder <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/04/16 23:43:34 by parinder         ###   ########.fr        #
+#    Updated: 2024/04/18 10:49:43 by maxime           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ OBJ=		$(SRC:.cpp=.o)
 
 SRC=		srcs/main.cpp \
 			srcs/Irc.cpp \
+			srcs/User.cpp \
 
 all:		$(NAME)
 
