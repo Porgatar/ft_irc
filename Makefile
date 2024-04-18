@@ -27,11 +27,12 @@ OBJ=		$(SRC:.cpp=.o)
 SRC=		srcs/main.cpp \
 			srcs/Irc.cpp \
 			srcs/User.cpp \
+			srcs/Channel.cpp \
 
 all:		$(NAME)
 
 $(NAME):	$(OBJ)
-			$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -g
+			$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 			# echo $(On_IGreen)"                                 "$(Color_Off)
 			# echo $(On_IGreen)$(BGreen)"       project compiled!        "$(Color_Off)
 			# echo $(On_IGreen)"                                 "$(Color_Off)
