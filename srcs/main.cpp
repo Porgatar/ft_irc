@@ -13,22 +13,19 @@
 #include <iostream>
 #include "../headers/Irc.hpp"
 
-int main(int argc, char *argv[])
+# define PRED		"\033[0;31m"
+# define PRESET		"\033[0m"
+
+int main(int ac, char **av)
 {
-    if (argc != 2)
-    {
-        std::cerr << "usage :./exe <port> <password>\n";
-        return (-1);
-    }
-    
-    Irc irc(argv[1], "password");
-    
-    if (irc.create_server(irc.getport()) == -1)
-    {
-        std::cerr << "server failed\n";   
-        return (-1);
-    }
-    irc.loop_for_connection();
-    // close(sock);
-    return (0);
+	if (ac == 3)
+	{
+		Irc	server(av[1], av[2]);
+		server.loop_for_connection();
+		std::cout << "server instance up\n";
+		return (0);
+	}
+	std::cerr << PRED << "Error, invalid format\n";
+	std::cerr << "format: ./ircserv <port> <password>" << PRESET << std::endl;
+	return (-1);
 }

@@ -10,31 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef USER_HPP
-#define USER_HPP
+#pragma once
 
 #include <iostream>
 
-class User
-{
-    private:
-    
-        int         _socket;
-        std::string _username;
-        std::string _nickname;
-        
-    public:
-        User();
-        User(const User &src);
-        User& operator=(const User &src);
+class User {
 
-        ~User();
+private:
 
-        int     getsocket() const;
-        void    setsocket(int fd);
+	int			_socket;
+	std::string	_username;
+	std::string	_nickname;
+	std::string	_buffer;
+public:
 
+	User	*next;
+
+	User(void);
+	User(const User &src);
+	~User(void);
+
+	User	&operator=(const User &rhs);
+
+	int	getsocket() const;
+	void	setsocket(int fd);
 };
-
-
-
-#endif
