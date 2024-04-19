@@ -12,33 +12,30 @@
 
 #include "../headers/User.hpp"
 
-User::User()
-{
+User::User(void) : _socket(0), _username(""), _nickname(""), _buffer(""), next(0) {};
+
+User::User(const User &src) {
+
+	*this = src;
 }
 
-User::User(const User &src)
-{
+User::~User(void) {};
+
+User	&User::operator=(const User &rhs) {
+
+	this->_socket = rhs._socket;
+	this->_username = rhs._username;
+	this->_nickname = rhs._nickname;
+	this->_buffer = rhs._buffer;
+	return (*this);
 }
 
-User& User::operator=(const User &src)
-{
-    if (this != &src)
-    {
-        // TODO: Implement copy assignment
-    }
-    return *this;
+int	User::getsocket() const {
+
+	return this->_socket;
 }
 
-User::~User() {
-    // TODO: Implement destructor
-}
+void	User::setsocket(int fd) {
 
-int User::getsocket() const
-{
-    return this->_socket;
-}
-
-void User::setsocket(int fd)
-{
-    this->_socket = fd;
+	this->_socket = fd;
 }
