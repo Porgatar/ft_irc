@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/19 13:14:27 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/19 15:27:06 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 
 #include "User.hpp"
 #include "Channel.hpp"
-
+#include <vector>
+#include <algorithm>
 
 #define NB_CLIENTS 5
 
@@ -38,7 +39,7 @@ private:
 
 	int			_socket;
 	std::string	_password;
-	User		_user[NB_CLIENTS]; // will change to chained class User to accept any number of clients
+	std::vector<User> _user;
 	Channel		*_channel;	// chained class Channel
 public:
 
@@ -53,4 +54,5 @@ public:
 	int			create_server();
 	void		loop_for_connection();
 	int			set_sockets(fd_set *set);
+	void		send_message(fd_set *set);
 };

@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/19 13:25:13 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/19 15:27:25 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,34 +72,60 @@ std::string	Irc::getpassword() const {
 	return this->_password;
 }
 
-int	Irc::set_sockets(fd_set *set) {
+int	Irc::set_sockets(fd_set *set)
+{
 	int max = this->_socket;
-	for (int i = 0; i < NB_CLIENTS; i++)
+    std::vector<User>::iterator it;
+
+	for (it = _user.begin(); it != _user.end(); ++it)
 	{
-		if (this->_user[i].getsocket() > 0) {
-			FD_SET(this->_user[i].getsocket(), set);
-			if (this->_user[i].getsocket() > max)
-				max = this->_user[i].getsocket();
+		if (it->getsocket() > 0) {
+			FD_SET(it->getsocket(), set);
+			if (it->getsocket() > max)
+				max = it->getsocket();
 		}
 	}
 	return (max);
 }
 
+void    Irc::send_message(fd_set *set)
+{
+    std::vector<User>::iterator it;
+    std::vector<User>::iterator ite;
+    int                         readed;
+	char                        buf[1024];
+    
+	memset(buf, '\0', 1024);
+	for (it = _user.begin(); it != _user.end(); ++it)
+	{
+		if (FD_ISSET(it->getsocket(), set))
+		{
+			if ((readed = read(it->getsocket(), buf, 1024)) == 0)
+			{
+				close(it->getsocket());
+				std::cout << "client n°" << it->getsocket() - 3 << " disconnected\n";
+				it->setsocket(0);
+			}
+			else
+			{
+				for (ite = _user.begin(); ite != _user.end(); ++ite)
+				{
+					if (it->getsocket() != ite->getsocket())
+						send(ite->getsocket(), buf, readed, 0);
+				}
+			}
+		}
+	}
+}
+
 void    Irc::loop_for_connection()
 {
-	struct sockaddr_in addr;
-	fd_set  set;
-	int     size;
-	int     readed;
-	int     max;
-	char    buf[1024];
+	struct sockaddr_in  addr;
+	fd_set              set;
+	int                 size;
+	int                 max;
 
-	bzero(buf, 1024);
 	size = sizeof(struct sockaddr_in);
-
-	for (int i = 0; i < NB_CLIENTS; i++)
-	    this->_user[i].setsocket(0);
-
 	while (1)
 	{
 		FD_ZERO(&set);
@@ -116,35 +142,11 @@ void    Irc::loop_for_connection()
 				std::cerr << "accept failed\n";
 				exit(EXIT_FAILURE);
 			}
-			for (int i = 0; i < NB_CLIENTS; i++)
-			{
-				if (this->_user[i].getsocket() == 0)
-				{
-					this->_user[i].setsocket(new_fd);
-					std::cout << "client nb " << i << " connected\n";
-					break;
-				}
-			}
+            User newuser;
+            newuser.setsocket(new_fd);
+            _user.push_back(newuser);
+			std::cout << "client n°" << new_fd - 3 << " connected\n";
 		}
-		for (int i = 0; i < NB_CLIENTS; i++)
-		{
-			if (FD_ISSET(this->_user[i].getsocket(), &set))
-			{
-				if ((readed = read(this->_user[i].getsocket(), buf, 1024)) == 0)
-				{
-					close(this->_user[i].getsocket());
-					this->_user[i].setsocket(0);
-					std::cout << "client nb " << i << " disconnected\n";
-				}
-				else
-				{
-					for (int j = 0; this->_user[j].getsocket(); j++)
-					{
-						if (this->_user[i].getsocket() != this->_user[j].getsocket())
-							send(this->_user[j].getsocket(), buf, readed, 0);
-					}
-				}
-			}
-		}
+        send_message(&set);
 	}
 }

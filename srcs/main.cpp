@@ -6,11 +6,10 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:05:07 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/19 13:10:57 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/19 14:36:06 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
 #include "../headers/Irc.hpp"
 
 # define PRED		"\033[0;31m"
