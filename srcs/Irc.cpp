@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/18 14:57:39 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/18 15:17:22 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	Irc::getport() const {
 	return this->_port;
 }
 
-int Irc::create_server(int port)
+int Irc::create_server()
 {
     struct protoent     *proto;
     struct sockaddr_in  sin;
@@ -68,7 +68,7 @@ int Irc::create_server(int port)
     }
     fcntl(this->_socket, F_SETFL, O_NONBLOCK); /* Passe la socket en mode non bloquant: fortement deconseillé ça bouffe le CPU*/
     sin.sin_family = AF_INET;
-    sin.sin_port = htons(port);
+    sin.sin_port = htons(this->getport());
     sin.sin_addr.s_addr = inet_addr("127.0.0.1"); /* inet return : network bytes order */
     if (bind(this->_socket, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
     {
