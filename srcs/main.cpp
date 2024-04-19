@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:05:07 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/18 14:16:10 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/18 15:17:43 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     
     Irc irc(argv[1], "password");
     
-    if (irc.create_server(irc.getport()) == -1)
+    if (irc.create_server() == -1)
     {
         std::cerr << "server failed\n";   
         return (-1);
