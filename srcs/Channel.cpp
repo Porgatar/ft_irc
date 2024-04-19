@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.h                                           :+:      :+:    :+:   */
+/*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 00:07:13 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/17 00:10:44 by parinder         ###   ########.fr       */
+/*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
+/*   Updated: 2024/04/18 00:41:14 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "../headers/User.hpp"
+#include "../headers/Channel.hpp"
 
-#include <iostream>
+Channel::Channel(void) : _name(""), _users(0), _operators(0), next(0) {};
 
-//	-	print colors
+Channel::Channel(const Channel &src) {
 
-# define PRED		"\033[0;31m"
-# define PRESET		"\033[0m"
+	*this = src;
+}
+
+Channel::~Channel(void){};
+
+Channel	&Channel::operator=(const Channel &rhs) {
+
+	this->_name = rhs._name;
+	return (*this);
+}

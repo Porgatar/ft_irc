@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/18 15:17:31 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/19 13:14:27 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <fcntl.h>
+
 #include "User.hpp"
+#include "Channel.hpp"
 
 
 #define NB_CLIENTS 5
@@ -32,14 +34,14 @@ class Irc {
 private:
 
 	Irc(void);
+	Irc(const Irc &src);
 
-	int			_port;
 	int			_socket;
 	std::string	_password;
-	User		_user[NB_CLIENTS];
+	User		_user[NB_CLIENTS]; // will change to chained class User to accept any number of clients
+	Channel		*_channel;	// chained class Channel
 public:
 
-	Irc(const Irc &src);
 	Irc(const std::string port, const std::string password);
 	~Irc(void);
 
@@ -47,7 +49,6 @@ public:
 
 	int			getsocket() const;
 	std::string getpassword() const;
-	int			getport() const;
 
 	int			create_server();
 	void		loop_for_connection();

@@ -6,7 +6,7 @@
 #    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/04/18 14:47:30 by maxime           ###   ########.fr        #
+#    Updated: 2024/04/19 13:14:50 by maxime           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,14 +27,15 @@ OBJ=		$(SRC:.cpp=.o)
 SRC=		srcs/main.cpp \
 			srcs/Irc.cpp \
 			srcs/User.cpp \
+			srcs/Channel.cpp \
 
 all:		$(NAME)
 
 $(NAME):	$(OBJ)
-			$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -g
-			# echo $(On_IGreen)"                                 "$(Color_Off)
-			# echo $(On_IGreen)$(BGreen)"       project compiled!        "$(Color_Off)
-			# echo $(On_IGreen)"                                 "$(Color_Off)
+			$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+			echo $(On_IGreen)"                                 "$(Color_Off)
+			echo $(On_IGreen)$(BGreen)"       project compiled!        "$(Color_Off)
+			echo $(On_IGreen)"                                 "$(Color_Off)
 
 clean:
 			rm -f $(OBJ)
