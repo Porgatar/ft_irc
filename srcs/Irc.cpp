@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/19 15:27:25 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/20 03:24:13 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,37 @@ void    Irc::send_message(fd_set *set)
 	}
 }
 
+/*              TO DO : 
+faire en sorte que les clients deja connecter puisse continuer a envoyer des messages,
+ meme si celui ci est en train de se connecter*/
+void    Irc::init_new_user(int socket)
+{
+	char    buf[60000];
+    char    nickname[11];
+    char    username[11];
+    
+	memset(buf, '\0', 60000);
+	memset(nickname, '\0', 11);
+	memset(username, '\0', 11);
+    write(socket, "password : ", 11);   
+    while (read(socket, buf, 60000) && _password.compare(buf) != 0)
+    {
+        char endline = strlen(buf) - 1;
+        buf[endline] = '\0';
+        if (_password.compare(buf) == 0)
+            break;
+        write(socket, "wrong password, try again\npassword : ", 38);
+    }
+    write(socket, "nickname : ", 11);
+    read(socket, nickname, 10);
+    write(socket, "username : ", 11);
+    read(socket, nickname, 10);
+    User newuser(socket, (std::string)username, (std::string)nickname);
+    // newuser.setsocket(socket);
+    _user.push_back(newuser);
+    
+}
+
 void    Irc::loop_for_connection()
 {
 	struct sockaddr_in  addr;
@@ -142,9 +173,8 @@ void    Irc::loop_for_connection()
 				std::cerr << "accept failed\n";
 				exit(EXIT_FAILURE);
 			}
-            User newuser;
-            newuser.setsocket(new_fd);
-            _user.push_back(newuser);
+            init_new_user(new_fd);
+            
 			std::cout << "client n°" << new_fd - 3 << " connected\n";
 		}
         send_message(&set);
