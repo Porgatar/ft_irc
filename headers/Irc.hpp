@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/19 15:27:06 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/20 01:47:48 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,5 @@ public:
 	void		loop_for_connection();
 	int			set_sockets(fd_set *set);
 	void		send_message(fd_set *set);
+	void		init_new_user(int socket);
 };

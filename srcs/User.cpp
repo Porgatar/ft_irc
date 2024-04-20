@@ -6,13 +6,22 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/18 14:31:12 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/20 03:15:39 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/User.hpp"
 
-User::User(void) : _socket(0), _username(""), _nickname(""), _buffer(""), next(0) {};
+User::User(void) : _socket(0), _username(""), _nickname(""), _buffer("") {};
+
+User::User(int socket, std::string username, std::string nickname) : _socket(socket), _username(username), _nickname(nickname), _buffer("")
+{
+    // std::cout << ;
+    // std::cout << ;
+    // std::cout << ;
+    // std::cout << ;
+    // std::cout << ;
+}
 
 User::User(const User &src) {
 
