@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/20 01:47:48 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/22 13:41:14 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@
 #include "Channel.hpp"
 #include <vector>
 #include <algorithm>
-
-#define NB_CLIENTS 5
 
 class Irc {
 
@@ -55,5 +53,5 @@ public:
 	void		loop_for_connection();
 	int			set_sockets(fd_set *set);
 	void		send_message(fd_set *set);
-	void		init_new_user(int socket);
+	void		init_new_user(int socket, fd_set *set);
 };
