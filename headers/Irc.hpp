@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/20 01:47:48 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/22 05:03:48 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ private:
 	Irc(void);
 	Irc(const Irc &src);
 
-	int			_socket;
-	std::string	_password;
-	std::vector<User> _user;
-	Channel		*_channel;	// chained class Channel
+	int							_socket;
+	std::string					_password;
+	std::vector<User>			_users;
+	std::forward_list<Channel>	_channels;
 public:
 
 	Irc(const std::string port, const std::string password);
@@ -51,7 +51,6 @@ public:
 	int			getsocket() const;
 	std::string getpassword() const;
 
-	int			create_server();
 	void		loop_for_connection();
 	int			set_sockets(fd_set *set);
 	void		send_message(fd_set *set);

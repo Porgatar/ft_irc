@@ -6,25 +6,31 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/20 03:24:13 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/22 05:14:07 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Irc.hpp"
 
-Irc::Irc(void) : _socket(0), _password(""), /*_user(0),*/ _channel(0) {};
+Irc::Irc(void) : _socket(0), _password("") {
+
+	std::cout << "Irc: default constructor\n";
+};
 
 Irc::Irc(const Irc &src) {
 
+	std::cout << "Irc: copy constructor\n";
 	*this = src;
 }
+
 Irc::Irc(const std::string s_port, const std::string password) : \
-			_socket(0), _password(password), /*_user(0),*/ _channel(0) {
+			_socket(0), _password(password) {
 
 	struct protoent		*proto;
 	struct sockaddr_in	sin;
 	int					port;
 
+	std::cout << "Irc: port/password constructor\n";
 	port = atoi(s_port.c_str());
 	proto = getprotobyname("tcp");
 	if (proto == 0)
@@ -48,17 +54,22 @@ Irc::Irc(const std::string s_port, const std::string password) : \
 	 	return ;
 	}
 	listen(this->_socket, 5);
+//	this->_channels.emplace_front("#paf", new User(54, "pif", "paf")); // test pour instancier un channel dans la list
 }
 
 Irc::~Irc(void) {
 
+	std::cout << "Irc: destructor\n";
 	close(this->_socket);
 };
 
 Irc	&Irc::operator=(const Irc &rhs) {
 
+	std::cout << "Irc: copy operator=\n";
 	this->_socket = rhs._socket;
 	this->_password = rhs._password;
+	this->_users = rhs._users;
+	this->_channels = rhs._channels;
 	return (*this);
 }
 
@@ -77,7 +88,7 @@ int	Irc::set_sockets(fd_set *set)
 	int max = this->_socket;
     std::vector<User>::iterator it;
 
-	for (it = _user.begin(); it != _user.end(); ++it)
+	for (it = _users.begin(); it != _users.end(); ++it)
 	{
 		if (it->getsocket() > 0) {
 			FD_SET(it->getsocket(), set);
@@ -96,7 +107,7 @@ void    Irc::send_message(fd_set *set)
 	char                        buf[1024];
     
 	memset(buf, '\0', 1024);
-	for (it = _user.begin(); it != _user.end(); ++it)
+	for (it = _users.begin(); it != _users.end(); ++it)
 	{
 		if (FD_ISSET(it->getsocket(), set))
 		{
@@ -108,7 +119,7 @@ void    Irc::send_message(fd_set *set)
 			}
 			else
 			{
-				for (ite = _user.begin(); ite != _user.end(); ++ite)
+				for (ite = _users.begin(); ite != _users.end(); ++ite)
 				{
 					if (it->getsocket() != ite->getsocket())
 						send(ite->getsocket(), buf, readed, 0);
@@ -145,8 +156,7 @@ void    Irc::init_new_user(int socket)
     read(socket, nickname, 10);
     User newuser(socket, (std::string)username, (std::string)nickname);
     // newuser.setsocket(socket);
-    _user.push_back(newuser);
-    
+    _users.push_back(newuser);
 }
 
 void    Irc::loop_for_connection()
