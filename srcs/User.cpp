@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/20 03:15:39 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/22 01:10:18 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ User::User(void) : _socket(0), _username(""), _nickname(""), _buffer("") {};
 
 User::User(int socket, std::string username, std::string nickname) : _socket(socket), _username(username), _nickname(nickname), _buffer("")
 {
+	_isconnected = 1;
     // std::cout << ;
     // std::cout << ;
     // std::cout << ;
-    // std::cout << ;
+    // std::cout << ; 
     // std::cout << ;
 }
 
@@ -47,4 +48,22 @@ int	User::getsocket() const {
 void	User::setsocket(int fd) {
 
 	this->_socket = fd;
+}
+
+void	User::setbuffer(char *buf)
+{
+	std::string convert(buf);
+	this->_buffer = convert;
+}
+
+std::string	User::getbuffer() const
+{
+	return this->_buffer;
+}
+
+bool	User::isconnect()
+{
+	if (this->_isconnected == 1)
+		return true;
+	return false;
 }

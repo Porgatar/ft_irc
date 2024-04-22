@@ -6,18 +6,21 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/20 03:07:35 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/22 00:58:03 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #pragma once
+#pragma once
 
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 class User {
 
 private:
 
+	int			_isconnected;
 	int			_socket;
 	std::string	_username;
 	std::string	_nickname;
@@ -31,6 +34,11 @@ public:
 
 	User	&operator=(const User &rhs);
 
-	int		getsocket() const;
-	void	setsocket(int fd);
+	int			getsocket() const;
+	void		setsocket(int fd);
+	void		setbuffer(char *buf);
+	bool		isconnect();
+	std::string	getbuffer() const;
+
+
 };
