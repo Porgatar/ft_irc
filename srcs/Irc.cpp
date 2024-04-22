@@ -6,19 +6,26 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/22 13:51:19 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/22 13:56:09 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Irc.hpp"
 
-Irc::Irc(void) : _socket(0), _password(""), /*_user(0),*/ _channel(0){};
+Irc::Irc(void) : _socket(0), _password("") {
+
+	std::cout << "Irc: default constructor\n";
+};
 
 Irc::Irc(const Irc &src)
 {
 
+	std::cout << "Irc: copy constructor\n";
 	*this = src;
 }
+
+Irc::Irc(const std::string s_port, const std::string password) : \
+			_socket(0), _password(password) {
 
 int setNonBlocking(int fd) {
     int flags = fcntl(fd, F_GETFL, 0);
@@ -37,6 +44,7 @@ Irc::Irc(const std::string s_port, const std::string password) : _socket(0), _pa
 	struct sockaddr_in sin;
 	int port;
 
+	std::cout << "Irc: port/password constructor\n";
 	port = atoi(s_port.c_str());
 	proto = getprotobyname("tcp");
 	if (proto == 0)
@@ -73,8 +81,11 @@ Irc::~Irc(void)
 Irc &Irc::operator=(const Irc &rhs)
 {
 
+	std::cout << "Irc: copy operator=\n";
 	this->_socket = rhs._socket;
 	this->_password = rhs._password;
+	this->_users = rhs._users;
+	this->_channels = rhs._channels;
 	return (*this);
 }
 
@@ -95,7 +106,7 @@ int Irc::set_sockets(fd_set *set)
 	int max = this->_socket;
 	std::vector<User>::iterator it;
 
-	for (it = _user.begin(); it != _user.end(); ++it)
+	for (it = _users.begin(); it != _users.end(); ++it)
 	{
 		if (it->getsocket() > 0)
 		{
