@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/22 13:56:09 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/22 17:41:01 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ Irc::Irc(const Irc &src)
 	std::cout << "Irc: copy constructor\n";
 	*this = src;
 }
+// 
+// Irc::Irc(const std::string s_port, const std::string password) : \
+// 			_socket(0), _password(password) {
 
-Irc::Irc(const std::string s_port, const std::string password) : \
-			_socket(0), _password(password) {
-
-int setNonBlocking(int fd) {
+int setNonBlocking(int fd)
+{
     int flags = fcntl(fd, F_GETFL, 0);
     if (flags == -1)
         return -1;
@@ -37,7 +38,7 @@ int setNonBlocking(int fd) {
     return 0;
 }
 
-Irc::Irc(const std::string s_port, const std::string password) : _socket(0), _password(password), /*_user(0),*/ _channel(0)
+Irc::Irc(const std::string s_port, const std::string password) : _socket(0), _password(password) /*_user(0),*/ //_channel(0)
 {
 
 	struct protoent *proto;
@@ -104,7 +105,7 @@ std::string Irc::getpassword() const
 int Irc::set_sockets(fd_set *set)
 {
 	int max = this->_socket;
-	std::vector<User>::iterator it;
+	std::list<User>::iterator it;
 
 	for (it = _users.begin(); it != _users.end(); ++it)
 	{
@@ -118,32 +119,29 @@ int Irc::set_sockets(fd_set *set)
 	return (max);
 }
 
-void Irc::send_message(fd_set *set)
+void Irc::is_writing()
 {
-	std::vector<User>::iterator actual;
-	std::vector<User>::iterator receiver;
+	std::list<User>::iterator actual;
+	std::list<User>::iterator receiver;
 	int readed;
 	char buf[1024];
 
 	memset(buf, '\0', 1024);
-	for (actual = _user.begin(); actual != _user.end(); ++actual)
+	for (actual = _users.begin(); actual != _users.end(); ++actual)
 	{
 		memset(buf, '\0', 1024);
 		if ((readed = recv(actual->getsocket(), buf, 1023, 0)) == 0)
 		{
 			close(actual->getsocket());
 			std::cout << "client n°" << actual->getsocket() - 3 << " disconnected\n";
-			actual = _user.erase(actual);
+			actual = _users.erase(actual);
 			actual--;
 		}	
 		else
 		{
-			// actual->setbuffer(buf);
-			for (receiver = _user.begin(); receiver != _user.end(); ++receiver)
-			{
-				if (actual->getsocket() != receiver->getsocket())// && receiver->isconnect() == true)
-					send(receiver->getsocket(), buf, readed, 0);
-			}
+			actual->setbuffer(buf);
+			actual->send_message(_users);
+			
 		}
 	}
 }
@@ -163,26 +161,27 @@ void	Irc::init_new_user(int socket, fd_set *set)
 	{
 		memset(buf, '\0', 12);
 		readed = recv(socket, buf, 11, 0);
-		int endline = strlen(buf) - 1;
-		buf[endline] = '\0';
-		send_message(set);
+		int endline = strlen(buf) - 1; 
+		if (buf[endline] == '\n')
+			buf[endline] = '\0';
+		is_writing();
 		if (_password.compare(buf) != 0 && readed != -1)
 			write(socket, "wrong password, try again\npassword : ", 38);
 	}
 	write(socket, "nickname : ", 11);
 	while (!nickname[0])
 	{
-		send_message(set);
+		is_writing();
 		readed = recv(socket, nickname, 10, 0);
 	}
 	write(socket, "username : ", 11);
 	while (!username[0])
 	{
-		send_message(set);
+		is_writing();
 		recv(socket, username, 10, 0);
 	}
 	User newuser(socket, (std::string)username, (std::string)nickname);
-	_user.push_back(newuser);
+	_users.push_back(newuser);
 	
 }
 
@@ -217,6 +216,6 @@ void Irc::loop_for_connection()
 
 			std::cout << "client n°" << new_fd - 3 << " connected\n";
 		}
-		send_message(&set);
+		is_writing();
 	}
 }
