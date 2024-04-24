@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/12 17:05:07 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/24 14:47:22 by maxime           ###   ########.fr       */
+/*   Created: 2024/04/24 12:07:24 by maxime            #+#    #+#             */
+/*   Updated: 2024/04/24 12:07:34 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/Irc.hpp"
+#pragma once
 
-# define PRED		"\033[0;31m"
-# define PRESET		"\033[0m"
-
-
-
-int main(int ac, char **av)
+void	remove_nl(char *str)
 {
-	if (ac == 3)
+	for (int i = 0; str[i]; i++)
 	{
-		Irc	server(av[1], av[2]);
-		server.loop_for_connection();
-		std::cout << "server instance up\n";
-		return (0);
+		if (str[i] == '\n')
+			str[i] = '\0';
 	}
-	std::cerr << PRED << "Error, invalid format\n";
-	std::cerr << "format: ./ircserv <port> <password>" << PRESET << std::endl;
-	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/22 17:14:03 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/23 18:50:31 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ Channel::Channel(const Channel &src) {
 	*this = src;
 }
 
-Channel::Channel(const std::string name, User *user) : _name(name) {
+Channel::Channel(const std::string name, User user) : _name(name) {
 
 	std::cout << "Channel: name/user constructor\n";
 	this->add_user(user);
@@ -50,14 +50,14 @@ void	Channel::send_group_msg(std::string msg) {
 	//send msg to all users.
 }
 
-void	Channel::add_user(User *user) {
+void	Channel::add_user(User user) {
 
 	std::cout << "Channel: adding user\n";
-	this->_users.push_front(user);
+	this->_users.push_back(user);
 }
 
-void	Channel::add_operator(User *user) {
+void	Channel::add_operator(User user) {
 
 	std::cout << "Channel: adding operator\n";
-	this->_operators.push_front(user);
+	this->_operators.push_back(user);
 }
