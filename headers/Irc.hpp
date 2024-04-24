@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/22 17:39:21 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/24 11:59:00 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,11 @@ public:
 	void		loop_for_connection();
 	int			set_sockets(fd_set *set);
 	void		is_writing();
-	void		init_new_user(int socket, fd_set *set);
+	void		init_new_user(int socket);
+
+	void 		exec_command(int command_number, std::list<User>::iterator actual);
+	void		join(std::list<User>::iterator actual);
+	void		nick(std::list<User>::iterator actual);
+	void		user(std::list<User>::iterator actual);
+	void		privmsg(std::list<User>::iterator actual);
 };

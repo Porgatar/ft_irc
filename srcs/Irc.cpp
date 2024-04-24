@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/22 17:41:01 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/24 15:11:31 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,8 @@ Irc::Irc(const Irc &src)
 	std::cout << "Irc: copy constructor\n";
 	*this = src;
 }
-// 
-// Irc::Irc(const std::string s_port, const std::string password) : \
-// 			_socket(0), _password(password) {
 
-int setNonBlocking(int fd)
+static int setNonBlocking(int fd)
 {
     int flags = fcntl(fd, F_GETFL, 0);
     if (flags == -1)
@@ -40,32 +37,32 @@ int setNonBlocking(int fd)
 
 Irc::Irc(const std::string s_port, const std::string password) : _socket(0), _password(password) /*_user(0),*/ //_channel(0)
 {
-
 	struct protoent *proto;
 	struct sockaddr_in sin;
 	int port;
 
 	std::cout << "Irc: port/password constructor\n";
 	port = atoi(s_port.c_str());
+	if (port > 65535) {
+		std::cerr << "port number too large: " << port << std::endl;
+		exit(EXIT_FAILURE);
+	}
 	proto = getprotobyname("tcp");
-	if (proto == 0)
-	{
+	if (proto == 0) {
 		std::cerr << "proto failed\n";
-		return;
+		exit(EXIT_FAILURE);
 	}
 	this->_socket = socket(PF_INET, SOCK_STREAM, proto->p_proto);
-	if (this->_socket == -1)
-	{
+	if (this->_socket == -1) {
 		std::cerr << "socket failed\n";
-		return;
+		exit(EXIT_FAILURE);
 	}
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
 	sin.sin_addr.s_addr = inet_addr("127.0.0.1"); /* inet return : network bytes order */
-	if (bind(this->_socket, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
-	{
+	if (bind(this->_socket, (const struct sockaddr *)&sin, sizeof(sin)) == -1) {
 		std::cerr << "bind failed\n";
-		return;
+		exit(EXIT_FAILURE);
 	}
 	listen(this->_socket, 5);
 	if (setNonBlocking(_socket) == -1) {
@@ -81,7 +78,6 @@ Irc::~Irc(void)
 
 Irc &Irc::operator=(const Irc &rhs)
 {
-
 	std::cout << "Irc: copy operator=\n";
 	this->_socket = rhs._socket;
 	this->_password = rhs._password;
@@ -92,13 +88,11 @@ Irc &Irc::operator=(const Irc &rhs)
 
 int Irc::getsocket() const
 {
-
 	return this->_socket;
 }
 
 std::string Irc::getpassword() const
 {
-
 	return this->_password;
 }
 
@@ -119,43 +113,146 @@ int Irc::set_sockets(fd_set *set)
 	return (max);
 }
 
+// Check if it is a command and then set the rest of the command in the buffer
+// return -1 if it is not
+int	is_command(char *buf, std::list<User>::iterator actual)
+{
+	int i = 0;
+	int j = 0;
+	std::string cmd[4] = {"JOIN", "NICK", "USER", "PRIVMSG"};
+	char	command[9];
+
+	memset(command, '\0', 9);
+	while (buf[i] >= 9 && buf[i] <= 13 || buf[i] == 32) // white space !
+		i++;
+	while (isalnum(buf[i]))
+	{
+		command[j] = buf[i];
+		i++;
+		j++;
+	}
+	for (int j = 0; j < 4; j++)
+	{
+		if (cmd[j].compare(command) == 0)
+		{
+			actual->setbuffer(&buf[i + 1]);
+			return (j + 1);
+		}
+	}
+	return (-1);
+}
+
+/*return true if the nickname respect the norm*/
+bool rfc_nickname(const std::string& str) {
+	
+    const std::string set = "([{{|\\}}])";
+
+    for (int i = 0; str[i]; i++) {
+        if (isalnum(str[i]) || set.find(str[i]) != std::string::npos)
+            continue;
+        else
+			return false;
+    }
+    return true;
+}
+
+void	Irc::join(std::list<User>::iterator actual)
+{
+	// Channel newchannel();
+	
+}
+
+void	Irc::nick(std::list<User>::iterator actual)
+{
+	std::list<User>::iterator it;
+	std::string argument = actual->getbuffer();
+	
+	if (!rfc_nickname(argument)) {	
+		write(actual->getsocket(), "Bad nickname character\n", 23);
+		return ;
+	}
+	for (it = _users.begin(); it != _users.end(); it++) {
+		if (it->getnickname().compare(argument.c_str()) == 0) {
+			write(actual->getsocket(), argument.c_str(), argument.length());
+			write(actual->getsocket(), " : Nickname is already in use\n", 30);
+			return ;
+		}
+	}
+	actual->setnickname(argument);
+}
+
+void	Irc::user(std::list<User>::iterator actual)
+{
+	
+}
+
+void	Irc::privmsg(std::list<User>::iterator actual)
+{
+	
+}
+
+void Irc::exec_command(int command_number, std::list<User>::iterator actual)
+{
+	if (command_number == 1)
+		join(actual);
+	else if (command_number == 2)
+		nick(actual);
+	else if (command_number == 3)
+		user(actual);
+	else if (command_number == 4)
+		privmsg(actual);
+
+}
+
+void	remove_nl(char *str)
+{
+	for (int i = 0; str[i]; i++)
+	{
+		if (str[i] == '\n')
+			str[i] = '\0';
+	}
+}
+
+/*Look for any client message and parse it*/
 void Irc::is_writing()
 {
 	std::list<User>::iterator actual;
 	std::list<User>::iterator receiver;
 	int readed;
+	int	command_number;
 	char buf[1024];
 
 	memset(buf, '\0', 1024);
 	for (actual = _users.begin(); actual != _users.end(); ++actual)
 	{
 		memset(buf, '\0', 1024);
-		if ((readed = recv(actual->getsocket(), buf, 1023, 0)) == 0)
+		readed = recv(actual->getsocket(), buf, 1023, 0);
+		remove_nl(buf);
+		if (readed == 0)
 		{
 			close(actual->getsocket());
 			std::cout << "client n°" << actual->getsocket() - 3 << " disconnected\n";
 			actual = _users.erase(actual);
 			actual--;
-		}	
+		}
+		else if ((command_number = is_command(buf, actual)) > -1) {
+			exec_command(command_number, actual);
+		}
 		else
 		{
 			actual->setbuffer(buf);
 			actual->send_message(_users);
-			
 		}
 	}
 }
 
-void	Irc::init_new_user(int socket, fd_set *set)
+void	Irc::init_new_user(int socket)
 {
-	char buf[12];
-	char nickname[11];
-	char username[11];
-	int readed;
+	char 	buf[12];
+	int		readed;
+	User 	newuser;
 	
 	memset(buf, '\0', 12);
-	memset(nickname, '\0', 11);
-	memset(username, '\0', 11);
 	write(socket, "password : ", 11);
 	while (_password.compare(buf) != 0)
 	{
@@ -168,29 +265,16 @@ void	Irc::init_new_user(int socket, fd_set *set)
 		if (_password.compare(buf) != 0 && readed != -1)
 			write(socket, "wrong password, try again\npassword : ", 38);
 	}
-	write(socket, "nickname : ", 11);
-	while (!nickname[0])
-	{
-		is_writing();
-		readed = recv(socket, nickname, 10, 0);
-	}
-	write(socket, "username : ", 11);
-	while (!username[0])
-	{
-		is_writing();
-		recv(socket, username, 10, 0);
-	}
-	User newuser(socket, (std::string)username, (std::string)nickname);
+	newuser.setsocket(socket);
 	_users.push_back(newuser);
-	
 }
 
 void Irc::loop_for_connection()
 {
-	struct sockaddr_in addr;
-	fd_set set;
-	int size;
-	int max;
+	struct sockaddr_in	addr;
+	fd_set				set;
+	int					size;
+	int					max;
 
 	size = sizeof(struct sockaddr_in);
 	while (1)
@@ -199,21 +283,22 @@ void Irc::loop_for_connection()
 		FD_SET(this->_socket, &set);
 		max = set_sockets(&set);
 		int ready_to_read = select(max + 1, &set, NULL, NULL, NULL); // attente d'une connection sur la socket
-		if (ready_to_read < 0)
-			printf("select error");
+		if (ready_to_read < 0){
+			printf("select failed\n");
+			exit(EXIT_FAILURE);
+		}
 		if (FD_ISSET(this->_socket, &set))
 		{
 			int new_fd = accept(this->_socket, (struct sockaddr *)&addr, (socklen_t *)&size);
-			if (new_fd == -1)
-			{
+			if (new_fd == -1) {
 				std::cerr << "accept failed\n";
 				exit(EXIT_FAILURE);
 			}
 			if (setNonBlocking(new_fd) == -1) {
         		std::cerr << "Failed to set client socket to non-blocking\n";
+				exit(EXIT_FAILURE);
     		}
-			init_new_user(new_fd, &set);
-
+			init_new_user(new_fd);
 			std::cout << "client n°" << new_fd - 3 << " connected\n";
 		}
 		is_writing();
