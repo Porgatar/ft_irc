@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/24 15:11:31 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/24 17:33:54 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,14 +167,19 @@ void	Irc::nick(std::list<User>::iterator actual)
 	std::list<User>::iterator it;
 	std::string argument = actual->getbuffer();
 	
+	if (argument.empty()){
+		write(actual->getsocket(), " :No nickname given\n", 20);
+		return ;
+	}
 	if (!rfc_nickname(argument)) {	
-		write(actual->getsocket(), "Bad nickname character\n", 23);
+		write(actual->getsocket(), argument.c_str(), argument.length());
+		write(actual->getsocket(), " :Erroneus nickname\n", 20);
 		return ;
 	}
 	for (it = _users.begin(); it != _users.end(); it++) {
 		if (it->getnickname().compare(argument.c_str()) == 0) {
 			write(actual->getsocket(), argument.c_str(), argument.length());
-			write(actual->getsocket(), " : Nickname is already in use\n", 30);
+			write(actual->getsocket(), " :Nickname is already in use\n", 30);
 			return ;
 		}
 	}
@@ -186,8 +191,61 @@ void	Irc::user(std::list<User>::iterator actual)
 	
 }
 
+std::string	gettarget(std::string argument)
+{
+	std::string target;
+	int			i = 0;
+	
+	while (!((argument[i] >= 9 && argument[i] <= 13) || argument[i] == 32))
+		i++;
+	target = argument.substr(0, i);
+	return (target);
+}
+
+std::string	skip_isspace(std::string str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] >= 9 && str[i] <= 13 || str[i] == 32) // white space !
+		i++;
+	return (&str[i]);
+}
+
 void	Irc::privmsg(std::list<User>::iterator actual)
 {
+	std::list<User>::iterator 	it;
+	std::string 				argument;
+	std::string					target;
+	std::string					message;
+	bool						finded;
+	
+	finded = false;
+	argument = actual->getbuffer();
+	target = gettarget(argument);
+	if (target.empty()) {
+		write(actual->getsocket(), " :No recipient given\n", 21);
+		return ;
+	}
+	for (it = _users.begin(); it != _users.end(); it++) {
+		if (it->getnickname().compare(target.c_str()) == 0)
+			finded = true;
+	}
+	if (!finded) {
+		write(actual->getsocket(), target.c_str(), target.length());
+		write(actual->getsocket(), " :No such nick\n", 15);
+		return ;
+	}
+	message = argument.substr(target.length(), argument.length() - target.length());
+	message = skip_isspace(message);
+	if (message.empty()) {
+		write(actual->getsocket(), " :No text to send\n", 18);
+		return ;
+	}
+	// if (target[0] == '&' || target[0] == '#')
+		//msg to channel
+	write(it->getsocket(), message.c_str(), message.length());
+	write(it->getsocket(),"\n", 1);
 	
 }
 
@@ -201,7 +259,6 @@ void Irc::exec_command(int command_number, std::list<User>::iterator actual)
 		user(actual);
 	else if (command_number == 4)
 		privmsg(actual);
-
 }
 
 void	remove_nl(char *str)
