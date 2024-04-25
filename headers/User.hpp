@@ -6,18 +6,11 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/24 22:25:31 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:07:18 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-
-#include <iostream>
-#include <algorithm>
-#include <list>
-#include <sys/types.h> 
-#include <sys/socket.h> 
-#include <cstring>
 
 #include "header.h"
 

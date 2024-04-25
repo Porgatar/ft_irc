@@ -6,22 +6,18 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/23 18:50:24 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/25 20:23:48 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <iostream>
-#include <list>
+#include "header.h"
 #include "User.hpp"
-
-class User;
 
 class Channel {
 
 private:
-
 
 	std::string		_name;
 	std::list<User>	_operators;
