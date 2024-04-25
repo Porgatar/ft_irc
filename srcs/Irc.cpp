@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/24 22:28:06 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:44:31 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ Irc &Irc::operator=(const Irc &rhs) {
 	return (*this);
 }
 
-/*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
+/*	-	-	-	-	-	Private Functions	-	-	-	-	-	*/
 
 int Irc::set_sockets(fd_set *set) {
 
@@ -292,12 +292,11 @@ void	Irc::exec_cmd(User &user) {
 }
 
 /*Look for any client message and parse it*/
-void	Irc::is_writing(void) {
+void	Irc::checkClientRequest(void) {
 
 	std::list<User>::iterator	actual;
 	std::list<User>::iterator	receiver;
 	int							readed;
-	int							command_number;
 	char						buf[1024];
 
 	memset(buf, '\0', 1024);
@@ -325,7 +324,7 @@ void	Irc::is_writing(void) {
 	}
 }
 
-void	Irc::init_new_user(int socket) {
+void	Irc::addUser(int socket) {
 
 //	char 	buf[12];
 //	int		readed;
@@ -348,7 +347,9 @@ void	Irc::init_new_user(int socket) {
 	_users.push_back(newuser);
 }
 
-void	Irc::loop_for_connection(void) {
+/*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
+
+void	Irc::run(void) {
 
 	struct sockaddr_in	addr;
 	fd_set				set;
@@ -376,9 +377,9 @@ void	Irc::loop_for_connection(void) {
         		std::cerr << "Failed to set client socket to non-blocking\n";
 				exit(EXIT_FAILURE);
     		}
-			init_new_user(new_fd);
+			addUser(new_fd);
 			std::cout << "client n°" << new_fd - 3 << " connected\n";
 		}
-		is_writing();
+		checkClientRequest();
 	}
 }

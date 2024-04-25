@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/24 22:26:33 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:42:21 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ User::User(int socket, std::string username, std::string nickname) \
 User::~User(void) {
 
 	//std::cout << "User: destructor\n";
-	//close(this->_socket);
+//	close(this->_socket);
 }
 
 /*	-	-	-	-	-	Operators	-	-	-	-	-	*/
