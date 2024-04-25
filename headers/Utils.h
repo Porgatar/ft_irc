@@ -6,17 +6,10 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 12:07:24 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/24 12:07:34 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/25 18:02:01 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-void	remove_nl(char *str)
-{
-	for (int i = 0; str[i]; i++)
-	{
-		if (str[i] == '\n')
-			str[i] = '\0';
-	}
-}
+void	remove_nl(char *str);

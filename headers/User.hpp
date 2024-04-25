@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/24 22:25:31 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:06:37 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ public:
 	~User(void);
 
 /*	-	-	-	-	-	Operators	-	-	-	-	-	-	*/
-	User		&operator=(const User &rhs);
+	User				&operator=(const User &rhs);
 
 /*	-	-	-	-	-	Getters	-	-	-	-	-	-	-	*/
 	int					getSocket(void) const;
@@ -52,13 +52,14 @@ public:
 	const std::string	&getUsername(void) const;
 
 /*	-	-	-	-	-	Setters	-	-	-	-	-	-	-	*/
-	void		setSocket(int fd);
-	void		setHigherRegisteredLevel(void);
-	void		setUsername(std::string username);
-	void		setNickname(std::string nickname);
-	void		setBuffer(std::string buf);
+	void				setSocket(int fd);
+	void				setHigherRegisteredLevel(void);
+	void				setLowerRegisteredLevel(void);
+	void				setUsername(std::string username);
+	void				setNickname(std::string nickname);
+	void				setBuffer(std::string buf);
 
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
-	void		sendMsg(std::list<User> users);
-	bool		isRegistered(void);
+	void				sendMsg(std::list<User> users);
+	bool				isRegistered(void);
 };
