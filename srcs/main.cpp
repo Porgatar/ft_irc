@@ -6,16 +6,12 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:05:07 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/24 14:47:22 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/24 19:37:12 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../headers/header.h"
 #include "../headers/Irc.hpp"
-
-# define PRED		"\033[0;31m"
-# define PRESET		"\033[0m"
-
-
 
 int main(int ac, char **av)
 {
@@ -23,10 +19,9 @@ int main(int ac, char **av)
 	{
 		Irc	server(av[1], av[2]);
 		server.loop_for_connection();
-		std::cout << "server instance up\n";
 		return (0);
 	}
-	std::cerr << PRED << "Error, invalid format\n";
-	std::cerr << "format: ./ircserv <port> <password>" << PRESET << std::endl;
+	std::cerr << PRED << "Error\ninvalid format\n" \
+		<< "usage: ./ircserv <port> <password>" << PRESET << std::endl;
 	return (-1);
 }
