@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/25 20:26:32 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/25 20:56:02 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "header.h"
 #include "User.hpp"
 #include "Channel.hpp"
+#include "Utils.h"
 
 class Irc {
 
@@ -34,10 +35,11 @@ private:
 	void	addUser(int socket);
 /*	-	-	-	-	-	Command Functions	-	-	-	-	*/
 	void 	registerUser(User &user);
-	void	user(std::list<User>::iterator actual);
-	void	nick(std::list<User>::iterator actual);
-	void	join(std::list<User>::iterator actual);
-	void	privmsg(std::list<User>::iterator actual);
+	void	pass(User &actual);
+	void	user(User &actual);
+	void	nick(User &actual);
+	void	join(User &actual);
+	void	privmsg(User &actual);
 public:
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
