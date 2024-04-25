@@ -6,7 +6,7 @@
 #    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/04/25 18:24:27 by maxime           ###   ########.fr        #
+#    Updated: 2024/04/25 21:03:58 by parinder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,6 @@ SRC=		srcs/main.cpp \
 			srcs/Irc.cpp \
 			srcs/User.cpp \
 			srcs/Channel.cpp \
-			srcs/Utils.c \
 
 all:		$(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/25 20:59:06 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:04:41 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,7 +314,7 @@ void	Irc::checkClientRequest(void) {
 	{
 		memset(buf, '\0', 1024);
 		readed = recv(actual->getSocket(), buf, 1023, MSG_DONTWAIT);
-		remove_nl(buf);
+//		remove_nl(buf);
 		if (readed == 0)
 		{
 			close(actual->getSocket());
