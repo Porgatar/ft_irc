@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/25 20:42:21 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:00:12 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,13 @@ void	User::setHigherRegisteredLevel(void) {
 	if (this->_registered < 3)
 		this->_registered++;
 }
+
+void	User::setLowerRegisteredLevel(void) {
+	
+	if (this->_registered > 0)
+		this->_registered--;
+}
+
 
 void	User::setUsername(std::string username) {
 
