@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/24 22:28:06 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:27:49 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,41 +162,6 @@ bool rfc_nickname(const std::string& str) {
     return true;
 }
 
-void	Irc::join(std::list<User>::iterator actual) {
-
-	// Channel newchannel();
-	
-}
-
-void	Irc::nick(std::list<User>::iterator actual) {
-
-	std::list<User>::iterator it;
-	std::string argument = actual->getBuffer();
-	
-	if (argument.empty()){
-		write(actual->getSocket(), " :No nickname given\n", 20);
-		return ;
-	}
-	if (!rfc_nickname(argument)) {	
-		write(actual->getSocket(), argument.c_str(), argument.length());
-		write(actual->getSocket(), " :Erroneus nickname\n", 20);
-		return ;
-	}
-	for (it = _users.begin(); it != _users.end(); it++) {
-		if (it->getNickname().compare(argument.c_str()) == 0) {
-			write(actual->getSocket(), argument.c_str(), argument.length());
-			write(actual->getSocket(), " :Nickname is already in use\n", 30);
-			return ;
-		}
-	}
-	actual->setNickname(argument);
-}
-
-void	Irc::user(std::list<User>::iterator actual) {
-
-	//.
-}
-
 std::string	gettarget(std::string argument) {
 
 	std::string target;
@@ -218,7 +183,61 @@ std::string	skip_isspace(std::string str) {
 	return (&str[i]);
 }
 
-void	Irc::privmsg(std::list<User>::iterator actual) {
+void	Irc::join(User &actual) {
+
+	// Channel newchannel();
+	
+}
+
+void	Irc::nick(User &actual) {
+
+	std::list<User>::iterator it;
+	std::string argument = actual.getBuffer();
+	
+	if (argument.empty()){
+		write(actual.getSocket(), " :No nickname given\n", 20);
+		return ;
+	}
+	if (!rfc_nickname(argument)) {	
+		write(actual.getSocket(), argument.c_str(), argument.length());
+		write(actual.getSocket(), " :Erroneus nickname\n", 20);
+		return ;
+	}
+	for (it = _users.begin(); it != _users.end(); it++) {
+		if (it->getNickname().compare(argument.c_str()) == 0) {
+			write(actual.getSocket(), argument.c_str(), argument.length());
+			write(actual.getSocket(), " :Nickname is already in use\n", 30);
+			return ;
+		}
+	}
+	actual.setNickname(argument);
+}
+// a l'appel de pass, verifier si on est pas deja connecter, pareil pour USER et NICK
+void	Irc::pass(User &actual)
+{
+	std::string argument = actual.getBuffer();
+	std::string temporaire = &argument[5]; // a changer apres parsing
+
+	temporaire = skip_isspace(temporaire);
+	
+	if (temporaire.empty())
+		write(actual.getSocket(), "PASS :Not enough parameters\n", 28); //test avec la commande PASS seule a verifier
+	else if (temporaire.compare(_password) == 0){
+		if (actual.getRegisteredLevel() == 0) 
+			actual.setHigherRegisteredLevel();
+	}
+	else {
+		actual.setLowerRegisteredLevel();
+		write(actual.getSocket(), " :Password incorrect\n", 21);
+	}
+}
+
+void	Irc::user(User &actual) {
+
+	//.
+}
+
+void	Irc::privmsg(User &actual) {
 
 	std::list<User>::iterator 	it;
 	std::string 				argument;
@@ -227,10 +246,10 @@ void	Irc::privmsg(std::list<User>::iterator actual) {
 	bool						finded;
 	
 	finded = false;
-	argument = actual->getBuffer();
+	argument = actual.getBuffer();
 	target = gettarget(argument);
 	if (target.empty()) {
-		write(actual->getSocket(), " :No recipient given\n", 21);
+		write(actual.getSocket(), " :No recipient given\n", 21);
 		return ;
 	}
 	for (it = _users.begin(); it != _users.end(); it++) {
@@ -238,14 +257,14 @@ void	Irc::privmsg(std::list<User>::iterator actual) {
 			finded = true;
 	}
 	if (!finded) {
-		write(actual->getSocket(), target.c_str(), target.length());
-		write(actual->getSocket(), " :No such nick\n", 15);
+		write(actual.getSocket(), target.c_str(), target.length());
+		write(actual.getSocket(), " :No such nick\n", 15);
 		return ;
 	}
 	message = argument.substr(target.length(), argument.length() - target.length());
 	message = skip_isspace(message);
 	if (message.empty()) {
-		write(actual->getSocket(), " :No text to send\n", 18);
+		write(actual.getSocket(), " :No text to send\n", 18);
 		return ;
 	}
 	// if (target[0] == '&' || target[0] == '#')
@@ -255,7 +274,7 @@ void	Irc::privmsg(std::list<User>::iterator actual) {
 }
 
 /*
-void Irc::exec_command(int command_number, std::list<User>::iterator actual) {
+void Irc::exec_command(int command_number, User & actual) {
 
 	if (command_number == 1)
 		join(actual);
@@ -268,15 +287,6 @@ void Irc::exec_command(int command_number, std::list<User>::iterator actual) {
 }
 */
 
-void	remove_nl(char *str) {
-
-	for (int i = 0; str[i]; i++)
-	{
-		if (str[i] == '\n')
-			str[i] = '\0';
-	}
-}
-
 void	Irc::exec_cmd(User &user) {
 
 	if (user.isRegistered())
@@ -287,7 +297,7 @@ void	Irc::exec_cmd(User &user) {
 
 // call command for testing purpose here !!!
 //	<command>(<args>);
-
+	pass(user);
 	user.setBuffer("");
 }
 
@@ -305,7 +315,7 @@ void	Irc::is_writing(void) {
 	{
 		memset(buf, '\0', 1024);
 		readed = recv(actual->getSocket(), buf, 1023, MSG_DONTWAIT);
-//		remove_nl(buf);
+		remove_nl(buf);
 		if (readed == 0)
 		{
 			close(actual->getSocket());
@@ -314,8 +324,8 @@ void	Irc::is_writing(void) {
 			actual = _users.erase(actual);
 			actual--;
 		}
-//		else if ((command_number = is_command(buf, actual)) > -1) {
-//			exec_command(command_number, actual);
+		// else if ((command_number = is_command(buf, actual)) > -1) {
+		// 	exec_command(command_number, actual);
 //		}
 //		else
 //		{
@@ -327,23 +337,8 @@ void	Irc::is_writing(void) {
 
 void	Irc::init_new_user(int socket) {
 
-//	char 	buf[12];
-//	int		readed;
 	User 	newuser;
 
-//	memset(buf, '\0', 12);
-//	write(socket, "password : ", 11);
-//	while (_password.compare(buf) != 0)
-//	{
-//		memset(buf, '\0', 12);
-//		readed = recv(socket, buf, 11, 0);
-//		int endline = strlen(buf) - 1; 
-//		if (buf[endline] == '\n')
-//			buf[endline] = '\0';
-//		is_writing();
-//		if (_password.compare(buf) != 0 && readed != -1)
-//			write(socket, "wrong password, try again\npassword : ", 38);
-//	}
 	newuser.setSocket(socket);
 	_users.push_back(newuser);
 }
@@ -372,10 +367,6 @@ void	Irc::loop_for_connection(void) {
 				std::cerr << "accept failed\n";
 				exit(EXIT_FAILURE);
 			}
-			if (setNonBlocking(new_fd) == -1) {
-        		std::cerr << "Failed to set client socket to non-blocking\n";
-				exit(EXIT_FAILURE);
-    		}
 			init_new_user(new_fd);
 			std::cout << "client n°" << new_fd - 3 << " connected\n";
 		}

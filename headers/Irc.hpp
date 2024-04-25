@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/24 22:24:27 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/25 18:02:18 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 #include "header.h"
 #include "User.hpp"
 #include "Channel.hpp"
+#include "Utils.h"
 
 class Irc {
 
@@ -65,8 +66,9 @@ public:
 //	void 		exec_command(int command_number, std::list<User>::iterator actual);
 
 /*	-	-	-	-	-	Command Functions	-	-	-	-	*/
-	void		join(std::list<User>::iterator actual);
-	void		nick(std::list<User>::iterator actual);
-	void		user(std::list<User>::iterator actual);
-	void		privmsg(std::list<User>::iterator actual);
+	void		join(User &actual);
+	void		nick(User &actual);
+	void		user(User &actual);
+	void		privmsg(User &actual);
+	void		pass(User &actual);
 };
