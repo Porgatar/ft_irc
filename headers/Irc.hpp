@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/27 02:21:06 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/27 12:16:12 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ private:
 	void	nick(User &actual);
 	void	join(User &actual);
 	void	privmsg(User &actual);
+	void 	launch_cmd(int command_number, User &actual);
+
 public:
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
