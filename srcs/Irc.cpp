@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/27 02:27:40 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/27 12:49:16 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,6 @@ Irc::Irc(const Irc &src) {
 
 	*this = src;
 }
-
-/*
-int setNonBlocking(int fd) {
-
-    int flags = fcntl(fd, F_GETFL, 0);
-    if (flags == -1)
-        return -1;
-    flags |= O_NONBLOCK;
-    if (fcntl(fd, F_SETFL, flags) == -1)
-        return -1;
-    return 0;
-}
-*/
 
 Irc::Irc(const std::string s_port, const std::string password) \
 	: _socket(0), _password(password) {
@@ -68,13 +55,6 @@ Irc::Irc(const std::string s_port, const std::string password) \
 		exit(EXIT_FAILURE);
 	}
 	listen(this->_socket, 5);
-	/*
-	if (setNonBlocking(_socket) == -1) {
-        std::cerr << PRED << "Error\nserver: could not switch to non-blocking listening" \
-			<< PRESET << std::endl;
-        exit(EXIT_FAILURE);
-    }
-	*/
 }
 
 /*	-	-	-	-	-	Destructors	-	-	-	-	-	*/
@@ -116,36 +96,6 @@ int Irc::setSockets(fd_set *set) {
 	return (max);
 }
 
-/*
-// Check if it is a command and then set the rest of the command in the buffer
-// return -1 if it is not
-int	is_command(char *buf, std::list<User>::iterator actual) {
-
-	int i = 0;
-	int j = 0;
-	std::string cmd[4] = {"JOIN", "NICK", "USER", "PRIVMSG"};
-	char	command[9];
-
-	memset(command, '\0', 9);
-	while (buf[i] >= 9 && buf[i] <= 13 || buf[i] == 32) // white space !
-		i++;
-	while (isalnum(buf[i]))
-	{
-		command[j] = buf[i];
-		i++;
-		j++;
-	}
-	for (int j = 0; j < 4; j++)
-	{
-		if (cmd[j].compare(command) == 0)
-		{
-			actual->setbuffer(&buf[i + 1]);
-			return (j + 1);
-		}
-	}
-	return (-1);
-}
-*/
 
 /*return true if the nickname respect the norm*/
 bool rfc_nickname(const std::string& str) {
@@ -193,6 +143,7 @@ void	Irc::nick(User &actual) {
 	std::list<User>::iterator it;
 	std::string argument = actual.getBuffer();
 	
+	argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
 	if (argument.empty()){
 		write(actual.getSocket(), " :No nickname given\n", 20);
 		return ;
@@ -215,13 +166,15 @@ void	Irc::nick(User &actual) {
 void	Irc::pass(User &actual)
 {
 	std::string argument = actual.getBuffer();
-	std::string temporaire = &argument[5]; // a changer apres parsing
+	argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
 
-	temporaire = skip_isspace(temporaire);
+	// std::string temporaire = &argument[5]; // a changer apres parsing
+
+	argument = skip_isspace(argument);
 	
-	if (temporaire.empty())
+	if (argument.empty())
 		write(actual.getSocket(), "PASS :Not enough parameters\n", 28); //test avec la commande PASS seule a verifier
-	else if (temporaire.compare(_password) == 0){
+	else if (argument.compare(_password) == 0){
 		if (actual.getRegisteredLevel() == 0) 
 			actual.setHigherRegisteredLevel();
 	}
@@ -233,7 +186,7 @@ void	Irc::pass(User &actual)
 
 void	Irc::user(User &actual) {
 
-	//.
+	//.	argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
 }
 
 void	Irc::privmsg(User &actual) {
@@ -272,8 +225,36 @@ void	Irc::privmsg(User &actual) {
 	write(it->getSocket(),"\n", 1);
 }
 
-/*
-void Irc::exec_command(int command_number, User & actual) {
+// Check if it is a command and then set the rest of the command in the buffer
+// return -1 if it is not
+int	is_command(std::string buf, User &actual) {
+
+	int i = 0;
+	int j = 0;
+	std::string cmd[5] = {"JOIN", "NICK", "USER", "PRIVMSG", "PASS"};
+	char	command[9];
+
+	memset(command, '\0', 9);
+	while (buf[i] >= 9 && buf[i] <= 13 || buf[i] == 32) // white space !
+		i++;
+	while (isalnum(buf[i]))
+	{
+		command[j] = buf[i];
+		i++;
+		j++;
+	}
+	for (int j = 0; j < 5; j++)
+	{
+		if (cmd[j].compare(command) == 0)
+		{
+			actual.setBuffer(&buf[i + 1]);
+			return (j + 1);
+		}
+	}
+	return (-1);
+}
+
+void Irc::launch_cmd(int command_number, User &actual) {
 
 	if (command_number == 1)
 		join(actual);
@@ -283,21 +264,33 @@ void Irc::exec_command(int command_number, User & actual) {
 		user(actual);
 	else if (command_number == 4)
 		privmsg(actual);
+	else if (command_number == 5)
+		pass(actual);
 }
-*/
+
+void	remove_nl(std::string str)
+{
+	for (int i = 0; str[i]; i++) {
+		if (str[i] == '\n')
+			str[i] = '\0';
+	}
+}
 
 void	Irc::exec_cmd(User &user) {
 
 	std::string	str;
 	size_t		len;
+	int			nb_cmd;
 
 	str = user.getBuffer();
-	if (str.find("\n", 0) == -1) {
+	if (str.find("\n", 0) == -1) { // != npos ?
 
 		std::cout << PYELLOW << "server: request: " << str << PRESET << "\n";
 		return ;
 	}
 	std::cout << PYELLOW << "server: request: " << str << PRESET;
+	if (nb_cmd = is_command(str, user))
+		launch_cmd(nb_cmd, user);
 /*
 	if (user.isRegistered())
 		//	allowed registered user actions
