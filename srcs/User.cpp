@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/25 21:00:12 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/27 00:15:54 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,21 @@
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 
-User::User(void) : _registered(0), _socket(0), _username(""), _nickname(""), _buffer("") {
-
-	//std::cout << "User: default constructor\n";
-}
+User::User(void) : _registered(0), _socket(0), _username(""), _nickname(""), _buffer("") {}
 
 User::User(const User &src) {
 
-	//std::cout << "User: copy constructor\n";
 	*this = src;
-}
-
-User::User(int socket, std::string username, std::string nickname) \
-	: _registered(3), _socket(socket), _username(username), _nickname(nickname), _buffer("") {
-
-	//std::cout << "User: socket/name constructor\n";
 }
 
 /*	-	-	-	-	-	Destructors	-	-	-	-	-	*/
 
-User::~User(void) {
-
-	//std::cout << "User: destructor\n";
-//	close(this->_socket);
-}
+User::~User(void) {}
 
 /*	-	-	-	-	-	Operators	-	-	-	-	-	*/
 
 User	&User::operator=(const User &rhs) {
 
-	//std::cout << "User: copy operator'='\n";
 	this->_registered = rhs._registered;
 	this->_socket = rhs._socket;
 	this->_username = rhs._username;

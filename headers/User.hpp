@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/25 20:57:03 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/27 00:11:20 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ class User {
 
 private:
 
-/*	-	-	-	-	-	member variables	-	-	-	-	*/
+/*	-	-	-	-	-	private variables	-	-	-	-	*/
 	int			_socket;
 	int			_registered;
 	std::string	_username;
@@ -28,7 +28,6 @@ public:
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 	User(void);
-	User(int socket, std::string username, std::string nickname);
 	User(const User &src);	
 /*	-	-	-	-	-	Destructors	-	-	-	-	-	-	*/
 	~User(void);
