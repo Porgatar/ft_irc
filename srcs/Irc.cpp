@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/25 21:04:41 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/27 02:27:40 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,14 @@
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 
-Irc::Irc(void) : _socket(0), _password("") {
-
-	std::cout << "Irc: default constructor\n";
-};
+Irc::Irc(void) : _socket(0), _password("") {};
 
 Irc::Irc(const Irc &src) {
 
-	std::cout << "Irc: copy constructor\n";
 	*this = src;
 }
 
+/*
 int setNonBlocking(int fd) {
 
     int flags = fcntl(fd, F_GETFL, 0);
@@ -35,6 +32,7 @@ int setNonBlocking(int fd) {
         return -1;
     return 0;
 }
+*/
 
 Irc::Irc(const std::string s_port, const std::string password) \
 	: _socket(0), _password(password) {
@@ -43,7 +41,6 @@ Irc::Irc(const std::string s_port, const std::string password) \
 	struct sockaddr_in	sin;
 	int					port;
 
-	std::cout << "Irc: port/password constructor\n";
 	port = atoi(s_port.c_str());
 	if (port < 1024 || port > 65535) {
 		std::cerr << PRED << "Error\nserver: port " << port \
@@ -71,18 +68,21 @@ Irc::Irc(const std::string s_port, const std::string password) \
 		exit(EXIT_FAILURE);
 	}
 	listen(this->_socket, 5);
+	/*
 	if (setNonBlocking(_socket) == -1) {
         std::cerr << PRED << "Error\nserver: could not switch to non-blocking listening" \
 			<< PRESET << std::endl;
         exit(EXIT_FAILURE);
     }
+	*/
 }
 
 /*	-	-	-	-	-	Destructors	-	-	-	-	-	*/
 
 Irc::~Irc(void) {
 
-	std::cout << "Irc: destructor\n";
+	this->_users.clear();
+	this->_channels.clear();
 	close(this->_socket);
 }
 
@@ -90,7 +90,6 @@ Irc::~Irc(void) {
 
 Irc &Irc::operator=(const Irc &rhs) {
 
-	std::cout << "Irc: copy operator=\n";
 	this->_socket = rhs._socket;
 	this->_password = rhs._password;
 	this->_users = rhs._users;
@@ -100,15 +99,15 @@ Irc &Irc::operator=(const Irc &rhs) {
 
 /*	-	-	-	-	-	Private Functions	-	-	-	-	-	*/
 
-int Irc::set_sockets(fd_set *set) {
+int Irc::setSockets(fd_set *set) {
 
 	int max = this->_socket;
 	std::list<User>::iterator it;
 
-	for (it = _users.begin(); it != _users.end(); ++it)
-	{
-		if (it->getSocket() > 0)
-		{
+	for (it = _users.begin(); it != _users.end(); ++it) {
+
+		if (it->getSocket() > 0) {
+
 			FD_SET(it->getSocket(), set);
 			if (it->getSocket() > max)
 				max = it->getSocket();
@@ -289,87 +288,97 @@ void Irc::exec_command(int command_number, User & actual) {
 
 void	Irc::exec_cmd(User &user) {
 
-	if (user.isRegistered())
-		std::cout << "received request from registered user(temporary print)\n";
-	else
-		std::cout << "received request from unregistered user(temporary print)\n";
-	std::cout << PYELLOW << "server: request: " << user.getBuffer() << PRESET << "\n";
+	std::string	str;
+	size_t		len;
 
-// call command for testing purpose here !!!
-//	<command>(<args>);
-	pass(user);
+	str = user.getBuffer();
+	if (str.find("\n", 0) == -1) {
+
+		std::cout << PYELLOW << "server: request: " << str << PRESET << "\n";
+		return ;
+	}
+	std::cout << PYELLOW << "server: request: " << str << PRESET;
+/*
+	if (user.isRegistered())
+		//	allowed registered user actions
+	else
+		//	allowed unregistered user actions
+*/
 	user.setBuffer("");
 }
 
-/*Look for any client message and parse it*/
 void	Irc::checkClientRequest(void) {
 
 	std::list<User>::iterator	actual;
-	std::list<User>::iterator	receiver;
 	int							readed;
 	char						buf[1024];
 
 	memset(buf, '\0', 1024);
-	for (actual = _users.begin(); actual != _users.end(); ++actual)
-	{
+	for (actual = _users.begin(); actual != _users.end(); ++actual) {
+
 		memset(buf, '\0', 1024);
 		readed = recv(actual->getSocket(), buf, 1023, MSG_DONTWAIT);
-//		remove_nl(buf);
-		if (readed == 0)
-		{
+		if (readed == 0) {
+
 			close(actual->getSocket());
 			std::cout << PRED << "server: client n°" << actual->getSocket() - 3 \
 				<< " disconnected" << PRESET << "\n";
 			actual = _users.erase(actual);
 			actual--;
 		}
-		// else if ((command_number = is_command(buf, actual)) > -1) {
-		// 	exec_command(command_number, actual);
-//		}
-//		else
-//		{
 		actual->setBuffer(actual->getBuffer() + std::string(buf));
 		this->exec_cmd(*actual);
-//		}
 	}
 }
 
-void	Irc::addUser(int socket) {
-
-	User 	newuser;
-
-	newuser.setSocket(socket);
-	_users.push_back(newuser);
-}
-
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
+
+void	Irc::setSigintHandler(void (*handler)(int)) {
+
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = handler;
+	sigaction(SIGINT, &sa, 0);
+}
 
 void	Irc::run(void) {
 
 	struct sockaddr_in	addr;
 	fd_set				set;
+	User				newuser;
 	int					size;
 	int					max;
+	int					new_fd;
+	int					ready_to_read;
 
 	size = sizeof(struct sockaddr_in);
-	while (1)
-	{
+	while (1) {
+
 		FD_ZERO(&set);
 		FD_SET(this->_socket, &set);
-		max = set_sockets(&set);
-		int ready_to_read = select(max + 1, &set, NULL, NULL, NULL); // attente d'une connection sur la socket
+		max = setSockets(&set);
+		ready_to_read = select(max + 1, &set, NULL, NULL, NULL);//	attente d'une connection
+																//	sur la socket
 		if (ready_to_read < 0) {
-			printf("select failed\n");
+
+			std::cerr << PRED << "server: select failed" << PRESET << std::endl;
 			exit(EXIT_FAILURE);
 		}
 		if (FD_ISSET(this->_socket, &set)) {
-			int new_fd = accept(this->_socket, (struct sockaddr *)&addr, (socklen_t *)&size);
+
+			new_fd = accept(this->_socket, (struct sockaddr *)&addr, (socklen_t *)&size);
 			if (new_fd == -1) {
-				std::cerr << "accept failed\n";
+
+				std::cerr << PRED << "server: accept failed" << PRESET << std::endl;
 				exit(EXIT_FAILURE);
 			}
-			addUser(new_fd);
-			std::cout << "client n°" << new_fd - 3 << " connected\n";
+			newuser.setSocket(new_fd);
+			this->_users.push_back(newuser);
+			std::cout << PYELLOW << "server: client n°" << new_fd - 3 \
+				<< " connected" << PRESET << "\n";
+			continue ;
 		}
 		checkClientRequest();
 	}

@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/25 20:47:39 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/27 02:04:20 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 #include <arpa/inet.h>
 //	memset dependency
 #include <cstring>
+//	signal handler dependency
+#include <signal.h>
+#include <cstdio>
 
 //	unknown dependency
 #include <algorithm>
