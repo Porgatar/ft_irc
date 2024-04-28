@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/23 18:50:31 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/28 17:01:29 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,36 @@ Channel	&Channel::operator=(const Channel &rhs) {
 	return (*this);
 }
 
+bool	Channel::user_already_in(User &user) {
+	
+	std::list<User>::iterator it;
+
+	for (it = _users.begin(); it != _users.end(); it++) {
+		if (user.getNickname().compare(it->getNickname().c_str()) == 0)
+			return (true);
+	}
+	return (false);
+}
+
 void	Channel::send_group_msg(std::string msg) {
 
 	std::cout << "Channel: group message: " << msg << "\n";
 	//send msg to all users.
 }
 
-void	Channel::add_user(User user) {
+void	Channel::add_user(User &user) {
 
 	std::cout << "Channel: adding user\n";
 	this->_users.push_back(user);
 }
 
-void	Channel::add_operator(User user) {
+void	Channel::add_operator(User &user) {
 
 	std::cout << "Channel: adding operator\n";
 	this->_operators.push_back(user);
+}
+
+std::string	Channel::getName() const {
+	
+	return (_name);
 }
