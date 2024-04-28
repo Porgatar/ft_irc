@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/28 20:35:41 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/28 21:47:16 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,11 @@ bool	Channel::user_already_in(User &user) {
 void	Channel::send_group_msg(std::string msg) {
 
 	std::cout << "Channel: group message: " << msg << "\n";
-	//send msg to all users.
+	std::list<User>::iterator	it;
+
+	for (it = _users.begin(); it != _users.end(); it++) {
+		write(it->getSocket(), msg.c_str(), msg.size());
+	}
 }
 
 void	Channel::add_user(User &user) {

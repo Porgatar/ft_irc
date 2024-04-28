@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/28 21:01:50 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/28 22:07:49 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,10 @@ bool	Irc::check_existing_channel(std::string channels_name, User &user)
 
 	for (it = _channels.begin(); it != _channels.end(); it++) {
 		if (it->getName().compare(channels_name.c_str()) == 0) {
-			if (it->user_already_in(user) == false)
+			if (it->user_already_in(user) == false) {
 				it->add_user(user);
+				it->send_group_msg(user.getNickname() + " is joining the channel " + it->getName() + "\n");
+			}
 			return (true);
 		}
 	}
@@ -184,6 +186,7 @@ void	Irc::join(User &user) {
 		if (!(check_existing_channel(*it, user))) {
 			Channel channel(*it, user);
 			_channels.push_back(channel);
+			channel.send_group_msg(user.getNickname() + " is joining the channel " + channel.getName() + "\n");
 		}
 	}
 }
@@ -210,9 +213,10 @@ void	Irc::nick(User &actual) {
 			return ;
 		}
 	}
-	if ((actual.getRegisteredLevel() == 2 || actual.getRegisteredLevel() == 1) && actual.getNickname().empty())
+	if ((actual.getRegisteredLevel() == 2 || actual.getRegisteredLevel() == 1) && actual.getNickname().empty()) {
 		actual.setHigherRegisteredLevel();
-	actual.setNickname(argument);
+		actual.setNickname(argument);
+	}
 }
 
 // a l'appel de pass, verifier si on est pas deja connecter, pareil pour USER et NICK
@@ -259,19 +263,24 @@ void	Irc::privmsg(User &actual) {
 		if (it->getNickname().compare(target.c_str()) == 0)
 			finded = true;
 	}
-	if (!finded) {
-		write(actual.getSocket(), target.c_str(), target.length());
-		write(actual.getSocket(), " :No such nick\n", 15);
-		return ;
-	}
 	message = argument.substr(target.length(), argument.length() - target.length());
 	message = skip_isspace(message);
 	if (message.empty()) {
 		write(actual.getSocket(), " :No text to send\n", 18);
 		return ;
 	}
-	// if (target[0] == '&' || target[0] == '#')
-		//msg to channel
+	if (target[0] == '&' || target[0] == '#') {
+		finded = true;
+		for (std::list<Channel>::iterator ite = _channels.begin(); ite != _channels.end(); ite++) {
+			if (ite->getName().compare(target.c_str()) == 0)
+				ite->send_group_msg(message);
+		}
+	}
+	if (!finded ) {
+		write(actual.getSocket(), target.c_str(), target.length());
+		write(actual.getSocket(), " :No such nick\n", 15);
+		return ;
+	}
 	write(it->getSocket(), message.c_str(), message.size());
 	write(it->getSocket(),"\n", 1);
 }
@@ -357,9 +366,8 @@ void	Irc::checkClientRequest(void) {
 			actual--;
 		}
 		else {
-			
-		actual->setBuffer(actual->getBuffer() + std::string(buf));
-		this->exec_cmd(*actual);
+			actual->setBuffer(actual->getBuffer() + std::string(buf));
+			this->exec_cmd(*actual);
 		}
 	}
 }
