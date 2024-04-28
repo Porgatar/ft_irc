@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/27 12:49:16 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/28 17:00:38 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,10 +132,60 @@ std::string	skip_isspace(std::string str) {
 	return (&str[i]);
 }
 
-void	Irc::join(User &actual) {
+bool	Irc::check_existing_channel(std::string channels_name, User &user)
+{
+	std::list<Channel>::iterator		it;
 
-	// Channel newchannel();
+	for (it = _channels.begin(); it != _channels.end(); it++) {
+		if (it->getName().compare(channels_name.c_str()) == 0) {
+			if (it->user_already_in(user) == false)
+				it->add_user(user);
+			return (true);
+		}
+	}
+	return (false);
+}
+
+void	Irc::join(User &user) {
 	
+	Channel channel;
+	std::list<std::string>::iterator	it;
+    std::list<std::string> 				cmds;
+    std::string 						argument = user.getBuffer();
+
+    argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
+    if (argument[0] != '&' && argument[0] != '#') {
+        write(user.getSocket(), "Channel begin with & or #\n", 26); // TEMPORAIRE
+        return;
+    }
+    size_t start = 0;
+    size_t end = 0;
+    while (end < argument.size() && argument[end] != ' ') {
+        while (end < argument.size() && argument[end] != '&' && argument[end] != '#') {
+            end++;
+        }
+        if (end < argument.size()) {
+            size_t next = end + 1;
+            while (next < argument.size() && argument[next] != ',' && argument[next] != ' ')
+                next++;
+			if (argument[next] == ',' && argument[next + 1] != '&' && argument[next + 1] != '#') {
+
+				write(user.getSocket(), "no comma allowed\n", 17);
+				return ;
+			}
+			/*si argument [next] == espace, regarder si il ya une clé apres, sinon retourner une erreur*/
+            std::string channel_name = argument.substr(start, next - start);
+            cmds.push_back(channel_name);
+            start = next + 1;
+        }
+        end = start;
+    }
+	for (it = cmds.begin(); it != cmds.end(); it++) {
+		if (!(check_existing_channel(*it, user))) {
+			Channel channel(*it, user);
+			_channels.push_back(channel);
+		}
+	}
 }
 
 void	Irc::nick(User &actual) {
@@ -160,18 +210,17 @@ void	Irc::nick(User &actual) {
 			return ;
 		}
 	}
+	if (actual.getRegisteredLevel() == 1)
+		actual.setHigherRegisteredLevel();
 	actual.setNickname(argument);
 }
+
 // a l'appel de pass, verifier si on est pas deja connecter, pareil pour USER et NICK
 void	Irc::pass(User &actual)
 {
 	std::string argument = actual.getBuffer();
 	argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
-
-	// std::string temporaire = &argument[5]; // a changer apres parsing
-
 	argument = skip_isspace(argument);
-	
 	if (argument.empty())
 		write(actual.getSocket(), "PASS :Not enough parameters\n", 28); //test avec la commande PASS seule a verifier
 	else if (argument.compare(_password) == 0){
@@ -187,6 +236,8 @@ void	Irc::pass(User &actual)
 void	Irc::user(User &actual) {
 
 	//.	argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
+	if (actual.getRegisteredLevel() == 2)
+		actual.setHigherRegisteredLevel();
 }
 
 void	Irc::privmsg(User &actual) {
@@ -230,24 +281,21 @@ void	Irc::privmsg(User &actual) {
 int	is_command(std::string buf, User &actual) {
 
 	int i = 0;
-	int j = 0;
-	std::string cmd[5] = {"JOIN", "NICK", "USER", "PRIVMSG", "PASS"};
+	std::string cmd[5] = {"PASS", "NICK", "USER", "PRIVMSG", "JOIN"};
 	char	command[9];
 
 	memset(command, '\0', 9);
-	while (buf[i] >= 9 && buf[i] <= 13 || buf[i] == 32) // white space !
-		i++;
+	buf = skip_isspace(buf);
 	while (isalnum(buf[i]))
 	{
-		command[j] = buf[i];
+		command[i] = buf[i];
 		i++;
-		j++;
 	}
 	for (int j = 0; j < 5; j++)
 	{
 		if (cmd[j].compare(command) == 0)
 		{
-			actual.setBuffer(&buf[i + 1]);
+			actual.setBuffer(&buf[i + 1]); // a voir si il ne faut pas effacer le buffer avant
 			return (j + 1);
 		}
 	}
@@ -257,23 +305,20 @@ int	is_command(std::string buf, User &actual) {
 void Irc::launch_cmd(int command_number, User &actual) {
 
 	if (command_number == 1)
-		join(actual);
+		pass(actual);
 	else if (command_number == 2)
 		nick(actual);
 	else if (command_number == 3)
 		user(actual);
+	else if (!actual.isRegistered()) {
+		write(actual.getSocket(), "User not registered\n", 20);
+		write(actual.getSocket(), "Usage : PASS and NICK and USER\n", 31);
+		return ;
+	}
 	else if (command_number == 4)
 		privmsg(actual);
 	else if (command_number == 5)
-		pass(actual);
-}
-
-void	remove_nl(std::string str)
-{
-	for (int i = 0; str[i]; i++) {
-		if (str[i] == '\n')
-			str[i] = '\0';
-	}
+		join(actual);
 }
 
 void	Irc::exec_cmd(User &user) {
@@ -319,8 +364,11 @@ void	Irc::checkClientRequest(void) {
 			actual = _users.erase(actual);
 			actual--;
 		}
+		else {
+			
 		actual->setBuffer(actual->getBuffer() + std::string(buf));
 		this->exec_cmd(*actual);
+		}
 	}
 }
 
@@ -371,7 +419,6 @@ void	Irc::run(void) {
 			this->_users.push_back(newuser);
 			std::cout << PYELLOW << "server: client n°" << new_fd - 3 \
 				<< " connected" << PRESET << "\n";
-			continue ;
 		}
 		checkClientRequest();
 	}

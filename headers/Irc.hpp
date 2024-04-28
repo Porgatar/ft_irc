@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/27 12:16:12 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/28 16:16:24 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ private:
 	void	checkClientRequest(void);
 	void 	exec_cmd(User &user);
 	void	addUser(int socket);
+	bool	check_existing_channel(std::string channels_name, User &user);
 /*	-	-	-	-	-	Command Functions	-	-	-	-	*/
 	void 	cap(User &user);
 	void	pass(User &actual);

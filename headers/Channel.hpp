@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/25 20:23:48 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/28 16:37:46 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ public:
 	Channel	&operator=(const Channel &rhs);
 
 	void	send_group_msg(std::string msg);
-	void	add_user(User user);
-	void	add_operator(User user);
+	void	add_user(User &user);
+	void	add_operator(User &user);
+	bool	user_already_in(User &user);
+	std::string	getName() const ;
 };
