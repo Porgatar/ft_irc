@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/28 17:00:38 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/28 21:01:50 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ void	Irc::nick(User &actual) {
 			return ;
 		}
 	}
-	if (actual.getRegisteredLevel() == 1)
+	if ((actual.getRegisteredLevel() == 2 || actual.getRegisteredLevel() == 1) && actual.getNickname().empty())
 		actual.setHigherRegisteredLevel();
 	actual.setNickname(argument);
 }
@@ -233,10 +233,10 @@ void	Irc::pass(User &actual)
 	}
 }
 
-void	Irc::user(User &actual) {
+void	Irc::user_cmd(User &actual) {
 
 	//.	argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
-	if (actual.getRegisteredLevel() == 2)
+	if ((actual.getRegisteredLevel() == 2 || actual.getRegisteredLevel() == 1) && actual.getUsername().empty())
 		actual.setHigherRegisteredLevel();
 }
 
@@ -272,7 +272,7 @@ void	Irc::privmsg(User &actual) {
 	}
 	// if (target[0] == '&' || target[0] == '#')
 		//msg to channel
-	write(it->getSocket(), message.c_str(), message.length());
+	write(it->getSocket(), message.c_str(), message.size());
 	write(it->getSocket(),"\n", 1);
 }
 
@@ -302,25 +302,6 @@ int	is_command(std::string buf, User &actual) {
 	return (-1);
 }
 
-void Irc::launch_cmd(int command_number, User &actual) {
-
-	if (command_number == 1)
-		pass(actual);
-	else if (command_number == 2)
-		nick(actual);
-	else if (command_number == 3)
-		user(actual);
-	else if (!actual.isRegistered()) {
-		write(actual.getSocket(), "User not registered\n", 20);
-		write(actual.getSocket(), "Usage : PASS and NICK and USER\n", 31);
-		return ;
-	}
-	else if (command_number == 4)
-		privmsg(actual);
-	else if (command_number == 5)
-		join(actual);
-}
-
 void	Irc::exec_cmd(User &user) {
 
 	std::string	str;
@@ -334,14 +315,25 @@ void	Irc::exec_cmd(User &user) {
 		return ;
 	}
 	std::cout << PYELLOW << "server: request: " << str << PRESET;
-	if (nb_cmd = is_command(str, user))
-		launch_cmd(nb_cmd, user);
-/*
-	if (user.isRegistered())
-		//	allowed registered user actions
-	else
-		//	allowed unregistered user actions
-*/
+	nb_cmd = is_command(str, user);
+	if (user.isRegistered()) {
+		if (nb_cmd == 4)
+			privmsg(user);
+		else if (nb_cmd == 5)
+			join(user);
+	}
+	else if (!(user.isRegistered()) && nb_cmd == 4 || nb_cmd == 5) {
+		write(user.getSocket(), "User not registered\n", 20);
+		write(user.getSocket(), "Usage : PASS and NICK/USER\n", 27);
+	}
+	else {
+		if (nb_cmd == 1)
+			pass(user);
+		else if (nb_cmd == 2)
+			nick(user);
+		else if (nb_cmd == 3)
+			user_cmd(user);
+	}
 	user.setBuffer("");
 }
 
