@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/28 17:01:29 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/28 20:35:41 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,10 @@ bool	Channel::user_already_in(User &user) {
 	std::list<User>::iterator it;
 
 	for (it = _users.begin(); it != _users.end(); it++) {
-		if (user.getNickname().compare(it->getNickname().c_str()) == 0)
+		if (user.getNickname().compare(it->getNickname().c_str()) == 0) {
+			write(user.getSocket(), "User already connected\n", 23);	
 			return (true);
+		}
 	}
 	return (false);
 }

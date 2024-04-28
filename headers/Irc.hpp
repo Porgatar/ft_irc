@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/28 16:16:24 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/28 20:49:51 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ private:
 /*	-	-	-	-	-	Command Functions	-	-	-	-	*/
 	void 	cap(User &user);
 	void	pass(User &actual);
-	void	user(User &actual);
+	void	user_cmd(User &actual);
 	void	nick(User &actual);
 	void	join(User &actual);
 	void	privmsg(User &actual);
