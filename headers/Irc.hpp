@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/28 20:49:51 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/29 12:35:54 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,3 +56,5 @@ public:
 	void	setSigintHandler(void (*handler)(int));
 	void	run(void);
 };
+
+typedef void (Irc::*function_p)(User &);

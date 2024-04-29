@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/28 22:07:49 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/29 13:18:01 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,12 +240,13 @@ void	Irc::pass(User &actual)
 void	Irc::user_cmd(User &actual) {
 
 	//.	argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
-	if ((actual.getRegisteredLevel() == 2 || actual.getRegisteredLevel() == 1) && actual.getUsername().empty())
+	if ((actual.getRegisteredLevel() == 2 || actual.getRegisteredLevel() == 1) && actual.getUsername() == "") {
 		actual.setHigherRegisteredLevel();
+		actual.setUsername(actual.getBuffer());
+	}
 }
 
 void	Irc::privmsg(User &actual) {
-
 	std::list<User>::iterator 	it;
 	std::string 				argument;
 	std::string					target;
@@ -272,9 +273,12 @@ void	Irc::privmsg(User &actual) {
 	if (target[0] == '&' || target[0] == '#') {
 		finded = true;
 		for (std::list<Channel>::iterator ite = _channels.begin(); ite != _channels.end(); ite++) {
-			if (ite->getName().compare(target.c_str()) == 0)
+			if (ite->getName().compare(target.c_str()) == 0) {
 				ite->send_group_msg(message);
+				return ;
+			}
 		}
+		// write(actual.getSocket(), "")
 	}
 	if (!finded ) {
 		write(actual.getSocket(), target.c_str(), target.length());
@@ -316,33 +320,25 @@ void	Irc::exec_cmd(User &user) {
 	std::string	str;
 	size_t		len;
 	int			nb_cmd;
+	function_p 	command[5] = { &Irc::pass, &Irc::nick, &Irc::user_cmd, &Irc::privmsg, &Irc::join };
 
 	str = user.getBuffer();
-	if (str.find("\n", 0) == -1) { // != npos ?
+	if (str.find("\n", 0) == -1) { // == npos ?
 
 		std::cout << PYELLOW << "server: request: " << str << PRESET << "\n";
 		return ;
 	}
 	std::cout << PYELLOW << "server: request: " << str << PRESET;
 	nb_cmd = is_command(str, user);
-	if (user.isRegistered()) {
-		if (nb_cmd == 4)
-			privmsg(user);
-		else if (nb_cmd == 5)
-			join(user);
-	}
-	else if (!(user.isRegistered()) && nb_cmd == 4 || nb_cmd == 5) {
+	if (user.isRegistered() == false && nb_cmd >= 4) {
 		write(user.getSocket(), "User not registered\n", 20);
 		write(user.getSocket(), "Usage : PASS and NICK/USER\n", 27);
 	}
-	else {
-		if (nb_cmd == 1)
-			pass(user);
-		else if (nb_cmd == 2)
-			nick(user);
-		else if (nb_cmd == 3)
-			user_cmd(user);
-	}
+	else if (user.isRegistered() && (nb_cmd >= 1 && nb_cmd <= 3))
+		write(user.getSocket(), "You are already registered\n", 27);	
+	else 
+		(this->*command[nb_cmd - 1])(user);
+	// else if (is_operator())
 	user.setBuffer("");
 }
 
