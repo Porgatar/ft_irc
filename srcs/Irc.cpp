@@ -6,11 +6,13 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/29 13:18:01 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/29 17:53:54 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Irc.hpp"
+
+Irc	*g_IrcPtr;
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 
@@ -61,6 +63,10 @@ Irc::Irc(const std::string s_port, const std::string password) \
 
 Irc::~Irc(void) {
 
+	std::list<User>::iterator	i;
+
+	for (i = _users.begin(); i != _users.end(); ++i)
+		close((*i).getSocket());
 	this->_users.clear();
 	this->_channels.clear();
 	close(this->_socket);
@@ -95,7 +101,6 @@ int Irc::setSockets(fd_set *set) {
 	}
 	return (max);
 }
-
 
 /*return true if the nickname respect the norm*/
 bool rfc_nickname(const std::string& str) {
@@ -374,6 +379,7 @@ void	Irc::setSigintHandler(void (*handler)(int)) {
 
 	struct sigaction	sa;
 
+	g_IrcPtr = this;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sa.sa_handler = handler;
