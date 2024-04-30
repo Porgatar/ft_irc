@@ -31,9 +31,10 @@ public:
 
 	Channel	&operator=(const Channel &rhs);
 
-	void	send_group_msg(std::string msg);
-	void	add_user(User &user);
-	void	add_operator(User &user);
-	bool	user_already_in(User &user);
 	std::string	getName() const ;
+
+	void	sendGroupMsg(std::string msg);
+	void	addUser(User &user);
+	void	addOperator(User &user);
+	bool	isConnected(User &user);
 };

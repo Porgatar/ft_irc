@@ -47,6 +47,6 @@ public:
 	void				setNickname(std::string nickname);
 	void				setBuffer(std::string buf);
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
-	void				sendMsg(std::list<User> users);
+	void				sendMsg(std::string msg);
 	bool				isRegistered(void);
 };

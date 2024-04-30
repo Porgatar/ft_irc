@@ -6,11 +6,13 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/28 21:47:16 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/30 00:10:23 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/Channel.hpp"
+#include "../../headers/Channel.hpp"
+
+/*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 
 Channel::Channel(void) : _name("") {
 
@@ -26,14 +28,18 @@ Channel::Channel(const Channel &src) {
 Channel::Channel(const std::string name, User user) : _name(name) {
 
 	std::cout << "Channel: name/user constructor\n";
-	this->add_user(user);
-	this->add_operator(user);
+	this->addUser(user);
+	this->addOperator(user);
 };
+
+/*	-	-	-	-	-	Destructors	-	-	-	-	-	*/
 
 Channel::~Channel(void) {
 
 	std::cout << "Channel: destructor\n";
 };
+
+/*	-	-	-	-	-	Operators	-	-	-	-	-	*/
 
 Channel	&Channel::operator=(const Channel &rhs) {
 
@@ -44,40 +50,7 @@ Channel	&Channel::operator=(const Channel &rhs) {
 	return (*this);
 }
 
-bool	Channel::user_already_in(User &user) {
-	
-	std::list<User>::iterator it;
-
-	for (it = _users.begin(); it != _users.end(); it++) {
-		if (user.getNickname().compare(it->getNickname().c_str()) == 0) {
-			write(user.getSocket(), "User already connected\n", 23);	
-			return (true);
-		}
-	}
-	return (false);
-}
-
-void	Channel::send_group_msg(std::string msg) {
-
-	std::cout << "Channel: group message: " << msg << "\n";
-	std::list<User>::iterator	it;
-
-	for (it = _users.begin(); it != _users.end(); it++) {
-		write(it->getSocket(), msg.c_str(), msg.size());
-	}
-}
-
-void	Channel::add_user(User &user) {
-
-	std::cout << "Channel: adding user\n";
-	this->_users.push_back(user);
-}
-
-void	Channel::add_operator(User &user) {
-
-	std::cout << "Channel: adding operator\n";
-	this->_operators.push_back(user);
-}
+/*	-	-	-	-	-	Getters	-	-	-	-	-	*/
 
 std::string	Channel::getName() const {
 	
