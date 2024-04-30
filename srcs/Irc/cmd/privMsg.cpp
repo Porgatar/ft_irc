@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   privMsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 04:12:41 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:09:59 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/Irc.hpp"
 
-static std::string	gettarget(std::string argument) {
+/*Get the first <argument>'s word; who is separated by a isspace*/
+std::string	getWord(std::string argument) {
 
 	std::string target;
 	int			i = 0;
@@ -33,7 +34,7 @@ void	Irc::privmsg(User &actual) {
 	
 	finded = false;
 	argument = actual.getBuffer();
-	target = gettarget(argument);
+	target = getWord(argument);
 	if (target.empty()) {
 
 		actual.sendMsg(" :No recipient given\n");

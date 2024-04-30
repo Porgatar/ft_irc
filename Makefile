@@ -6,7 +6,7 @@
 #    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/04/30 04:15:55 by parinder         ###   ########.fr        #
+#    Updated: 2024/04/30 15:51:49 by maxime           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC=		srcs/main.cpp \
 			srcs/Irc/Irc.cpp \
 			srcs/Irc/Irc_run.cpp \
 			srcs/Irc/cmd/join.cpp \
+			srcs/Irc/cmd/kick.cpp \
 			srcs/Irc/cmd/nick.cpp \
 			srcs/Irc/cmd/pass.cpp \
 			srcs/Irc/cmd/privMsg.cpp \

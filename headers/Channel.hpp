@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/28 16:37:46 by maxime           ###   ########.fr       */
+/*   Updated: 2024/04/30 19:34:06 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ public:
 	void	sendGroupMsg(std::string msg);
 	void	addUser(User &user);
 	void	addOperator(User &user);
-	bool	isConnected(User &user);
+	bool	isConnected(std::string nick);
+	void	kickuser(std::string nick, std::string message);
 };

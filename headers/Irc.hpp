@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 04:13:44 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/30 19:25:59 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ private:
 	std::string			_password;
 	std::list<User>		_users;
 	std::list<Channel>	_channels;
+	std::list<Channel>::iterator _it;
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 	Irc(void);
 /*	-	-	-	-	-	Private Functions	-	-	-	-	*/
@@ -40,6 +41,8 @@ private:
 	void	pass(User &actual);
 	void	privmsg(User &actual);
 	void	user(User &actual);
+	void    kick(User &actual);
+	bool	checkExistingChannel(User &user, std::string channels_name);
 public:
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
@@ -59,3 +62,4 @@ std::string	skip_isspace(std::string str); //temporary
 extern Irc	*g_IrcPtr;
 
 typedef void (Irc::*function_p)(User &);
+std::string	getWord(std::string argument);

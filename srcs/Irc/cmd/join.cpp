@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 03:50:06 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/30 19:27:19 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/Irc.hpp"
 
-static bool	checkExistingChannel(std::list<Channel> _channels, User &user, std::string channels_name)
+bool	Irc::checkExistingChannel(User &user, std::string channels_name)
 {
 	std::list<Channel>::iterator		it;
 
@@ -20,7 +20,7 @@ static bool	checkExistingChannel(std::list<Channel> _channels, User &user, std::
 
 		if (it->getName().compare(channels_name.c_str()) == 0) {
 
-			if (it->isConnected(user) == false) {
+			if (it->isConnected(user.getNickname()) == false) {
 
 				it->addUser(user);
 				it->sendGroupMsg(user.getNickname() + " is joining the channel " + it->getName() + "\n");
@@ -69,7 +69,7 @@ void	Irc::join(User &user) {
     }
 	for (it = cmds.begin(); it != cmds.end(); it++) {
 
-		if (!(checkExistingChannel(this->_channels, user, *it))) {
+		if (!(checkExistingChannel(user, *it))) {
 
 			Channel	channel(*it, user);
 			_channels.push_back(channel);

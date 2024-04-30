@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc_run.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 04:16:22 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/30 18:52:51 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	is_command(std::string buf, User &actual) {
 
 	int			i;
 	char		command[9];
-	std::string	cmd[5] = {"PASS", "NICK", "USER", "PRIVMSG", "JOIN"};
+	std::string	cmd[6] = {"PASS", "NICK", "USER", "PRIVMSG", "JOIN", "KICK"};
 
 	memset(command, '\0', 9);
 	buf = skip_isspace(buf);
@@ -28,7 +28,7 @@ static int	is_command(std::string buf, User &actual) {
 		command[i] = buf[i];
 		i++;
 	}
-	for (int j = 0; j < 5; j++) {
+	for (int j = 0; j < 6; j++) {
 
 		if (cmd[j].compare(command) == 0) {
 
@@ -44,7 +44,7 @@ void	Irc::exec_cmd(User &user) {
 	std::string	str;
 	size_t		len;
 	int			nb_cmd;
-	function_p 	command[5] = { &Irc::pass, &Irc::nick, &Irc::user, &Irc::privmsg, &Irc::join };
+	function_p 	command[9] = { &Irc::pass, &Irc::nick, &Irc::user, &Irc::privmsg, &Irc::join, &Irc::kick };
 
 	str = user.getBuffer();
 	if (str.find("\n", 0) == -1) { // == npos ?
@@ -55,10 +55,10 @@ void	Irc::exec_cmd(User &user) {
 	std::cout << PYELLOW << "server: request: " << str << PRESET;
 	nb_cmd = is_command(str, user);
 	if (user.isRegistered() == false && nb_cmd >= 4)
-		user.sendMsg(std::string("User not registered\n") + "Usage : PASS and NICK/USER\n");
+		user.sendMsg("User not registered\nUsage : PASS and NICK/USER\n");
 	else if (user.isRegistered() && (nb_cmd >= 1 && nb_cmd <= 3))
-		user.sendMsg("You are already registered\n");	
-	else 
+		user.sendMsg("You are already registered\n");
+	else if (nb_cmd != -1)
 		(this->*command[nb_cmd - 1])(user);
 	// else if (is_operator())
 	user.setBuffer("");
