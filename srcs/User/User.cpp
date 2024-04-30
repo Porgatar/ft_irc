@@ -6,11 +6,11 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/27 00:15:54 by parinder         ###   ########.fr       */
+/*   Updated: 2024/04/30 02:46:37 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/User.hpp"
+#include "../../headers/User.hpp"
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 
@@ -101,22 +101,9 @@ void	User::setBuffer(std::string buf) {
 
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
 
-//	soon go to channel class and be adapted to new registration
-void	User::sendMsg(std::list<User> users) {
+void	User::sendMsg(std::string msg) {
 
-	std::list<User>::iterator receiver;
-	for (receiver = users.begin(); receiver != users.end(); ++receiver)
-	{
-		if (_socket != receiver->getSocket() && !_buffer.empty())// && if in_channel
-		{
-			if (!receiver->getUsername().empty()) {
-				send(receiver->getSocket(), _username.c_str(), _username.length(), 0);
-				send(receiver->getSocket(), " : ", 3, 0);
-			}
-			send(receiver->getSocket(), _buffer.c_str(), _buffer.length(), 0);
-		}
-	}
-	std::cout << _buffer;
+	write(this->_socket, msg.c_str(), msg.length());
 }
 
 bool	User::isRegistered(void) {

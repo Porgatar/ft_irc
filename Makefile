@@ -6,7 +6,7 @@
 #    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/04/25 21:03:58 by parinder         ###   ########.fr        #
+#    Updated: 2024/04/30 04:15:55 by parinder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,9 +25,16 @@ endif
 OBJ=		$(SRC:.cpp=.o)
 
 SRC=		srcs/main.cpp \
-			srcs/Irc.cpp \
-			srcs/User.cpp \
-			srcs/Channel.cpp \
+			srcs/Irc/Irc.cpp \
+			srcs/Irc/Irc_run.cpp \
+			srcs/Irc/cmd/join.cpp \
+			srcs/Irc/cmd/nick.cpp \
+			srcs/Irc/cmd/pass.cpp \
+			srcs/Irc/cmd/privMsg.cpp \
+			srcs/Irc/cmd/user.cpp \
+			srcs/User/User.cpp \
+			srcs/Channel/Channel.cpp \
+			srcs/Channel/UserManagement.cpp \
 
 all:		$(NAME)
 
