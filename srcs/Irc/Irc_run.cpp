@@ -6,33 +6,36 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 18:52:51 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/01 02:18:07 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/Irc.hpp"
 
+static std::string	getWord(std::string str, int n) {
+
+	std::istringstream	iss(str);
+
+	while (n-- > 0 && (iss >> str));
+	return (str);
+}
+
 // Check if it is a command and then set the rest of the command in the buffer
 // return -1 if it is not
-static int	is_command(std::string buf, User &actual) {
+static int	is_command(std::string &buf, User &actual) {
 
+	std::string	cmd[7] = {"CAP", "PASS", "USER", "NICK", "PRIVMSG", "JOIN", "KICK"};
+	std::string command;
 	int			i;
-	char		command[9];
-	std::string	cmd[6] = {"PASS", "NICK", "USER", "PRIVMSG", "JOIN", "KICK"};
 
-	memset(command, '\0', 9);
 	buf = skip_isspace(buf);
-	i = 0;
-	while (isalnum(buf[i])) {
-
+	for (i = 0; isalnum(buf[i]); i++)
 		command[i] = buf[i];
-		i++;
-	}
-	for (int j = 0; j < 6; j++) {
+	for (int j = 0; j < 7; j++) {
 
 		if (cmd[j].compare(command) == 0) {
 
-			actual.setBuffer(&buf[i + 1]); // a voir si il ne faut pas effacer le buffer avant
+			buf = buf[i + 1];
 			return (j + 1);
 		}
 	}
@@ -42,26 +45,35 @@ static int	is_command(std::string buf, User &actual) {
 void	Irc::exec_cmd(User &user) {
 
 	std::string	str;
+	std::string	tmp;
 	size_t		len;
 	int			nb_cmd;
-	function_p 	command[9] = { &Irc::pass, &Irc::nick, &Irc::user, &Irc::privmsg, &Irc::join, &Irc::kick };
+	function_p 	command[7] = {	&Irc::cap, &Irc::pass, &Irc::user, &Irc::nick, \
+								&Irc::privmsg, &Irc::join, &Irc::kick};
 
 	str = user.getBuffer();
-	if (str.find("\n", 0) == -1) { // == npos ?
+	len = str.find("\n", 0);
+	if (len == -1) {
 
 		std::cout << PYELLOW << "server: request: " << str << PRESET << "\n";
 		return ;
 	}
 	std::cout << PYELLOW << "server: request: " << str << PRESET;
-	nb_cmd = is_command(str, user);
-	if (user.isRegistered() == false && nb_cmd >= 4)
+	tmp = str.substr(len + 1, str.length() - len);
+	user.setBuffer(tmp);
+	str = str.substr(0, len);
+	//	str contient a ce moment toute la chaine jusqu'au \n.
+	tmp = getWord(str, 1);	//recupere le premier mots et le met dans tmp.
+	nb_cmd = is_command(tmp, user);
+	if (nb_cmd == -1)
+		user.sendMsg(tmp + " :Unknown command\n");
+	else if (!user.isRegistered() && nb_cmd > 4)
 		user.sendMsg("User not registered\nUsage : PASS and NICK/USER\n");
-	else if (user.isRegistered() && (nb_cmd >= 1 && nb_cmd <= 3))
+	else if (user.isRegistered() && (nb_cmd > 0 && nb_cmd < 5))
 		user.sendMsg("You are already registered\n");
-	else if (nb_cmd != -1)
+	else
 		(this->*command[nb_cmd - 1])(user);
 	// else if (is_operator())
-	user.setBuffer("");
 }
 
 void	Irc::checkClientRequest(void) {
@@ -70,7 +82,6 @@ void	Irc::checkClientRequest(void) {
 	int							readed;
 	char						buf[1024];
 
-	memset(buf, '\0', 1024);
 	for (actual = _users.begin(); actual != _users.end(); ++actual) {
 
 		memset(buf, '\0', 1024);
@@ -127,6 +138,7 @@ void	Irc::run(void) {
 			std::cout << PYELLOW << "server: client n°" << new_fd - 3 \
 				<< " connected" << PRESET << "\n";
 		}
-		checkClientRequest();
+		else
+			this->checkClientRequest();
 	}
 }
