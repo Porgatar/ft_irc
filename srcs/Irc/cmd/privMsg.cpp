@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 16:09:59 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/01 01:18:33 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ std::string	getWord(std::string argument) {
 	std::string target;
 	int			i = 0;
 
-	while (!((argument[i] >= 9 && argument[i] <= 13) || argument[i] == 32))
+	while (argument[i] && !((argument[i] >= 9 && argument[i] <= 13) || argument[i] == 32))
 		i++;
 	target = argument.substr(0, i);
 	return (target);
 }
 
+//buggggggggggg
 void	Irc::privmsg(User &actual) {
 
 	std::list<User>::iterator 	it;
@@ -35,6 +36,7 @@ void	Irc::privmsg(User &actual) {
 	finded = false;
 	argument = actual.getBuffer();
 	target = getWord(argument);
+	// target = argument.substr(0, argument.find(' ', 0));
 	if (target.empty()) {
 
 		actual.sendMsg(" :No recipient given\n");
@@ -69,4 +71,5 @@ void	Irc::privmsg(User &actual) {
 		actual.sendMsg(target + " :No such nick\n");
 	else
 		it->sendMsg(message + "\n");
+	// std::cout << it->getNickname() << std::endl;
 }
