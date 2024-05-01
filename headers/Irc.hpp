@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 19:25:59 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/01 01:39:51 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,3 @@ std::string	skip_isspace(std::string str); //temporary
 extern Irc	*g_IrcPtr;
 
 typedef void (Irc::*function_p)(User &);
-std::string	getWord(std::string argument);

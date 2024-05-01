@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/27 02:04:20 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/01 01:34:35 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 //	std::string & print redirection dependency
 #include <iostream>
+#include <sstream>
 //	list for users & channels dependency
 #include <list>
 //	fcntl dependency
