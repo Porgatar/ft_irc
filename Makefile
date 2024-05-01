@@ -6,7 +6,7 @@
 #    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/04/30 15:51:49 by maxime           ###   ########.fr        #
+#    Updated: 2024/05/01 01:43:02 by parinder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ OBJ=		$(SRC:.cpp=.o)
 SRC=		srcs/main.cpp \
 			srcs/Irc/Irc.cpp \
 			srcs/Irc/Irc_run.cpp \
+			srcs/Irc/cmd/cap.cpp \
 			srcs/Irc/cmd/join.cpp \
 			srcs/Irc/cmd/kick.cpp \
 			srcs/Irc/cmd/nick.cpp \
