@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/01 02:18:07 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/02 16:25:31 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,14 @@ static int	is_command(std::string &buf, User &actual) {
 	int			i;
 
 	buf = skip_isspace(buf);
-	for (i = 0; isalnum(buf[i]); i++)
-		command[i] = buf[i];
 	for (int j = 0; j < 7; j++) {
 
-		if (cmd[j].compare(command) == 0) {
-
-			buf = buf[i + 1];
+		if (cmd[j].compare(buf) == 0)
 			return (j + 1);
-		}
 	}
 	return (-1);
 }
+
 
 void	Irc::exec_cmd(User &user) {
 
@@ -52,19 +48,20 @@ void	Irc::exec_cmd(User &user) {
 								&Irc::privmsg, &Irc::join, &Irc::kick};
 
 	str = user.getBuffer();
-	len = str.find("\n", 0);
-	if (len == -1) {
-
-		std::cout << PYELLOW << "server: request: " << str << PRESET << "\n";
-		return ;
-	}
 	std::cout << PYELLOW << "server: request: " << str << PRESET;
+	len = str.find("\n", 0);
+	if (len == std::string::npos)
+		return ;
 	tmp = str.substr(len + 1, str.length() - len);
 	user.setBuffer(tmp);
 	str = str.substr(0, len);
-	//	str contient a ce moment toute la chaine jusqu'au \n.
+		// str contient a ce moment toute la chaine jusqu'au \n.
 	tmp = getWord(str, 1);	//recupere le premier mots et le met dans tmp.
-	nb_cmd = is_command(tmp, user);
+	// GETWORD USELESS SI ON LAISSE LE VECTEUR
+	_args = split_space(str);
+	// std::cout << "str == " << str << " tmp == " << tmp << std::endl;
+	nb_cmd = is_command(_args[0], user);
+	// std::cout << nb_cmd << std::endl;
 	if (nb_cmd == -1)
 		user.sendMsg(tmp + " :Unknown command\n");
 	else if (!user.isRegistered() && nb_cmd > 4)

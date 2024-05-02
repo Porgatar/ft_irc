@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/01 01:39:51 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:43:21 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ class Irc {
 private:
 
 /*	-	-	-	-	-	private Variables	-	-	-	-	*/
-	int					_socket;
-	std::string			_password;
-	std::list<User>		_users;
-	std::list<Channel>	_channels;
-	std::list<Channel>::iterator _it;
+	int								_socket;
+	std::string						_password;
+	std::list<User>					_users;
+	std::list<Channel>				_channels;
+	std::list<Channel>::iterator	_it;
+	std::vector<std::string>		_args;
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 	Irc(void);
 /*	-	-	-	-	-	Private Functions	-	-	-	-	*/
@@ -58,6 +59,7 @@ public:
 };
 
 std::string	skip_isspace(std::string str); //temporary
+std::vector<std::string> split_space(std::string s);
 
 extern Irc	*g_IrcPtr;
 

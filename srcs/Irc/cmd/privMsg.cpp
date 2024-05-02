@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 16:09:59 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/02 17:58:54 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,46 +27,34 @@ std::string	getWord(std::string argument) {
 void	Irc::privmsg(User &actual) {
 
 	std::list<User>::iterator 	it;
-	std::string 				argument;
-	std::string					target;
 	std::string					message;
-	bool						finded;
+	std::string					target;
 	
-	finded = false;
-	argument = actual.getBuffer();
-	target = getWord(argument);
-	if (target.empty()) {
-
+	if (_args.size() == 1) {
 		actual.sendMsg(" :No recipient given\n");
 		return ;
 	}
-	for (it = _users.begin(); it != _users.end(); it++) {
-
-		if (it->getNickname().compare(target.c_str()) == 0)
-			finded = true;
-	}
-	message = argument.substr(target.length(), argument.length() - target.length());
-	message = skip_isspace(message);
-	if (message.empty()) {
-
+	if (_args.size() == 2) {
 		actual.sendMsg(" :No text to send\n");
 		return ;
 	}
+	target = _args[1];
+	message = _args[2];
+	for (int i = 3; i < _args.size(); i++)
+       	message += " " + _args[i];
+	for (it = _users.begin(); it != _users.end(); it++) {
+		if (it->getNickname().compare(target.c_str()) == 0) {
+			it->sendMsg(message + "\n");
+			return ;	
+		}
+	}
 	if (target[0] == '&' || target[0] == '#') {
-
-		finded = true;
-		for (std::list<Channel>::iterator ite = _channels.begin(); ite != _channels.end(); ite++) {
-
-			if (ite->getName().compare(target.c_str()) == 0) {
-
-				ite->sendGroupMsg(message);
+		for (_it = _channels.begin(); _it != _channels.end(); _it++) {
+			if (_it->getName().compare(target.c_str()) == 0) {
+				_it->sendGroupMsg(message);
 				return ;
 			}
 		}
-		// write(actual.getSocket(), "")
 	}
-	if (!finded)
-		actual.sendMsg(target + " :No such nick\n");
-	else
-		it->sendMsg(message + "\n");
+	actual.sendMsg(target + " :No such nick/channel\n");
 }

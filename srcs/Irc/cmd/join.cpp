@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 19:27:19 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/02 16:07:23 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,28 @@ void	Irc::join(User &user) {
 
 	std::list<std::string>::iterator	it;
     std::list<std::string> 				cmds;
-    std::string 						argument;
-
-	argument = user.getBuffer();
-    argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
-    if (argument[0] != '&' && argument[0] != '#') {
-
-        user.sendMsg("Channel begin with & or #\n"); // TEMPORAIRE
-        return;
-    }
-    size_t start = 0;
-    size_t end = 0;
-    while (end < argument.size() && argument[end] != ' ') {
-
-        while (end < argument.size() && argument[end] != '&' && argument[end] != '#')
+    size_t 								start = 0;
+    size_t 								end = 0;
+	
+    while (end < _args[1].size()) {
+		
+        while (end < _args[1].size() && _args[1][end] != '&' && _args[1][end] != '#')
             end++;
-        if (end < argument.size()) {
+        if (end < _args[1].size()) {
 
             size_t next = end + 1;
-            while (next < argument.size() && argument[next] != ',' && argument[next] != ' ')
+            while (next < _args[1].size() && _args[1][next] != ',')
                 next++;
-			if (argument[next] == ',' && argument[next + 1] != '&' && argument[next + 1] != '#') {
+			if (_args[1][next] == ',' && _args[1][next + 1] != '&' && _args[1][next + 1] != '#') {
 
 				user.sendMsg("no comma allowed\n");
 				return ;
 			}
-			/*si argument [next] == espace, regarder si il ya une clé apres, sinon retourner une erreur*/
-            std::string channel_name = argument.substr(start, next - start);
+			if (_args[1][0 + start] != '&' && _args[1][0 + start] != '#') {
+       			user.sendMsg("Channel begin with & or #\n");
+        		return;
+   			}
+            std::string channel_name = _args[1].substr(start, next - start);
             cmds.push_back(channel_name);
             start = next + 1;
         }
