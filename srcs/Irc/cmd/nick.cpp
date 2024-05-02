@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:52:42 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 03:51:05 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/02 16:01:13 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,31 +29,26 @@ static bool rfc_nickname(const std::string& str) {
 void	Irc::nick(User &actual) {
 
 	std::list<User>::iterator	it;
-	std::string					argument;
 
-	argument = actual.getBuffer();
-	argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
-	if (argument.empty()) {
+	if (_args[1].empty()) {
 
 		actual.sendMsg(" :No nickname given\n");
 		return ;
 	}
-	if (!rfc_nickname(argument)) {
-
-		actual.sendMsg(argument + " :Erroneus nickname\n");
+	if (!rfc_nickname(_args[1])) {
+		actual.sendMsg(_args[1] + " :Erroneus nickname\n");
 		return ;
 	}
 	for (it = _users.begin(); it != _users.end(); it++) {
 
-		if (it->getNickname().compare(argument.c_str()) == 0) {
-
-			actual.sendMsg(argument + " :Nickname is already in use\n");
+		if (it->getNickname().compare(_args[1].c_str()) == 0) {
+			actual.sendMsg(_args[1] + " :Nickname is already in use\n");
 			return ;
 		}
 	}
 	if ((actual.getRegisteredLevel() == 2 || actual.getRegisteredLevel() == 1) \
 												&& actual.getNickname().empty()) {
 		actual.setHigherRegisteredLevel();
-		actual.setNickname(argument);
+		actual.setNickname(_args[1]);
 	}
 }

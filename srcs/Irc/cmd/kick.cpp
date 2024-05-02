@@ -6,12 +6,11 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/30 21:40:09 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/02 16:58:48 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/Irc.hpp"
-#include <vector>
 
 std::vector<std::string> split_space(std::string s) {
     
@@ -35,43 +34,29 @@ std::vector<std::string> split_space(std::string s) {
 
 void    Irc::kick(User &actual) {
     
-    std::vector<std::string> 	    cmds;
-    std::string 				    argument;
-    std::string                     tmp; 
+    std::string msg = " :has been kicked"; 
 
-    tmp = " :has been kicked";
-	argument = actual.getBuffer();
-    if (argument != "")
-        argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
-    cmds = split_space(argument);
-    if (cmds.size() < 2) {
+    if (_args.size() < 3) {
         actual.sendMsg("KICK :Not enough parameters\n");
-        return ;
+        return ;    
     }
-    else if (cmds.size() > 2) 
-        tmp.erase(0, 19);
-    if (cmds.size() >= 2) {
-        for (_it = _channels.begin(); _it != _channels.end(); _it++) {
-            if (_it->getName() == cmds[0])
-                break ;
+    for (_it = _channels.begin(); _it != _channels.end(); _it++) {
+        if (_it->getName() == _args[1])
+            break ;
+    }
+    if (_it == _channels.end())
+        actual.sendMsg(_args[1] + " :No such channel\n");
+    else if (_it->isConnected(_args[2]) == false)
+        actual.sendMsg(_args[2] + " " + _it->getName() + " :They aren't on that channel\n");
+    else if (_args.size() >= 4 && _args[3][0] != ':')
+        actual.sendMsg("kick message begin with \':\'\n");
+    else {
+        if (_args[3] != "")
+            msg = _args[3];
+        if (_args.size() >= 5) {
+            for (int i = 4; i < _args.size(); i++)
+                msg += " " + _args[i];
         }
-        if (_it == _channels.end()) {
-            actual.sendMsg(cmds[0] + " :No such channel\n");
-            return ;
-        }
-        if (_it->isConnected(cmds[1]) == false) {
-            actual.sendMsg(cmds[1] + " " + _it->getName() + " :They aren't on that channel\n");
-            return ;
-        }
-        for (int i = 2; i < cmds.size(); i++) {
-            if (cmds[2][0] != ':') {
-                actual.sendMsg("kick message begin with \':\'\n");
-                return ;   
-            }
-            else 
-                tmp += cmds[i] + " ";
-        }
-        tmp.erase(0, 1);
-        _it->kickuser(cmds[1], tmp);
+        _it->kickuser(_args[2], msg);
     }
 }
