@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/01 01:17:34 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/03 23:08:25 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,30 @@ Irc::Irc(const std::string s_port, const std::string password) \
 
 	port = atoi(s_port.c_str());
 	if (port < 1024 || port > 65535) {
-		std::cerr << PRED << "Error\nserver: port " << port \
-			<< " is out of range\nrange: 1024 - 65535" << PRESET << std::endl;
+
+		this->log(ERROR, std::string("Error\nserver: port ") + s_port + \
+								" is out of range\nrange: 1024 - 65535");
 		exit(EXIT_FAILURE);
 	}
 	proto = getprotobyname("tcp");
 	if (proto == 0) {
-		std::cerr << PRED << "Error\nserver: could not get prototype" \
-			<< PRESET << std::endl;
+
+		this->log(ERROR, "Error\nserver: could not get prototype");
 		exit(EXIT_FAILURE);
 	}
 	this->_socket = socket(PF_INET, SOCK_STREAM, proto->p_proto);
 	if (this->_socket == -1) {
-		std::cerr << PRED << "Error\nserver: could not get socket" \
-			<< PRESET << std::endl;
+
+		this->log(ERROR, "Error\nserver: could not get socket");
 		exit(EXIT_FAILURE);
 	}
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
 	sin.sin_addr.s_addr = inet_addr("127.0.0.1"); /* inet return : network bytes order */
 	if (bind(this->_socket, (const struct sockaddr *)&sin, sizeof(sin)) == -1) {
-		std::cerr << PRED << "Error\nserver: could not bind" \
-			<< PRESET << std::endl;
+
+		this->log(ERROR, "Error\nserver: could not bind");
+		close(this->_socket);
 		exit(EXIT_FAILURE);
 	}
 	listen(this->_socket, 5);

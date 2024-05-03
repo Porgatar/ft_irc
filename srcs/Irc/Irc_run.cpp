@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/02 16:25:31 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/03 23:01:33 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,29 +48,35 @@ void	Irc::exec_cmd(User &user) {
 								&Irc::privmsg, &Irc::join, &Irc::kick};
 
 	str = user.getBuffer();
-	std::cout << PYELLOW << "server: request: " << str << PRESET;
 	len = str.find("\n", 0);
 	if (len == std::string::npos)
 		return ;
+	this->log(INFO, std::string("server: request: ") + str);
 	tmp = str.substr(len + 1, str.length() - len);
 	user.setBuffer(tmp);
 	str = str.substr(0, len);
-		// str contient a ce moment toute la chaine jusqu'au \n.
-	tmp = getWord(str, 1);	//recupere le premier mots et le met dans tmp.
-	// GETWORD USELESS SI ON LAISSE LE VECTEUR
-	_args = split_space(str);
-	// std::cout << "str == " << str << " tmp == " << tmp << std::endl;
-	nb_cmd = is_command(_args[0], user);
-	// std::cout << nb_cmd << std::endl;
-	if (nb_cmd == -1)
-		user.sendMsg(tmp + " :Unknown command\n");
-	else if (!user.isRegistered() && nb_cmd > 4)
-		user.sendMsg("User not registered\nUsage : PASS and NICK/USER\n");
-	else if (user.isRegistered() && (nb_cmd > 0 && nb_cmd < 5))
-		user.sendMsg("You are already registered\n");
+	this->_args = split_space(str);
+	nb_cmd = is_command(this->_args[0], user);
+	if (nb_cmd == -1) {
+
+		user.sendMsg(this->_args[0] + " :Unknown command");
+		this->log(WARNING, std::to_string(user.getSocket() - 3) + " " + this->_args[0] + \
+																" :Unknown command");
+	}
+	else if (!user.isRegistered() && nb_cmd > 4) {
+
+		user.sendMsg(" :You have not registered");
+		this->log(WARNING, std::to_string(user.getSocket() - 3) + " :You have not registered");
+	}
+	else if (user.isRegistered() && (nb_cmd > 0 && nb_cmd < 5)) {
+
+		user.sendMsg(" :You may not reregister");
+		this->log(WARNING, std::to_string(user.getSocket() - 3) + " :You may not reregister");
+	}
 	else
 		(this->*command[nb_cmd - 1])(user);
 	// else if (is_operator())
+	this->exec_cmd(user);
 }
 
 void	Irc::checkClientRequest(void) {
@@ -86,8 +92,8 @@ void	Irc::checkClientRequest(void) {
 		if (readed == 0) {
 
 			close(actual->getSocket());
-			std::cout << PRED << "server: client n°" << actual->getSocket() - 3 \
-				<< " disconnected" << PRESET << "\n";
+			this->log(INFO, std::string("server: client n°") + \
+				std::to_string(actual->getSocket() - 3) + " disconnected");
 			actual = _users.erase(actual);
 			actual--;
 		}
@@ -119,7 +125,7 @@ void	Irc::run(void) {
 																//	sur la socket
 		if (ready_to_read < 0) {
 
-			std::cerr << PRED << "server: select failed" << PRESET << std::endl;
+			this->log(ERROR, "server: select failed");
 			exit(EXIT_FAILURE);
 		}
 		if (FD_ISSET(this->_socket, &set)) {
@@ -127,13 +133,13 @@ void	Irc::run(void) {
 			new_fd = accept(this->_socket, (struct sockaddr *)&addr, (socklen_t *)&size);
 			if (new_fd == -1) {
 
-				std::cerr << PRED << "server: accept failed" << PRESET << std::endl;
+				this->log(ERROR, "server: accept failed");
 				exit(EXIT_FAILURE);
 			}
 			newuser.setSocket(new_fd);
 			this->_users.push_back(newuser);
-			std::cout << PYELLOW << "server: client n°" << new_fd - 3 \
-				<< " connected" << PRESET << "\n";
+			this->log(INFO, std::string("server: client n°") + std::to_string(new_fd - 3) + \
+																			" connected");
 		}
 		else
 			this->checkClientRequest();

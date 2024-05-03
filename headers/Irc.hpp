@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/02 15:43:21 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/03 22:02:17 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 #include "User.hpp"
 #include "Channel.hpp"
 #include "Utils.h"
+
+#define ERROR	101
+#define WARNING	102
+#define DEBUG	103
+#define INFO	104
 
 class Irc {
 
@@ -35,6 +40,7 @@ private:
 	void	exec_cmd(User &user);
 	int		setSockets(fd_set *set);
 	void	addUser(int socket);
+	void	log(int log, const std::string &str);
 /*	-	-	-	-	-	Command Functions	-	-	-	-	*/
 	void 	cap(User &user);
 	void	join(User &actual);
