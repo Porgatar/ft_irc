@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/27 00:11:20 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:13:32 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ public:
 /*	-	-	-	-	-	Getters	-	-	-	-	-	-	-	*/
 	int					getSocket(void) const;
 	int					getRegisteredLevel(void) const;
+	std::string			getStringId(void) const;
 	const std::string	&getBuffer(void) const;
 	const std::string	&getNickname(void) const;
 	const std::string	&getUsername(void) const;

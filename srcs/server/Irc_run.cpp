@@ -6,29 +6,36 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/03 23:01:33 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:23:35 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/Irc.hpp"
 
-static std::string	getWord(std::string str, int n) {
+std::vector<std::string>	split_space(std::string str) {
 
-	std::istringstream	iss(str);
+    std::vector<std::string>	res;
+	std::istringstream			iss(str);
+	std::string					buff;
+	std::string					lastWord;
 
-	while (n-- > 0 && (iss >> str));
-	return (str);
+	while (true) {
+
+		iss >> buff;
+		if (buff == lastWord)
+			break ;
+		lastWord = buff;
+		res.push_back(buff);
+	}
+	return (res);
 }
 
-// Check if it is a command and then set the rest of the command in the buffer
-// return -1 if it is not
 static int	is_command(std::string &buf, User &actual) {
 
 	std::string	cmd[7] = {"CAP", "PASS", "USER", "NICK", "PRIVMSG", "JOIN", "KICK"};
-	std::string command;
+	std::string	command;
 	int			i;
 
-	buf = skip_isspace(buf);
 	for (int j = 0; j < 7; j++) {
 
 		if (cmd[j].compare(buf) == 0)
@@ -36,7 +43,6 @@ static int	is_command(std::string &buf, User &actual) {
 	}
 	return (-1);
 }
-
 
 void	Irc::exec_cmd(User &user) {
 
@@ -49,29 +55,31 @@ void	Irc::exec_cmd(User &user) {
 
 	str = user.getBuffer();
 	len = str.find("\n", 0);
-	if (len == std::string::npos)
+	if (!len || len == std::string::npos)
 		return ;
-	this->log(INFO, std::string("server: request: ") + str);
 	tmp = str.substr(len + 1, str.length() - len);
 	user.setBuffer(tmp);
 	str = str.substr(0, len);
+	this->log(INFO, std::string("server: request: ") + user.getStringId() + ": " + str);
 	this->_args = split_space(str);
 	nb_cmd = is_command(this->_args[0], user);
 	if (nb_cmd == -1) {
 
 		user.sendMsg(this->_args[0] + " :Unknown command");
-		this->log(WARNING, std::to_string(user.getSocket() - 3) + " " + this->_args[0] + \
-																" :Unknown command");
+		this->log(WARNING, std::string("server: reply: ") + user.getStringId() + \
+			": " + this->_args[0] + " :Unknown command");
 	}
 	else if (!user.isRegistered() && nb_cmd > 4) {
 
 		user.sendMsg(" :You have not registered");
-		this->log(WARNING, std::to_string(user.getSocket() - 3) + " :You have not registered");
+		this->log(WARNING, std::string("server: reply: ") + user.getStringId() + \
+			" :You have not registered");
 	}
 	else if (user.isRegistered() && (nb_cmd > 0 && nb_cmd < 5)) {
 
 		user.sendMsg(" :You may not reregister");
-		this->log(WARNING, std::to_string(user.getSocket() - 3) + " :You may not reregister");
+		this->log(WARNING, std::string("server: reply: ") + user.getStringId() + \
+			" :You may not reregister");
 	}
 	else
 		(this->*command[nb_cmd - 1])(user);
@@ -92,8 +100,8 @@ void	Irc::checkClientRequest(void) {
 		if (readed == 0) {
 
 			close(actual->getSocket());
-			this->log(INFO, std::string("server: client n°") + \
-				std::to_string(actual->getSocket() - 3) + " disconnected");
+			this->log(INFO, std::string("server: info: ") + actual->getStringId() + \
+				": disconnected");
 			actual = _users.erase(actual);
 			actual--;
 		}
@@ -138,8 +146,7 @@ void	Irc::run(void) {
 			}
 			newuser.setSocket(new_fd);
 			this->_users.push_back(newuser);
-			this->log(INFO, std::string("server: client n°") + std::to_string(new_fd - 3) + \
-																			" connected");
+			this->log(INFO, std::string("server: info: ") + newuser.getStringId() + ": connected");
 		}
 		else
 			this->checkClientRequest();
