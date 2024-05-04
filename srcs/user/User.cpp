@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/04/30 02:46:37 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/04 22:25:28 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ int	User::getSocket() const {
 int	User::getRegisteredLevel() const {
 
 	return (this->_registered);
+}
+
+std::string	User::getStringId() const {
+
+	return (std::string("client n°") + std::to_string(this->_socket - 3));
 }
 
 const std::string	&User::getUsername() const {
@@ -103,6 +108,7 @@ void	User::setBuffer(std::string buf) {
 
 void	User::sendMsg(std::string msg) {
 
+	msg += "\r\n";
 	write(this->_socket, msg.c_str(), msg.length());
 }
 

@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/03 23:08:25 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/04 20:46:33 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,16 +102,6 @@ int Irc::setSockets(fd_set *set) {
 		}
 	}
 	return (max);
-}
-
-std::string	skip_isspace(std::string str) {
-
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] >= 9 && str[i] <= 13 || str[i] == 32) // white space !
-		i++;
-	return (&str[i]);
 }
 
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/

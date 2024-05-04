@@ -6,7 +6,7 @@
 #    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/05/03 23:02:06 by parinder         ###   ########.fr        #
+#    Updated: 2024/05/04 20:36:04 by parinder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,19 +25,19 @@ endif
 OBJ=		$(SRC:.cpp=.o)
 
 SRC=		srcs/main.cpp \
-			srcs/Irc/Irc.cpp \
-			srcs/Irc/Irc_run.cpp \
-			srcs/Irc/Irc_log.cpp \
-			srcs/Irc/cmd/cap.cpp \
-			srcs/Irc/cmd/join.cpp \
-			srcs/Irc/cmd/kick.cpp \
-			srcs/Irc/cmd/nick.cpp \
-			srcs/Irc/cmd/pass.cpp \
-			srcs/Irc/cmd/privMsg.cpp \
-			srcs/Irc/cmd/user.cpp \
-			srcs/User/User.cpp \
-			srcs/Channel/Channel.cpp \
-			srcs/Channel/UserManagement.cpp \
+			srcs/server/Irc.cpp \
+			srcs/server/Irc_run.cpp \
+			srcs/server/Irc_log.cpp \
+			srcs/server/cmd/cap.cpp \
+			srcs/server/cmd/join.cpp \
+			srcs/server/cmd/kick.cpp \
+			srcs/server/cmd/nick.cpp \
+			srcs/server/cmd/pass.cpp \
+			srcs/server/cmd/privMsg.cpp \
+			srcs/server/cmd/user.cpp \
+			srcs/user/User.cpp \
+			srcs/channel/Channel.cpp \
+			srcs/channel/UserManagement.cpp \
 
 all:		$(NAME)
 

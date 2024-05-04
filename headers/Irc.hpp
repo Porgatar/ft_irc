@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/03 22:02:17 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/04 21:11:57 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "header.h"
 #include "User.hpp"
 #include "Channel.hpp"
-#include "Utils.h"
 
 #define ERROR	101
 #define WARNING	102
@@ -63,9 +62,6 @@ public:
 	void	setSigintHandler(void (*handler)(int));
 	void	run(void);
 };
-
-std::string	skip_isspace(std::string str); //temporary
-std::vector<std::string> split_space(std::string s);
 
 extern Irc	*g_IrcPtr;
 
