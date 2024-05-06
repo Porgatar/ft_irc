@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 13:53:13 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:42:03 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,9 @@ std::vector<std::string>	split_space(std::string str) {
     std::vector<std::string>	res;
 	std::istringstream			iss(str);
 	std::string					buff;
-	std::string					lastWord;
 
-	while (true) {
-
-		iss >> buff;
-		if (buff == lastWord)
-			break ;
-		lastWord = buff;
+	while (iss >> buff)
 		res.push_back(buff);
-	}
 	return (res);
 }
 

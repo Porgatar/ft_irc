@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 14:08:52 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:38:39 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,18 @@
 #define PYELLOW		"\033[0;33m"
 #define PRESET		"\033[0m"
 
+//	irc class defines
+#define ERROR	101
+#define WARNING	102
+#define DEBUG	103
+#define INFO	104
+
+//	user class defines
 #define REGISTERED	3
+
+//	channel class _mode defines
+#define I	0
+#define T	1
+#define K	2
+#define O	3
+#define L	4
