@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc_run.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 17:42:03 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:19:45 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	Irc::exec_cmd(User &user) {
 	tmp = str.substr(len + 1, str.length() - len);
 	user.setBuffer(tmp);
 	str = str.substr(0, len);
+	user.setMessage(str);
 	this->log(INFO, std::string("server: request: ") + user.getStringId() + ": " + str);
 	this->_args = split_space(str);
 	nb_cmd = is_command(this->_args[0]);

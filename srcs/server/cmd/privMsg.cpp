@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   privMsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2024/05/06 14:52:30 by mdesrose         ###   ########.fr       */
+=======
 /*   Updated: 2024/05/06 13:59:59 by parinder         ###   ########.fr       */
+>>>>>>> refs/remotes/origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +31,6 @@ std::string	getWord(std::string argument) {
 void	Irc::privmsg(User &actual) {
 
 	std::list<User>::iterator 	it;
-	std::string					message;
 	std::string					target;
 	
 	if (_args.size() == 1) {
@@ -39,19 +42,17 @@ void	Irc::privmsg(User &actual) {
 		return ;
 	}
 	target = _args[1];
-	message = _args[2];
-	for (size_t i = 3; i < _args.size(); i++)
-       	message += " " + _args[i];
+	actual.setMessage(get_message(2, actual.getMessage()));
 	for (it = _users.begin(); it != _users.end(); it++) {
 		if (it->getNickname().compare(target.c_str()) == 0) {
-			it->sendMsg(message + "\n");
+			it->sendMsg(actual.getMessage());
 			return ;	
 		}
 	}
 	if (target[0] == '&' || target[0] == '#') {
 		for (_it = _channels.begin(); _it != _channels.end(); _it++) {
 			if (_it->getName().compare(target.c_str()) == 0) {
-				_it->sendGroupMsg(message);
+				_it->sendGroupMsg(actual.getMessage());
 				return ;
 			}
 		}
