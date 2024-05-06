@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 14:52:34 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:26:35 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 //	signal handler dependency
 #include <signal.h>
 #include <cstdio>
+//	itoa
+#include <stdlib.h>
 
 //	unknown dependency
 #include <algorithm>

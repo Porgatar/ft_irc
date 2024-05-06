@@ -6,7 +6,7 @@
 #    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/05/06 14:54:58 by mdesrose         ###   ########.fr        #
+#    Updated: 2024/05/06 15:26:39 by mdesrose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME=		ircserv
 
 CC=			c++
 
-CFLAGS=		-Wall -Werror -Wextra -std=c++98 -g -j8
+CFLAGS=		-Wall -Werror -Wextra -std=c++98
 
 ifdef DEBUG
 CFLAGS +=	-g

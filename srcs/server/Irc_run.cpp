@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 14:45:22 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:25:45 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,15 @@ std::vector<std::string>	split_space(std::string str) {
 	return (res);
 }
 
-static int	is_command(std::string &buf, User &actual) {
+static int	is_command(const std::string &buf) {
 
 	std::string	cmd[7] = {"CAP", "PASS", "USER", "NICK", "PRIVMSG", "JOIN", "KICK"};
 	std::string	command;
-	int			i;
 
-	for (int j = 0; j < 7; j++) {
+	for (int i = 0; i < 7; i++) {
 
-		if (cmd[j].compare(buf) == 0)
-			return (j + 1);
+		if (cmd[i].compare(buf) == 0)
+			return (i);
 	}
 	return (-1);
 }
@@ -63,27 +62,27 @@ void	Irc::exec_cmd(User &user) {
 	user.setMessage(str);
 	this->log(INFO, std::string("server: request: ") + user.getStringId() + ": " + str);
 	this->_args = split_space(str);
-	nb_cmd = is_command(this->_args[0], user);
+	nb_cmd = is_command(this->_args[0]);
 	if (nb_cmd == -1) {
 
 		user.sendMsg(this->_args[0] + " :Unknown command");
 		this->log(WARNING, std::string("server: reply: ") + user.getStringId() + \
 			": " + this->_args[0] + " :Unknown command");
 	}
-	else if (!user.isRegistered() && nb_cmd > 4) {
+	else if (!user.isRegistered() && nb_cmd >= 4) {
 
 		user.sendMsg(" :You have not registered");
 		this->log(WARNING, std::string("server: reply: ") + user.getStringId() + \
 			" :You have not registered");
 	}
-	else if (user.isRegistered() && (nb_cmd > 0 && nb_cmd < 5)) {
+	else if (user.isRegistered() && (nb_cmd >= 0 && nb_cmd <= 3)) {
 
 		user.sendMsg(" :You may not reregister");
 		this->log(WARNING, std::string("server: reply: ") + user.getStringId() + \
 			" :You may not reregister");
 	}
 	else
-		(this->*command[nb_cmd - 1])(user);
+		(this->*command[nb_cmd])(user);
 	// else if (is_operator())
 	this->exec_cmd(user);
 }
