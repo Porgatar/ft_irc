@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/02 14:18:40 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/06 14:08:52 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 //	signal handler dependency
 #include <signal.h>
 #include <cstdio>
+//	itoa
+#include <stdlib.h>
 
 //	unknown dependency
 #include <algorithm>

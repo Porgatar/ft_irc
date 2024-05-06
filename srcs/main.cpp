@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:05:07 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/05 15:24:03 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/06 13:47:57 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ static void	ft_exit(int sig)
 {
 	std::cout << PRED << "server: server shutdown..." << PRESET << std::endl;
 	g_IrcPtr->~Irc();
-	exit(0);
+	exit(sig);
 }
 
 static int is_isspace(char c) {
 
-    if (c >= 9 && c <= 13 || c == ' ')
+    if ((c >= 9 && c <= 13) || c == ' ')
         return (1);
     return (0);
 }
