@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/04 20:46:33 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:14:56 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,4 +115,29 @@ void	Irc::setSigintHandler(void (*handler)(int)) {
 	sa.sa_flags = 0;
 	sa.sa_handler = handler;
 	sigaction(SIGINT, &sa, 0);
+}
+
+bool	Irc::checkExistingChannel(std::string channels_name)
+{
+	std::list<Channel>::iterator		it;
+
+	for (it = _channels.begin(); it != _channels.end(); it++) {
+		if (it->getName() == channels_name)
+			return (true);
+	}
+	return (false);
+}
+
+void	Irc::AddUserInChannel(User &user, std::string channels_name)
+{
+	std::list<Channel>::iterator		it;
+
+	for (it = _channels.begin(); it != _channels.end(); it++) {
+		if (it->getName() == channels_name) {
+			if (it->isConnected(user.getNickname()) == false) {
+				it->addUser(user);
+				it->sendGroupMsg(user.getNickname() + " is joining the channel " + it->getName() + "\n");
+			}
+		}
+	}
 }

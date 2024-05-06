@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/04 21:11:57 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:12:56 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ private:
 	void	privmsg(User &actual);
 	void	user(User &actual);
 	void    kick(User &actual);
-	bool	checkExistingChannel(User &user, std::string channels_name);
+	void    topic(User &user);
+	bool	checkExistingChannel(std::string channels_name);
+	void	AddUserInChannel(User &user, std::string channels_name);
 public:
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
