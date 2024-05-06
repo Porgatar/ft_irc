@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:37:48 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 19:16:41 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:57:12 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ void	Irc::mode(User &actual) {
 
 		actual.sendMsg(tmp + " :No such channel");
 		this->log(actual.getStringId() + " " + tmp + " :No such channel");
+		return ;
 	}
-	else if ()
+	else if (len == 2) {
+
+//		actual.sendMsg(tmp + " " + );
+//		this->log(actual.getStringId() + " " + tmp + " :");
+		//	need to create channel member function getMode();
+	}
 }
