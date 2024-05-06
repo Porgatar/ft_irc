@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 19:12:56 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:22:37 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ private:
 	int		setSockets(fd_set *set);
 	void	addUser(int socket);
 	void	log(int log, const std::string &str);
+	bool	checkExistingChannel(std::string channels_name);
+	void	AddUserInChannel(User &user, std::string channels_name);
 /*	-	-	-	-	-	Command Functions	-	-	-	-	*/
 	void 	cap(User &user);
 	void	join(User &actual);
@@ -49,10 +51,9 @@ private:
 	void	user(User &actual);
 	void    kick(User &actual);
 	void    topic(User &user);
-	bool	checkExistingChannel(std::string channels_name);
-	void	AddUserInChannel(User &user, std::string channels_name);
 public:
 
+	Channel	getChannel(std::string name);
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 	Irc(const Irc &src);
 	Irc(const std::string port, const std::string password);

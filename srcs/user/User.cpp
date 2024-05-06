@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/06 14:19:45 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:36:36 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,11 @@ const std::string	&User::getBuffer() const {
 	return (this->_buffer);
 }
 
+const std::string	&User::getMessage(void) const {
+
+	return this->_message;
+}
+
 /*	-	-	-	-	-	Setters	-	-	-	-	-	*/
 
 void	User::setSocket(int fd) {
@@ -105,6 +110,11 @@ void	User::setNickname(std::string nickname) {
 void	User::setBuffer(std::string buf) {
 
 	this->_buffer = buf;
+}
+
+void	User::setMessage(std::string str) {
+
+	this->_message = str;
 }
 
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/

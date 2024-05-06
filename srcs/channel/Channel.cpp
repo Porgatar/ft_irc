@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 00:10:23 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:35:03 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,20 @@ Channel	&Channel::operator=(const Channel &rhs) {
 	return (*this);
 }
 
+void	Channel::setTopic(std::string name) {
+
+	_topic = name;
+}
+
 /*	-	-	-	-	-	Getters	-	-	-	-	-	*/
 
 std::string	Channel::getName() const {
 	
 	return (_name);
 }
+
+std::string	Channel::getTopic() const {
+	
+	return (this->_topic);
+}
+

@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 19:14:56 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:25:28 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,4 +140,15 @@ void	Irc::AddUserInChannel(User &user, std::string channels_name)
 			}
 		}
 	}
+}
+
+Channel	Irc::getChannel(std::string name) {
+	
+	std::list<Channel>::iterator it;
+
+	for (it = _channels.begin(); it != _channels.end(); it++) {
+		if (it->getName() == name)
+			return (*it);
+	}
+	return (Channel());
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
+#    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/05/06 13:46:41 by parinder         ###   ########.fr        #
+#    Updated: 2024/05/06 18:44:45 by mdesrose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRC=		srcs/main.cpp \
 			srcs/server/cmd/pass.cpp \
 			srcs/server/cmd/privMsg.cpp \
 			srcs/server/cmd/user.cpp \
+			srcs/server/cmd/topic.cpp \
 			srcs/user/User.cpp \
 			srcs/channel/Channel.cpp \
 			srcs/channel/UserManagement.cpp \

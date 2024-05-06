@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/02 18:30:13 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/06 19:14:47 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/Irc.hpp"
-
-bool	Irc::checkExistingChannel(User &user, std::string channels_name)
-{
-	std::list<Channel>::iterator		it;
-
-	for (it = _channels.begin(); it != _channels.end(); it++) {
-
-		if (it->getName().compare(channels_name.c_str()) == 0) {
-
-			if (it->isConnected(user.getNickname()) == false) {
-
-				it->addUser(user);
-				it->sendGroupMsg(user.getNickname() + " is joining the channel " + it->getName() + "\n");
-			}
-			return (true);
-		}
-	}
-	return (false);
-}
 
 void	Irc::join(User &user) {
 
@@ -38,6 +19,10 @@ void	Irc::join(User &user) {
     size_t 								start = 0;
     size_t 								end = 0;
 	
+	if (_args[1][end] != '&' && _args[1][end] != '#') {
+		user.sendMsg("Channel begin with & or #");
+        return;
+	}
     while (end < _args[1].size()) {
 		
         while (end < _args[1].size() && _args[1][end] != '&' && _args[1][end] != '#')
@@ -62,11 +47,13 @@ void	Irc::join(User &user) {
         end = start;
     }
 	for (it = cmds.begin(); it != cmds.end(); it++) {
-		if (!(checkExistingChannel(user, *it))) {
+		if (!(checkExistingChannel(*it))) {
 			Channel	channel(*it, user);
 			_channels.push_back(channel);
 			channel.sendGroupMsg(user.getNickname() + " is joining the channel " \
 														+ channel.getName() + "\n");
 		}
+		else
+			AddUserInChannel(user, *it);
 	}
 }
