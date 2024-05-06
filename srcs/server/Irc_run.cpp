@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc_run.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 13:53:13 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:44:17 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,18 @@ std::vector<std::string>	split_space(std::string str) {
     std::vector<std::string>	res;
 	std::istringstream			iss(str);
 	std::string					buff;
-	std::string					lastWord;
 
-	while (true) {
-
-		iss >> buff;
-		if (buff == lastWord)
-			break ;
-		lastWord = buff;
+	while (iss >> buff)
 		res.push_back(buff);
-	}
 	return (res);
 }
 
 static int	is_command(const std::string &buf) {
 
-	std::string	cmd[7] = {"CAP", "PASS", "USER", "NICK", "PRIVMSG", "JOIN", "KICK"};
+	std::string	cmd[8] = {"CAP", "PASS", "USER", "NICK", "PRIVMSG", "JOIN", "KICK", "TOPIC"};
 	std::string	command;
 
-	for (int i = 0; i < 7; i++) {
+	for (int i = 0; i < 8; i++) {
 
 		if (cmd[i].compare(buf) == 0)
 			return (i);
@@ -49,8 +42,8 @@ void	Irc::exec_cmd(User &user) {
 	std::string	tmp;
 	size_t		len;
 	int			nb_cmd;
-	function_p 	command[7] = {	&Irc::cap, &Irc::pass, &Irc::user, &Irc::nick, \
-								&Irc::privmsg, &Irc::join, &Irc::kick};
+	function_p 	command[8] = {	&Irc::cap, &Irc::pass, &Irc::user, &Irc::nick, \
+								&Irc::privmsg, &Irc::join, &Irc::kick, &Irc::topic};
 
 	str = user.getBuffer();
 	len = str.find("\n", 0);
@@ -59,6 +52,7 @@ void	Irc::exec_cmd(User &user) {
 	tmp = str.substr(len + 1, str.length() - len);
 	user.setBuffer(tmp);
 	str = str.substr(0, len);
+	user.setMessage(str);
 	this->log(INFO, std::string("server: request: ") + user.getStringId() + ": " + str);
 	this->_args = split_space(str);
 	nb_cmd = is_command(this->_args[0]);

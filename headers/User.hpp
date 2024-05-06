@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/04 22:13:32 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:33:56 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ private:
 	std::string	_username;
 	std::string	_nickname;
 	std::string	_buffer;
+	std::string	_message;
 public:
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
@@ -40,7 +41,9 @@ public:
 	const std::string	&getBuffer(void) const;
 	const std::string	&getNickname(void) const;
 	const std::string	&getUsername(void) const;
+	const std::string	&getMessage(void) const;
 /*	-	-	-	-	-	Setters	-	-	-	-	-	-	-	*/
+	void				setMessage(std::string str);
 	void				setSocket(int fd);
 	void				setHigherRegisteredLevel(void);
 	void				setLowerRegisteredLevel(void);

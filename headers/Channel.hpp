@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 19:34:06 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/06 19:35:21 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ class Channel {
 private:
 
 	std::string		_name;
+	std::string		_topic;
 	std::list<User>	_operators;
 	std::list<User>	_users;
+	
 public:
 
 	Channel(void);
@@ -32,7 +34,9 @@ public:
 	Channel	&operator=(const Channel &rhs);
 
 	std::string	getName() const ;
+	std::string	getTopic() const ;
 
+	void	setTopic(std::string name);
 	void	sendGroupMsg(std::string msg);
 	void	addUser(User &user);
 	void	addOperator(User &user);

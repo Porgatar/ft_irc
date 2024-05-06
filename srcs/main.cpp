@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:05:07 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/06 13:47:57 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:15:58 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int is_isspace(char c) {
 }
 
 //n is the number of arguments we want to skip
-std::string	get_message(int n, std::string &str) {
+std::string	skip_words(int n, const std::string &str) {
 
 	int	words = 0;
     int i = 0;
