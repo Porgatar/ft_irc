@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 17:05:07 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/06 14:52:32 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:26:32 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ static void	ft_exit(int sig)
 {
 	std::cout << PRED << "server: server shutdown..." << PRESET << std::endl;
 	g_IrcPtr->~Irc();
-	exit(0);
+	exit(sig);
 }
 
 static int is_isspace(char c) {
 
-    if (c >= 9 && c <= 13 || c == ' ')
+    if ((c >= 9 && c <= 13) || c == ' ')
         return (1);
     return (0);
 }

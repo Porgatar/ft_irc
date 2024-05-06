@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 01:41:09 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/02 15:38:00 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/06 13:54:38 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 
 void	Irc::cap(User &user) {
 
+	(void)user;
 	std::cout << "executing cap\n";
 }

@@ -6,7 +6,11 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/05/06 14:17:22 by mdesrose         ###   ########.fr       */
+=======
+/*   Updated: 2024/05/06 14:19:45 by parinder         ###   ########.fr       */
+>>>>>>> refs/remotes/origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +18,7 @@
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 
-User::User(void) : _registered(0), _socket(0), _username(""), _nickname(""), _buffer("") {}
+User::User(void) : _socket(0), _registered(0), _username(""), _nickname(""), _buffer("") {}
 
 User::User(const User &src) {
 
@@ -57,7 +61,10 @@ int	User::getRegisteredLevel() const {
 
 std::string	User::getStringId() const {
 
-	return (std::string("client n°") + std::to_string(this->_socket - 3));
+	std::ostringstream	oss;
+
+	oss << this->_socket - 3;
+	return (std::string("client n°") + oss.str());
 }
 
 const std::string	&User::getUsername() const {
