@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
+#    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/05/06 13:46:41 by parinder         ###   ########.fr        #
+#    Updated: 2024/05/06 15:26:39 by mdesrose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,14 +16,11 @@ NAME=		ircserv
 
 CC=			c++
 
-CFLAGS=		-Wall -Werror -Wextra -std=c++98 -g
+CFLAGS=		-Wall -Werror -Wextra -std=c++98
 
 ifdef DEBUG
 CFLAGS +=	-g
 endif
-
-.cpp.o:
-			${CC} ${CFLAGS} -c $< -o ${<:.cpp=.o}
 
 OBJ=		$(SRC:.cpp=.o)
 

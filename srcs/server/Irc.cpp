@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/04 20:46:33 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 14:44:38 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,11 @@ Irc::Irc(const std::string s_port, const std::string password) \
 		close(this->_socket);
 		exit(EXIT_FAILURE);
 	}
-	listen(this->_socket, 5);
+	if (listen(this->_socket, 5) == -1) {
+		this->log(ERROR, "Error\nserver: could not listen");
+		close(this->_socket);
+		exit(EXIT_FAILURE);
+	}
 }
 
 /*	-	-	-	-	-	Destructors	-	-	-	-	-	*/
