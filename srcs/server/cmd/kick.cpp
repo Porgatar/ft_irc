@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/04 20:51:22 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 13:59:35 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void    Irc::kick(User &actual) {
         if (_args[3] != "")
             msg = _args[3];
         if (_args.size() >= 5) {
-            for (int i = 4; i < _args.size(); i++)
+            for (size_t i = 4; i < _args.size(); i++)
                 msg += " " + _args[i];
         }
         _it->kickuser(_args[2], msg);

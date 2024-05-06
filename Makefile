@@ -6,7 +6,7 @@
 #    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/05/04 20:36:04 by parinder         ###   ########.fr        #
+#    Updated: 2024/05/06 13:46:41 by parinder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,9 @@ CFLAGS=		-Wall -Werror -Wextra -std=c++98 -g
 ifdef DEBUG
 CFLAGS +=	-g
 endif
+
+.cpp.o:
+			${CC} ${CFLAGS} -c $< -o ${<:.cpp=.o}
 
 OBJ=		$(SRC:.cpp=.o)
 

@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/02 18:37:54 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/06 13:59:59 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	Irc::privmsg(User &actual) {
 	}
 	target = _args[1];
 	message = _args[2];
-	for (int i = 3; i < _args.size(); i++)
+	for (size_t i = 3; i < _args.size(); i++)
        	message += " " + _args[i];
 	for (it = _users.begin(); it != _users.end(); it++) {
 		if (it->getNickname().compare(target.c_str()) == 0) {
