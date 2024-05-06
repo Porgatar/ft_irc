@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/04 21:11:57 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:40:15 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 #include "header.h"
 #include "User.hpp"
 #include "Channel.hpp"
-
-#define ERROR	101
-#define WARNING	102
-#define DEBUG	103
-#define INFO	104
 
 class Irc {
 
@@ -41,13 +36,14 @@ private:
 	void	addUser(int socket);
 	void	log(int log, const std::string &str);
 /*	-	-	-	-	-	Command Functions	-	-	-	-	*/
-	void 	cap(User &user);
+	void 	cap(User &actual);
 	void	join(User &actual);
 	void	nick(User &actual);
 	void	pass(User &actual);
 	void	privmsg(User &actual);
 	void	user(User &actual);
 	void    kick(User &actual);
+	void	mode(User &actual);
 	bool	checkExistingChannel(User &user, std::string channels_name);
 public:
 

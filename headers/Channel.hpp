@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 19:34:06 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/06 18:37:18 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ class Channel {
 private:
 
 	std::string		_name;
+	bool			_mode[5];
 	std::list<User>	_operators;
 	std::list<User>	_users;
 public:
