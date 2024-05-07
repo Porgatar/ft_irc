@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/06 19:18:24 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:48:25 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ public:
 /*	-	-	-	-	-	Operators	-	-	-	-	-	-	*/
 	User				&operator=(const User &rhs);
 /*	-	-	-	-	-	Getters	-	-	-	-	-	-	-	*/
-	int					getSocket(void) const;
-	int					getRegisteredLevel(void) const;
-	std::string			getStringId(void) const;
+	const int			&getSocket(void) const;
+	const int			&getRegisteredLevel(void) const;
+	const std::string	getStringId(void) const;
 	const std::string	&getBuffer(void) const;
 	const std::string	&getNickname(void) const;
 	const std::string	&getUsername(void) const;

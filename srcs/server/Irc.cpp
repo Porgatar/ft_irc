@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 14:44:38 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:46:23 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,16 @@ int Irc::setSockets(fd_set *set) {
 		}
 	}
 	return (max);
+}
+
+std::list<Channel>::iterator	Irc::getChannelIteratorByName(const std::string &channelName)
+{
+	std::list<Channel>::iterator	it;
+
+	for (it = this->_channels.begin(); it != this->_channels.end(); it++)
+		if (channelName == it->getName())
+			return (it);
+	return (it);
 }
 
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/

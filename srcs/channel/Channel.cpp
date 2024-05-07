@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/04/30 00:10:23 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/07 18:10:39 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ Channel	&Channel::operator=(const Channel &rhs) {
 
 /*	-	-	-	-	-	Getters	-	-	-	-	-	*/
 
-std::string	Channel::getName() const {
-	
-	return (_name);
-}
+const std::string	&Channel::getName(void) const {return (_name);}
+
+const bool			&Channel::getMode(const int mode) const {return (this->_mode[mode]);}

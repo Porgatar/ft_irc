@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 18:40:15 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:46:28 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ private:
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 	Irc(void);
 /*	-	-	-	-	-	Private Functions	-	-	-	-	*/
-	void	checkClientRequest(void);
-	void	exec_cmd(User &user);
-	int		setSockets(fd_set *set);
-	void	addUser(int socket);
-	void	log(int log, const std::string &str);
+	void							log(int log, const std::string &str);
+	int								setSockets(fd_set *set);
+	void							checkClientRequest(void);
+	void							exec_cmd(User &user);
+	std::list<Channel>::iterator	getChannelIteratorByName(const std::string &channelName);
 /*	-	-	-	-	-	Command Functions	-	-	-	-	*/
 	void 	cap(User &actual);
 	void	join(User &actual);
