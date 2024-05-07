@@ -6,7 +6,7 @@
 #    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/05/06 15:26:39 by mdesrose         ###   ########.fr        #
+#    Updated: 2024/05/07 19:53:46 by parinder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,12 +29,13 @@ SRC=		srcs/main.cpp \
 			srcs/server/Irc_run.cpp \
 			srcs/server/Irc_log.cpp \
 			srcs/server/cmd/cap.cpp \
+			srcs/server/cmd/pass.cpp \
+			srcs/server/cmd/user.cpp \
+			srcs/server/cmd/nick.cpp \
+			srcs/server/cmd/privMsg.cpp \
 			srcs/server/cmd/join.cpp \
 			srcs/server/cmd/kick.cpp \
-			srcs/server/cmd/nick.cpp \
-			srcs/server/cmd/pass.cpp \
-			srcs/server/cmd/privMsg.cpp \
-			srcs/server/cmd/user.cpp \
+			srcs/server/cmd/mode.cpp \
 			srcs/user/User.cpp \
 			srcs/channel/Channel.cpp \
 			srcs/channel/UserManagement.cpp \

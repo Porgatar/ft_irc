@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/06 19:26:24 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:49:06 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,17 @@ const std::string	&User::getMessage(void) const {
 }
 
 
-int	User::getSocket() const {
+const int	&User::getSocket() const {
 
 	return (this->_socket);
 }
 
-int	User::getRegisteredLevel() const {
+const int	&User::getRegisteredLevel() const {
 
 	return (this->_registered);
 }
 
-std::string	User::getStringId() const {
+const std::string	User::getStringId() const {
 
 	std::ostringstream	oss;
 

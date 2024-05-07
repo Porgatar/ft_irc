@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 19:19:45 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/07 20:11:57 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ std::vector<std::string>	split_space(std::string str) {
 
 static int	is_command(const std::string &buf) {
 
-	std::string	cmd[7] = {"CAP", "PASS", "USER", "NICK", "PRIVMSG", "JOIN", "KICK"};
+	std::string	cmd[8] = {"CAP", "PASS", "USER", "NICK", "PRIVMSG", "JOIN", "KICK", "MODE"};
 	std::string	command;
 
-	for (int i = 0; i < 7; i++) {
+	for (int i = 0; i < 8; i++) {
 
 		if (cmd[i].compare(buf) == 0)
 			return (i);
@@ -42,8 +42,8 @@ void	Irc::exec_cmd(User &user) {
 	std::string	tmp;
 	size_t		len;
 	int			nb_cmd;
-	function_p 	command[7] = {	&Irc::cap, &Irc::pass, &Irc::user, &Irc::nick, \
-								&Irc::privmsg, &Irc::join, &Irc::kick};
+	function_p 	command[8] = {	&Irc::cap, &Irc::pass, &Irc::user, &Irc::nick, \
+								&Irc::privmsg, &Irc::join, &Irc::kick, &Irc::mode};
 
 	str = user.getBuffer();
 	len = str.find("\n", 0);
@@ -53,29 +53,30 @@ void	Irc::exec_cmd(User &user) {
 	user.setBuffer(tmp);
 	str = str.substr(0, len);
 	user.setMessage(str);
-	this->log(INFO, std::string("server: request: ") + user.getStringId() + ": " + str);
+	this->log(INFO, std::string("server: request from ") + user.getStringId() + " (" + \
+		user.getNickname() + "): " + str);
 	this->_args = split_space(str);
 	nb_cmd = is_command(this->_args[0]);
-	if (nb_cmd == -1) {
+	if (!user.isRegistered() && (nb_cmd == -1 || nb_cmd >= 4)) {
 
-		user.sendMsg(this->_args[0] + " :Unknown command");
-		this->log(WARNING, std::string("server: reply: ") + user.getStringId() + \
-			": " + this->_args[0] + " :Unknown command");
-	}
-	else if (!user.isRegistered() && nb_cmd >= 4) {
-
-		user.sendMsg(" :You have not registered");
-		this->log(WARNING, std::string("server: reply: ") + user.getStringId() + \
-			" :You have not registered");
+		user.sendMsg(user.getNickname() + " :You have not registered");
+		this->log(WARNING, std::string("server: reply to ") + user.getStringId() + \
+			" '" + user.getNickname() + " :You have not registered'");
 	}
 	else if (user.isRegistered() && (nb_cmd >= 0 && nb_cmd <= 3)) {
 
-		user.sendMsg(" :You may not reregister");
-		this->log(WARNING, std::string("server: reply: ") + user.getStringId() + \
-			" :You may not reregister");
+		user.sendMsg(user.getNickname() + " :You may not reregister");
+		this->log(WARNING, std::string("server: reply to ") + user.getStringId() + \
+			" '" + user.getNickname() + " :You may not reregister'");
 	}
-	else
+	else if (nb_cmd > -1)
 		(this->*command[nb_cmd])(user);
+	else {
+
+		user.sendMsg(user.getNickname() + " " + this->_args[0] + " :Unknown command");
+		this->log(WARNING, std::string("server: reply to ") + user.getStringId() + \
+			" '" + user.getNickname() + " " + this->_args[0] + " :Unknown command'");
+	}
 	// else if (is_operator())
 	this->exec_cmd(user);
 }
@@ -93,8 +94,8 @@ void	Irc::checkClientRequest(void) {
 		if (readed == 0) {
 
 			close(actual->getSocket());
-			this->log(INFO, std::string("server: info: ") + actual->getStringId() + \
-				": disconnected");
+			this->log(INFO, std::string("server: request from ") + actual->getStringId() + \
+				": " + actual->getNickname() + " :Disconnected");
 			actual = _users.erase(actual);
 			actual--;
 		}
@@ -139,7 +140,8 @@ void	Irc::run(void) {
 			}
 			newuser.setSocket(new_fd);
 			this->_users.push_back(newuser);
-			this->log(INFO, std::string("server: info: ") + newuser.getStringId() + ": connected");
+			this->log(INFO, std::string("server: request from ") + newuser.getStringId() +\
+			": " + newuser.getNickname() + " :Connected");
 		}
 		else
 			this->checkClientRequest();
