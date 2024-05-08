@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:24:32 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:44:53 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	Irc::AddUserInChannel(User &user, std::string channels_name)
 
 	for (it = _channels.begin(); it != _channels.end(); it++) {
 		if (it->getName() == channels_name) {
-			if (it->isConnected(user.getNickname()) == false) {
+			if (it->isUser(user.getNickname()) == false) {
 				it->addUser(user);
 				it->sendGroupMsg(user.getNickname() + " is joining the channel " + it->getName() + "\n");
 			}

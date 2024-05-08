@@ -6,20 +6,29 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 00:05:32 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 17:03:10 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:53:04 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/Channel.hpp"
 
-bool	Channel::isConnected(std::string nick) {
+bool	Channel::isOperator(const std::string &nick) {
 	
 	std::list<User>::iterator it;
 
-	for (it = _users.begin(); it != _users.end(); it++) {
-		if (nick.compare(it->getNickname().c_str()) == 0)
+	for (it = this->_operators.begin(); it != this->_operators.end(); it++)
+		if (nick == it->getNickname())
 			return (true);
-	}
+	return (false);
+}
+
+bool	Channel::isUser(const std::string &nick) {
+	
+	std::list<User>::iterator it;
+
+	for (it = this->_users.begin(); it != this->_users.end(); it++)
+		if (nick == it->getNickname())
+			return (true);
 	return (false);
 }
 

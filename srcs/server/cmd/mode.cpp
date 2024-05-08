@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:37:48 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:04:20 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:37:50 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	Irc::mode(User &actual) {
 		this->log(WARNING, std::string("server: request from ") + actual.getStringId() + \
 			" '" + tmp + "'");
 	}
-	else {
-
-		std::cout << "setting mode...\n";
-	}
+	for (size_t i = 2; i <= len; i++)
+		std::cout << "test\n";
 }

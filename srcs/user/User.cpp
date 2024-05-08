@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/08 15:49:43 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:16:57 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,6 @@ User	&User::operator=(const User &rhs) {
 }
 
 /*	-	-	-	-	-	Getters	-	-	-	-	-	*/
-
-const std::string	&User::getMessage(void) const {
-
-	return (this->_message);
-}
-
 
 const int	&User::getSocket() const {
 
