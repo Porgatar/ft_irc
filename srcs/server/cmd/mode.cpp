@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:37:48 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 16:30:17 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:06:59 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,5 @@ void	Irc::mode(User &actual) {
 			" '" + tmp + "'");
 	}
 	for (size_t i = 2; i <= len; i++)
-		std::cout << "test\n";
+		std::cout << "arg mode request\n";
 }

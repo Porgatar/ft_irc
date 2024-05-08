@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:26:10 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:39:33 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 
 #define PRED		"\033[0;31m"
 #define PYELLOW		"\033[0;33m"
+#define PORANGE		"\033[0;93m"
 #define PRESET		"\033[0m"
 
 //	irc class defines
