@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 19:35:03 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:25:59 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,36 @@
 
 Channel::Channel(void) : _name("") {
 
-	std::cout << "Channel: default constructor\n";
+	for (int i = 0; i < 5; i++)
+		this->_mode[i] = false;
 };
 
-Channel::Channel(const Channel &src) {
+Channel::Channel(const Channel &src) : \
+	_name(src._name), _operators(src._operators), _users(src._users) {
 
-	std::cout << "Channel: copy constructor\n";
-	*this = src;
+	for (int i = 0; i < 5; i++)
+		this->_mode[i] = src._mode[i];
 }
 
 Channel::Channel(const std::string name, User user) : _name(name) {
 
-	std::cout << "Channel: name/user constructor\n";
+	for (int i = 0; i < 5; i++)
+		this->_mode[i] = false;
 	this->addUser(user);
 	this->addOperator(user);
 };
 
 /*	-	-	-	-	-	Destructors	-	-	-	-	-	*/
 
-Channel::~Channel(void) {
-
-	std::cout << "Channel: destructor\n";
-};
+Channel::~Channel(void) {};
 
 /*	-	-	-	-	-	Operators	-	-	-	-	-	*/
 
 Channel	&Channel::operator=(const Channel &rhs) {
 
-	std::cout << "Channel: copy operator'='\n";
 	this->_name = rhs._name;
+	for (int i = 0; i < 5; i++)
+		this->_mode[i] = rhs._mode[i];
 	this->_operators = rhs._operators;
 	this->_users = rhs._users;
 	return (*this);
@@ -57,13 +58,15 @@ void	Channel::setTopic(std::string name) {
 
 /*	-	-	-	-	-	Getters	-	-	-	-	-	*/
 
-std::string	Channel::getName() const {
-	
-	return (_name);
-}
-
-std::string	Channel::getTopic() const {
+std::string	&Channel::getTopic() const {
 	
 	return (this->_topic);
 }
 
+const std::string	&Channel::getName(void) const {return (_name);}
+
+const bool			&Channel::getMode(const int &mode) const {return (this->_mode[mode]);}
+
+/*	-	-	-	-	-	Setters	-	-	-	-	-	*/
+
+void	Channel::setMode(const int &mode, const bool &state) {this->_mode[mode] = state;}

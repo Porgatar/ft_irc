@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 18:15:42 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:26:10 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,21 @@
 #define PYELLOW		"\033[0;33m"
 #define PRESET		"\033[0m"
 
+//	irc class defines
+#define ERROR	101
+#define WARNING	102
+#define DEBUG	103
+#define INFO	104
+
+//	user class defines
 #define REGISTERED	3
 
 std::string	skip_words(int n, const std::string &str);
+//	channel class _mode defines
+#define I	0
+#define T	1
+#define K	2
+#define O	3
+#define L	4
+
+std::string	get_message(int n, const std::string &str);

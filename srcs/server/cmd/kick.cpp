@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/06 18:15:29 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:22:42 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 
 void    Irc::kick(User &actual) {
     
+    std::list<Channel>::iterator it;
     std::string msg = " :has been kicked"; 
 
     if (_args.size() < 3) {
         actual.sendMsg("KICK :Not enough parameters");
         return ;    
     }
-    for (_it = _channels.begin(); _it != _channels.end(); _it++) {
-        if (_it->getName() == _args[1])
+    for (it = _channels.begin(); it != _channels.end(); it++) {
+        if (it->getName() == _args[1])
             break ;
     }
-    if (_it == _channels.end())
-        actual.sendMsg(_args[1] + " :No such channel");
-    else if (_it->isConnected(_args[2]) == false)
-        actual.sendMsg(_args[2] + " " + _it->getName() + " :They aren't on that channel");
+    if (it == _channels.end())
+        actual.sendMsg(_args[1] + " :No such channel\n");
+    else if (it->isConnected(_args[2]) == false)
+        actual.sendMsg(_args[2] + " " + it->getName() + " :They aren't on that channel\n");
     else if (_args.size() >= 4 && _args[3][0] != ':')
         actual.sendMsg("kick message begin with \':\'");
     else {
-        if (_args.size() > 3) {
-	        actual.setMessage(skip_words(3, actual.getMessage()));
-            _it->kickuser(_args[2], actual.getMessage());
+        if (_args[3] != "") {
+            actual.setMessage(get_message(3, actual.getMessage()));
+            actual.setMessage(actual.getMessage().substr(1));
         }
-        else
-            _it->kickuser(_args[2], msg);
+        it->kickuser(_args[2], msg);
     }
 }

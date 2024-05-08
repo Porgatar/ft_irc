@@ -6,7 +6,7 @@
 #    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/05/06 18:44:45 by mdesrose         ###   ########.fr        #
+#    Updated: 2024/05/08 15:27:04 by mdesrose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME=		ircserv
 
 CC=			c++
 
-CFLAGS=		-Wall -Werror -Wextra -std=c++98 -g
+CFLAGS=		-Wall -Werror -Wextra -std=c++98
 
 ifdef DEBUG
 CFLAGS +=	-g
@@ -32,12 +32,13 @@ SRC=		srcs/main.cpp \
 			srcs/server/Irc_run.cpp \
 			srcs/server/Irc_log.cpp \
 			srcs/server/cmd/cap.cpp \
+			srcs/server/cmd/pass.cpp \
+			srcs/server/cmd/user.cpp \
+			srcs/server/cmd/nick.cpp \
+			srcs/server/cmd/privMsg.cpp \
 			srcs/server/cmd/join.cpp \
 			srcs/server/cmd/kick.cpp \
-			srcs/server/cmd/nick.cpp \
-			srcs/server/cmd/pass.cpp \
-			srcs/server/cmd/privMsg.cpp \
-			srcs/server/cmd/user.cpp \
+			srcs/server/cmd/mode.cpp \
 			srcs/server/cmd/topic.cpp \
 			srcs/user/User.cpp \
 			srcs/channel/Channel.cpp \
