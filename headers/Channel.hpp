@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:05:12 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:31:30 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ public:
 
 	const std::string	&getName(void) const ;
 	const bool			&getMode(const int &mode) const ;
+	const bool			&isConnected(const std::string &nick);
+	const bool			&isOperator(const std::string &nick);
 
 	void	setMode(const int &mode, const bool &state);
 
-	void	sendGroupMsg(std::string msg);
-	void	addUser(User &user);
-	void	addOperator(User &user);
-	bool	isConnected(std::string nick);
-	void	kickuser(std::string nick, std::string message);
+	void		sendGroupMsg(std::string msg);
+	void		addUser(User &user);
+	void		addOperator(User &user);
+	void		kickuser(std::string nick, std::string message);
 };
