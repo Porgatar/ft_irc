@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:37:48 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/07 20:05:14 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:04:20 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,35 +15,42 @@
 void	Irc::mode(User &actual) {
 
 	std::list<Channel>::iterator	channel;
-	std::string						channelName("");
+	std::string						mode("itkol");
 	std::string						tmp;
 	size_t							len;
-	char							mode[6] = {"itkol"};
 
-	len = _args.size();
+	len = this->_args.size();
 	if (len > 1)
-	{
-		channelName = _args[1];
-		channel = this->getChannelIteratorByName(channelName);
-	}
+		channel = this->getChannelIteratorByName(this->_args[1]);
 	if (len == 1 || channel == this->_channels.end()) {
 
-		actual.sendMsg(actual.getNickname() + " " + channelName + " :No such channel");
+		if (len == 1)
+			tmp = actual.getNickname() + "  :No such channel";
+		else
+			tmp = actual.getNickname() + " " + this->_args[1] + " :No such channel";
+		actual.sendMsg(tmp);
 		this->log(WARNING, std::string("server: request from ") + actual.getStringId() + \
-			" '" + actual.getNickname() + " " + channelName + " :No such channel'");
+			" '" + tmp + "'");
 	}
 	else if (len == 2) {
 
-		tmp = actual.getNickname() + " " + channelName + " ";
-		for (int i = 0; i < 5; i++)
+		tmp = actual.getNickname() + " " + this->_args[1] + " ";
+		for (int i = 0; i < 5; i++) {
+
+			std::string c;
+
+			c = mode[i];
 			if (channel->getMode(i))
-				tmp += mode[i];
+				tmp = tmp + "+" + c;
+			else
+				tmp = tmp + "-" + c;
+		}
 		actual.sendMsg(tmp);
 		this->log(WARNING, std::string("server: request from ") + actual.getStringId() + \
-			" " + tmp);
+			" '" + tmp + "'");
 	}
 	else {
-		//	setting current mode to + or -.
+
 		std::cout << "setting mode...\n";
 	}
 }
