@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/06 16:33:56 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:24:40 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ public:
 /*	-	-	-	-	-	Operators	-	-	-	-	-	-	*/
 	User				&operator=(const User &rhs);
 /*	-	-	-	-	-	Getters	-	-	-	-	-	-	-	*/
-	int					getSocket(void) const;
-	int					getRegisteredLevel(void) const;
-	std::string			getStringId(void) const;
+	const int			&getSocket(void) const;
+	const int			&getRegisteredLevel(void) const;
+	const std::string	getStringId(void) const;
 	const std::string	&getBuffer(void) const;
 	const std::string	&getNickname(void) const;
 	const std::string	&getUsername(void) const;
 	const std::string	&getMessage(void) const;
+	
 /*	-	-	-	-	-	Setters	-	-	-	-	-	-	-	*/
 	void				setMessage(std::string str);
 	void				setSocket(int fd);
@@ -50,6 +51,7 @@ public:
 	void				setUsername(std::string username);
 	void				setNickname(std::string nickname);
 	void				setBuffer(std::string buf);
+	void				setMessage(std::string buf);
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
 	void				sendMsg(std::string msg);
 	bool				isRegistered(void);

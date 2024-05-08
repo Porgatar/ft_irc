@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 19:35:21 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:25:52 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ private:
 
 	std::string		_name;
 	std::string		_topic;
+	bool			_mode[5];
 	std::list<User>	_operators;
 	std::list<User>	_users;
 	
@@ -32,9 +33,12 @@ public:
 	~Channel(void);
 
 	Channel	&operator=(const Channel &rhs);
+	
+	std::string			&getTopic() const ;
+	const std::string	&getName(void) const ;
+	const bool			&getMode(const int &mode) const ;
 
-	std::string	getName() const ;
-	std::string	getTopic() const ;
+	void	setMode(const int &mode, const bool &state);
 
 	void	setTopic(std::string name);
 	void	sendGroupMsg(std::string msg);

@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 19:25:28 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:24:32 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,11 @@ Irc::Irc(const std::string s_port, const std::string password) \
 		close(this->_socket);
 		exit(EXIT_FAILURE);
 	}
-	listen(this->_socket, 5);
+	if (listen(this->_socket, 5) == -1) {
+		this->log(ERROR, "Error\nserver: could not listen");
+		close(this->_socket);
+		exit(EXIT_FAILURE);
+	}
 }
 
 /*	-	-	-	-	-	Destructors	-	-	-	-	-	*/
@@ -102,6 +106,16 @@ int Irc::setSockets(fd_set *set) {
 		}
 	}
 	return (max);
+}
+
+std::list<Channel>::iterator	Irc::getChannelIteratorByName(const std::string &channelName)
+{
+	std::list<Channel>::iterator	it;
+
+	for (it = this->_channels.begin(); it != this->_channels.end(); it++)
+		if (channelName == it->getName())
+			return (it);
+	return (it);
 }
 
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/

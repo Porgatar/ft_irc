@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 19:22:37 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:27:50 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 #include "header.h"
 #include "User.hpp"
 #include "Channel.hpp"
-
-#define ERROR	101
-#define WARNING	102
-#define DEBUG	103
-#define INFO	104
 
 class Irc {
 
@@ -35,22 +30,23 @@ private:
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 	Irc(void);
 /*	-	-	-	-	-	Private Functions	-	-	-	-	*/
-	void	checkClientRequest(void);
-	void	exec_cmd(User &user);
-	int		setSockets(fd_set *set);
-	void	addUser(int socket);
-	void	log(int log, const std::string &str);
-	bool	checkExistingChannel(std::string channels_name);
-	void	AddUserInChannel(User &user, std::string channels_name);
+	bool							checkExistingChannel(std::string channels_name);
+	void							AddUserInChannel(User &user, std::string channels_name);
+	void							log(int log, const std::string &str);
+	int								setSockets(fd_set *set);
+	void							checkClientRequest(void);
+	void							exec_cmd(User &user);
+	std::list<Channel>::iterator	getChannelIteratorByName(const std::string &channelName);
 /*	-	-	-	-	-	Command Functions	-	-	-	-	*/
-	void 	cap(User &user);
+	void 	cap(User &actual);
 	void	join(User &actual);
 	void	nick(User &actual);
 	void	pass(User &actual);
 	void	privmsg(User &actual);
 	void	user(User &actual);
 	void    kick(User &actual);
-	void    topic(User &user);
+	void	mode(User &actual);
+	void	topic(User &actual);
 public:
 
 	Channel	getChannel(std::string name);
