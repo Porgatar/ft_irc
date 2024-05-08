@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/08 15:26:32 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:49:43 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,6 @@ const std::string	&User::getNickname() const {
 const std::string	&User::getBuffer() const {
 
 	return (this->_buffer);
-}
-
-const std::string	&User::getMessage(void) const {
-
-	return this->_message;
 }
 
 /*	-	-	-	-	-	Setters	-	-	-	-	-	*/

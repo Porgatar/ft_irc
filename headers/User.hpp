@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/08 15:24:40 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:48:39 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ public:
 	void				setUsername(std::string username);
 	void				setNickname(std::string nickname);
 	void				setBuffer(std::string buf);
-	void				setMessage(std::string buf);
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
 	void				sendMsg(std::string msg);
 	bool				isRegistered(void);
