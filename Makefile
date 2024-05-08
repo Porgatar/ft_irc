@@ -6,7 +6,7 @@
 #    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/05/07 19:53:46 by parinder         ###   ########.fr        #
+#    Updated: 2024/05/08 11:26:30 by parinder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,9 @@ CFLAGS=		-Wall -Werror -Wextra -std=c++98
 ifdef DEBUG
 CFLAGS +=	-g
 endif
+
+.cpp.o:
+			${CC} ${CFLAGS} -c $< -o ${<:.cpp=.o}
 
 OBJ=		$(SRC:.cpp=.o)
 
