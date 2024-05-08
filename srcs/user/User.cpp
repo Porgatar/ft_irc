@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/07 19:49:06 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:47:18 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,6 @@ User	&User::operator=(const User &rhs) {
 
 /*	-	-	-	-	-	Getters	-	-	-	-	-	*/
 
-const std::string	&User::getMessage(void) const {
-
-	return (this->_message);
-}
-
-
 const int	&User::getSocket() const {
 
 	return (this->_socket);
@@ -76,6 +70,11 @@ const std::string	&User::getNickname() const {
 const std::string	&User::getBuffer() const {
 
 	return (this->_buffer);
+}
+
+const std::string	&User::getMessage(void) const {
+
+	return this->_message;
 }
 
 /*	-	-	-	-	-	Setters	-	-	-	-	-	*/
@@ -113,9 +112,9 @@ void	User::setBuffer(std::string buf) {
 	this->_buffer = buf;
 }
 
-void	User::setMessage(std::string buf) {
+void	User::setMessage(std::string str) {
 
-	_message = buf;
+	this->_message = str;
 }
 
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/

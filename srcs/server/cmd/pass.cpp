@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:30:21 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/02 16:00:20 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/06 18:34:20 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	Irc::pass(User &actual)
 		actual.sendMsg("PASS :Not enough parameters\n");	// test avec la commande 
 															// PASS seule a verifier
 	else if (_args[1].compare(_password) == 0) {
-
 		if (actual.getRegisteredLevel() == 0) 
 			actual.setHigherRegisteredLevel();
 	}

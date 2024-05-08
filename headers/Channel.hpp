@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:31:30 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:53:12 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@ class Channel {
 private:
 
 	std::string		_name;
+	std::string		_topic;
 	bool			_mode[5];
 	std::list<User>	_operators;
 	std::list<User>	_users;
+	
 public:
 
 	Channel(void);
@@ -31,16 +33,18 @@ public:
 	~Channel(void);
 
 	Channel	&operator=(const Channel &rhs);
-
+	
+	const std::string	&getTopic() const ;
 	const std::string	&getName(void) const ;
 	const bool			&getMode(const int &mode) const ;
-	const bool			&isConnected(const std::string &nick);
-	const bool			&isOperator(const std::string &nick);
 
 	void	setMode(const int &mode, const bool &state);
+	void	setTopic(std::string name);
 
-	void		sendGroupMsg(std::string msg);
-	void		addUser(User &user);
-	void		addOperator(User &user);
-	void		kickuser(std::string nick, std::string message);
+	bool	isUser(const std::string &nick);
+	bool	isOperator(const std::string &nick);
+	void	sendGroupMsg(std::string msg);
+	void	addUser(User &user);
+	void	addOperator(User &user);
+	void	kickuser(std::string nick, std::string message);
 };
