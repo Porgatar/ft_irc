@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:26:10 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:33:45 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,3 @@ std::string	skip_words(int n, const std::string &str);
 #define O	3
 #define L	4
 
-std::string	get_message(int n, const std::string &str);

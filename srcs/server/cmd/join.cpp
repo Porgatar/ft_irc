@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 19:14:47 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:04:05 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ void	Irc::join(User &user) {
     std::list<std::string> 				cmds;
     size_t 								start = 0;
     size_t 								end = 0;
-	
+	if (_args.size() < 2) {
+		user.sendMsg("JOIN :Not enough parameters");
+        return;
+	}
 	if (_args[1][end] != '&' && _args[1][end] != '#') {
 		user.sendMsg("Channel begin with & or #");
         return;
@@ -56,4 +59,7 @@ void	Irc::join(User &user) {
 		else
 			AddUserInChannel(user, *it);
 	}
+	// if (_args.size() >= 3) {
+		
+	// }
 }

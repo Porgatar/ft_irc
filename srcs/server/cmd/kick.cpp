@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/08 15:22:42 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:48:59 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void    Irc::kick(User &actual) {
         actual.sendMsg("kick message begin with \':\'");
     else {
         if (_args[3] != "") {
-            actual.setMessage(get_message(3, actual.getMessage()));
+            actual.setMessage(skip_words(3, actual.getMessage()));
             actual.setMessage(actual.getMessage().substr(1));
         }
         it->kickuser(_args[2], msg);
