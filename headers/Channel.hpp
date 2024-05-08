@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:30:56 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:17:30 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ public:
 	const bool			&getMode(const int &mode) const ;
 
 	void	setMode(const int &mode, const bool &state);
-
 	void	setTopic(std::string name);
+
+	bool	isUser(const std::string &nick);
+	bool	isOperator(const std::string &nick);
 	void	sendGroupMsg(std::string msg);
 	void	addUser(User &user);
 	void	addOperator(User &user);
-	bool	isConnected(std::string nick);
 	void	kickuser(std::string nick, std::string message);
 };
