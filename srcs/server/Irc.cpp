@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/07 19:46:23 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:44:53 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,4 +129,40 @@ void	Irc::setSigintHandler(void (*handler)(int)) {
 	sa.sa_flags = 0;
 	sa.sa_handler = handler;
 	sigaction(SIGINT, &sa, 0);
+}
+
+bool	Irc::checkExistingChannel(std::string channels_name)
+{
+	std::list<Channel>::iterator		it;
+
+	for (it = _channels.begin(); it != _channels.end(); it++) {
+		if (it->getName() == channels_name)
+			return (true);
+	}
+	return (false);
+}
+
+void	Irc::AddUserInChannel(User &user, std::string channels_name)
+{
+	std::list<Channel>::iterator		it;
+
+	for (it = _channels.begin(); it != _channels.end(); it++) {
+		if (it->getName() == channels_name) {
+			if (it->isUser(user.getNickname()) == false) {
+				it->addUser(user);
+				it->sendGroupMsg(user.getNickname() + " is joining the channel " + it->getName() + "\n");
+			}
+		}
+	}
+}
+
+Channel	Irc::getChannel(std::string name) {
+	
+	std::list<Channel>::iterator it;
+
+	for (it = _channels.begin(); it != _channels.end(); it++) {
+		if (it->getName() == name)
+			return (*it);
+	}
+	return (Channel());
 }

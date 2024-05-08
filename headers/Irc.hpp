@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/07 19:46:28 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:27:50 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ private:
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 	Irc(void);
 /*	-	-	-	-	-	Private Functions	-	-	-	-	*/
+	bool							checkExistingChannel(std::string channels_name);
+	void							AddUserInChannel(User &user, std::string channels_name);
 	void							log(int log, const std::string &str);
 	int								setSockets(fd_set *set);
 	void							checkClientRequest(void);
@@ -44,9 +46,10 @@ private:
 	void	user(User &actual);
 	void    kick(User &actual);
 	void	mode(User &actual);
-	bool	checkExistingChannel(User &user, std::string channels_name);
+	void	topic(User &actual);
 public:
 
+	Channel	getChannel(std::string name);
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 	Irc(const Irc &src);
 	Irc(const std::string port, const std::string password);

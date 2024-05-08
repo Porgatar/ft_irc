@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 19:25:23 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:23:07 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	Irc::privmsg(User &actual) {
 		return ;
 	}
 	target = _args[1];
-	actual.setMessage(get_message(2, actual.getMessage()));
+	actual.setMessage(skip_words(2, actual.getMessage()));
 	for (it = _users.begin(); it != _users.end(); it++) {
 		if (it->getNickname().compare(target.c_str()) == 0) {
 			it->sendMsg(actual.getMessage());

@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/06 19:18:56 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:26:10 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@
 //	user class defines
 #define REGISTERED	3
 
+std::string	skip_words(int n, const std::string &str);
 //	channel class _mode defines
 #define I	0
 #define T	1

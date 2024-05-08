@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/07 19:48:25 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:44:02 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ private:
 	std::string	_username;
 	std::string	_nickname;
 	std::string	_buffer;
-	std::string _message;
+	std::string	_message;
 public:
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
@@ -44,13 +44,13 @@ public:
 	const std::string	&getMessage(void) const;
 	
 /*	-	-	-	-	-	Setters	-	-	-	-	-	-	-	*/
+	void				setMessage(std::string str);
 	void				setSocket(int fd);
 	void				setHigherRegisteredLevel(void);
 	void				setLowerRegisteredLevel(void);
 	void				setUsername(std::string username);
 	void				setNickname(std::string nickname);
 	void				setBuffer(std::string buf);
-	void				setMessage(std::string buf);
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
 	void				sendMsg(std::string msg);
 	bool				isRegistered(void);
