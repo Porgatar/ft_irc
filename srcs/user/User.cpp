@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/08 15:47:18 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:22:53 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ const std::string	User::getStringId() const {
 	std::ostringstream	oss;
 
 	oss << this->_socket - 3;
-	return (std::string("client n°") + oss.str());
+	return (this->_nickname + "(n°" + oss.str() + ")");
 }
 
 const std::string	&User::getUsername() const {
