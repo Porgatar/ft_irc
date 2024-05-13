@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 17:39:33 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/13 14:02:29 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,15 @@
 //	user class defines
 #define REGISTERED	3
 
-std::string	skip_words(int n, const std::string &str);
-//	channel class _mode defines
-#define I	0
-#define T	1
-#define K	2
-#define O	3
-#define L	4
+//	channel class is(), add() and _mode defines
+#define USER		0
+#define OPERATOR	1
+#define INVITE		2
+#define I			0
+#define T			1
+#define K			2
+#define O			3
+#define L			4
 
+std::string	skip_words(int n, const std::string &str);
 std::string	get_message(int n, const std::string &str);
