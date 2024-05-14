@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:42:01 by mdesrose          #+#    #+#             */
-/*   Updated: 2024/05/13 14:45:10 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/14 16:28:02 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void    Irc::topic(User &user) {
         user.sendMsg(_args[1] + " :No topic is set");
     else if (_args.size() < 3)
         user.sendMsg(_args[1] + " : " + it->getTopic());
-    else if (_args.size() == 3 && _args[2] == ":" && it->isIn(USER, user.getNickname()))
+    else if (_args.size() == 3 && _args[2] == ":" && it->getUserByNameFrom(USER_LIST, user.getNickname()))
         it->setTopic("");
-    else if (_args.size() == 3 && it->isIn(USER, user.getNickname()))
+    else if (_args.size() == 3 && it->getUserByNameFrom(USER_LIST, user.getNickname()))
         it->setTopic(_args[2]);
 }
