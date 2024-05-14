@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:24:23 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:44:37 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,31 +53,29 @@ void	Irc::exec_cmd(User &user) {
 	user.setBuffer(tmp);
 	str = str.substr(0, len);
 	user.setMessage(str);
-	this->log(INFO, std::string("server: request from ") + user.getStringId() + \
-		": '" + user.getNickname() + " :" + str + "'");
+	this->log(INFO, std::string("request from ") + user.getStringId() + " :" + str);
 	this->_args = split_space(str);
 	nb_cmd = is_command(this->_args[0]);
 	if (!user.isRegistered() && (nb_cmd == -1 || nb_cmd >= 4)) {
 
 		user.sendMsg(user.getNickname() + " :You have not registered");
-		this->log(WARNING, std::string("server: reply to ") + user.getStringId() + \
-			": '" + user.getNickname() + " :You have not registered'");
+		this->log(WARNING, std::string("reply to ") + user.getStringId() + \
+			" :You have not registered");
 	}
 	else if (user.isRegistered() && (nb_cmd >= 0 && nb_cmd <= 3)) {
 
 		user.sendMsg(user.getNickname() + " :You may not reregister");
-		this->log(WARNING, std::string("server: reply to ") + user.getStringId() + \
-			": '" + user.getNickname() + " :You may not reregister'");
+		this->log(WARNING, std::string("reply to ") + user.getStringId() + \
+			" :You may not reregister");
 	}
 	else if (nb_cmd > -1)
 		(this->*command[nb_cmd])(user);
 	else {
 
 		user.sendMsg(user.getNickname() + " " + this->_args[0] + " :Unknown command");
-		this->log(WARNING, std::string("server: reply to ") + user.getStringId() + \
-			": '" + user.getNickname() + " " + this->_args[0] + " :Unknown command'");
+		this->log(WARNING, std::string("reply to ") + user.getStringId() + \
+			" " + this->_args[0] + " :Unknown command");
 	}
-	// else if (is_operator())
 	this->exec_cmd(user);
 }
 
@@ -94,8 +92,8 @@ void	Irc::checkClientRequest(void) {
 		if (readed == 0) {
 
 			close(actual->getSocket());
-			this->log(INFO, std::string("server: request from ") + actual->getStringId() + \
-				": '" + actual->getNickname() + " :Disconnected'");
+			this->log(INFO, std::string("request from ") + actual->getStringId() + \
+				" :Disconnected");
 			actual = _users.erase(actual);
 			actual--;
 		}
@@ -127,7 +125,7 @@ void	Irc::run(void) {
 																//	sur la socket
 		if (ready_to_read < 0) {
 
-			this->log(ERROR, "server: select failed");
+			this->log(ERROR, "select failed");
 			exit(EXIT_FAILURE);
 		}
 		if (FD_ISSET(this->_socket, &set)) {
@@ -135,13 +133,12 @@ void	Irc::run(void) {
 			new_fd = accept(this->_socket, (struct sockaddr *)&addr, (socklen_t *)&size);
 			if (new_fd == -1) {
 
-				this->log(ERROR, "server: accept failed");
+				this->log(ERROR, "accept failed");
 				exit(EXIT_FAILURE);
 			}
 			newuser.setSocket(new_fd);
 			this->_users.push_back(newuser);
-			this->log(INFO, std::string("server: request from ") + newuser.getStringId() +\
-			": '" + newuser.getNickname() + " :Connected'");
+			this->log(INFO, std::string("request from ") + newuser.getStringId() + " :Connected");
 		}
 		else
 			this->checkClientRequest();
