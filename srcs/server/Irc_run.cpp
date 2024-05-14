@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc_run.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 17:44:37 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/14 18:24:07 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,15 @@ void	Irc::exec_cmd(User &user) {
 	this->exec_cmd(user);
 }
 
+void	Irc::clearUserFromChan(const std::string &nick) {
+	std::list<Channel>::iterator it;
+	for (it = _channels.begin(); it != _channels.end(); it++) {
+		it->removeFrom(OPERATOR, nick);
+		it->removeFrom(USER, nick);
+		it->removeFrom(INVITE, nick);
+	}
+}
+
 void	Irc::checkClientRequest(void) {
 
 	std::list<User>::iterator	actual;
@@ -94,6 +103,7 @@ void	Irc::checkClientRequest(void) {
 			close(actual->getSocket());
 			this->log(INFO, std::string("request from ") + actual->getStringId() + \
 				" :Disconnected");
+			clearUserFromChan(actual->getNickname());
 			actual = _users.erase(actual);
 			actual--;
 		}

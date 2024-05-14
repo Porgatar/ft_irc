@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/14 17:48:58 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/14 18:29:17 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,9 @@ const std::string	&User::getBuffer() const {
 
 	return (this->_buffer);
 }
+
+const std::string	&User::getMessage() const { return this->_message; }
+
 
 /*	-	-	-	-	-	Setters	-	-	-	-	-	*/
 
