@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:52:42 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/02 16:01:13 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/14 18:37:01 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,23 @@ void	Irc::nick(User &actual) {
 
 	std::list<User>::iterator	it;
 
+	if (actual.getRegisteredLevel() == 0) {
+		actual.sendMsg("Enter password first");
+		return ;
+	}
 	if (_args[1].empty()) {
 
-		actual.sendMsg(" :No nickname given\n");
+		actual.sendMsg(" :No nickname given");
 		return ;
 	}
 	if (!rfc_nickname(_args[1])) {
-		actual.sendMsg(_args[1] + " :Erroneus nickname\n");
+		actual.sendMsg(_args[1] + " :Erroneus nickname");
 		return ;
 	}
 	for (it = _users.begin(); it != _users.end(); it++) {
 
 		if (it->getNickname().compare(_args[1].c_str()) == 0) {
-			actual.sendMsg(_args[1] + " :Nickname is already in use\n");
+			actual.sendMsg(_args[1] + " :Nickname is already in use");
 			return ;
 		}
 	}

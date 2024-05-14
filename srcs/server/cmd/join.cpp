@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 16:04:05 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/14 18:46:42 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ void	Irc::join(User &user) {
                 next++;
 			if (_args[1][next] == ',' && _args[1][next + 1] != '&' && _args[1][next + 1] != '#') {
 
-				user.sendMsg("no comma allowed\n");
+				user.sendMsg("no comma allowed");
 				return ;
 			}
 			if (_args[1][0 + start] != '&' && _args[1][0 + start] != '#') {
-       			user.sendMsg("Channel begin with & or #\n");
+       			user.sendMsg("Channel begin with & or #");
         		return;
    			}
             std::string channel_name = _args[1].substr(start, next - start);
@@ -53,8 +53,7 @@ void	Irc::join(User &user) {
 		if (!(checkExistingChannel(*it))) {
 			Channel	channel(*it, user);
 			_channels.push_back(channel);
-			channel.sendGroupMsg(user.getNickname() + " is joining the channel " \
-														+ channel.getName() + "\n");
+			channel.sendGroupMsg(user.getNickname() + " is joining the channel " + channel.getName());
 		}
 		else
 			AddUserInChannel(user, *it);

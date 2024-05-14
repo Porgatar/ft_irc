@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/14 17:48:26 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/14 18:44:20 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void    Irc::kick(User &actual) {
             break ;
     }
     if (it == _channels.end())
-        actual.sendMsg(_args[1] + " :No such channel\n");
+        actual.sendMsg(_args[1] + " :No such channel");
     else if (it->isIn(USER, _args[2]) == false)
-        actual.sendMsg(_args[2] + " " + it->getName() + " :They aren't on that channel\n");
+        actual.sendMsg(_args[2] + " " + it->getName() + " :They aren't on that channel");
     else if (_args.size() >= 4 && _args[3][0] != ':')
         actual.sendMsg("kick message begin with \':\'");
     else {

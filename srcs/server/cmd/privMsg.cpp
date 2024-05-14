@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privMsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:23:07 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/14 18:45:07 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ void	Irc::privmsg(User &actual) {
 	std::string					target;
 	
 	if (_args.size() == 1) {
-		actual.sendMsg(" :No recipient given\n");
+		actual.sendMsg(" :No recipient given");
 		return ;
 	}
 	if (_args.size() == 2) {
-		actual.sendMsg(" :No text to send\n");
+		actual.sendMsg(" :No text to send");
 		return ;
 	}
 	target = _args[1];
@@ -53,5 +53,5 @@ void	Irc::privmsg(User &actual) {
 			}
 		}
 	}
-	actual.sendMsg(target + " :No such nick/channel\n");
+	actual.sendMsg(target + " :No such nick/channel");
 }
