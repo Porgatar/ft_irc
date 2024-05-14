@@ -6,60 +6,47 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 00:05:32 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:53:04 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/13 14:59:48 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../headers/Channel.hpp"
 
-bool	Channel::isOperator(const std::string &nick) {
-	
-	std::list<User>::iterator it;
+void	Channel::sendGroupMsg(const std::string &msg) {
 
-	for (it = this->_operators.begin(); it != this->_operators.end(); it++)
-		if (nick == it->getNickname())
-			return (true);
-	return (false);
+	std::list<User>::iterator	it;
+
+	for (it = this->_users[USER].begin(); it != this->_users[USER].end(); it++)
+		it->sendMsg(msg);
 }
 
-bool	Channel::isUser(const std::string &nick) {
-	
+void	Channel::removeFrom(const int &list, const std::string &nick) {
+
 	std::list<User>::iterator it;
 
-	for (it = this->_users.begin(); it != this->_users.end(); it++)
-		if (nick == it->getNickname())
-			return (true);
-	return (false);
-}
+	for (it = this->_users[list].begin(); it != this->_users[list].end(); it++) {
 
-void	Channel::kickuser(std::string nick, std::string message) {
-	
-	std::list<User>::iterator it;
-	
-	for (it = _users.begin(); it != _users.end(); it++) {
 		if (nick == it->getNickname()) {
-			this->sendGroupMsg(it->getNickname() + " " + message + "\n");
-			_users.erase(it);
+
+			this->_users[list].erase(it);
 			return ;
 		}
 	}
 }
 
-void	Channel::sendGroupMsg(std::string msg) {
+void	Channel::kickuser(const std::string &nick, const std::string &message) {
 
-	std::list<User>::iterator	it;
+	std::list<User>::iterator it;
 
-	for (it = _users.begin(); it != _users.end(); it++) {
-		write(it->getSocket(), msg.c_str(), msg.size());
+	for (it = _users[USER].begin(); it != _users[USER].end(); it++) {
+
+		if (nick == it->getNickname()) {
+
+			this->sendGroupMsg(it->getNickname() + " " + message + "\n");
+			this->_users[USER].erase(it);
+			//	le user doit aussi etre remove des operateur?
+			this->removeFrom(OPERATOR, nick);
+			return ;
+		}
 	}
-}
-
-void	Channel::addUser(User &user) {
-
-	this->_users.push_back(user);
-}
-
-void	Channel::addOperator(User &user) {
-
-	this->_operators.push_back(user);
 }

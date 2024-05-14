@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 16:17:30 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/14 17:47:23 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,28 @@ private:
 
 	std::string		_name;
 	std::string		_topic;
-	bool			_mode[5];
-	std::list<User>	_operators;
-	std::list<User>	_users;
+	bool			_modes[5];
+	std::list<User>	_users[3];
 	
 public:
 
 	Channel(void);
 	Channel(const Channel &src);
-	Channel(const std::string name, User user);
+	Channel(const std::string &name, const User &user);
 	~Channel(void);
 
 	Channel	&operator=(const Channel &rhs);
 	
-	const std::string	&getTopic() const ;
 	const std::string	&getName(void) const ;
+	const std::string	&getTopic(void) const ;
 	const bool			&getMode(const int &mode) const ;
+	bool				isIn(const int &list, const std::string &nick);
 
+	void	setTopic(const std::string &name);
 	void	setMode(const int &mode, const bool &state);
-	void	setTopic(std::string name);
+	void	addTo(const int &list, const User &user);
 
-	bool	isUser(const std::string &nick);
-	bool	isOperator(const std::string &nick);
-	void	sendGroupMsg(std::string msg);
-	void	addUser(User &user);
-	void	addOperator(User &user);
-	void	kickuser(std::string nick, std::string message);
+	void	sendGroupMsg(const std::string &msg);
+	void	removeFrom(const int &list, const std::string &nick);
+	void	kickuser(const std::string &nick, const std::string &msg);
 };

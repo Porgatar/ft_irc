@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/08 16:16:57 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/14 17:48:58 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ const std::string	User::getStringId() const {
 	std::ostringstream	oss;
 
 	oss << this->_socket - 3;
-	return (std::string("client n°") + oss.str());
+	return (this->_nickname + "(n°" + oss.str() + ")");
 }
 
 const std::string	&User::getUsername() const {
