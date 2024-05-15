@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/14 15:38:10 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/15 21:08:06 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@
 #define INVITE_LIST		2
 #define I				0
 #define T				1
-#define K				2
-#define L				3
+
+//	Reply Macros
+//	WELCOME_RPL
 
 std::string	skip_words(int n, const std::string &str);
 std::string	get_message(int n, const std::string &str);

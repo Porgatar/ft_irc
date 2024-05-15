@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:37:48 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/14 16:27:04 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/15 21:35:14 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,20 @@ void	Irc::mode(User &actual) {
 	}
 	else if (len == 2) {
 
+		std::string c;
+
 		tmp = actual.getNickname() + " " + this->_args[1] + " ";
-		for (int i = 0; i < 4; i++) {
-
-			std::string c;
-
-			c = modes[i];
-			if (channel->getMode(i))
-				tmp = tmp + "+" + c;
-			else
-				tmp = tmp + "-" + c;
-		}
+		c = "+";
+		if (channel->getMode(I))
+			c += "i";
+		if (channel->getMode(T))
+			c += "t";
+		if (!channel->getKey().empty())
+			c += "k";
+		if (channel->getUserLimit())
+			c += "l";
+		if (c.length() > 1)
+			tmp += c;
 		actual.sendMsg(tmp);
 		this->log(WARNING, std::string("reply to ") + actual.getStringId() + " " + tmp);
 		return ;
@@ -76,6 +79,13 @@ void	Irc::mode(User &actual) {
 				this->log(WARNING, std::string("reply to ") + actual.getStringId() + " " + tmp);
 				return ;
 			}
+			if (modes[modeIndex] == 'k') {	// if is mode 'l' set a new userLimit.
+
+				if (i + 1 < len)
+					channel->setKey(this->_args[i + 1]);
+				i++;
+				break ;
+			}
 			if (modes[modeIndex] == 'o') {	// if is mode 'o' set a new channel operator.
 
 				user = 0;
@@ -96,6 +106,14 @@ void	Irc::mode(User &actual) {
 					channel->addUserTo(OPERATOR_LIST, *user);
 				else if (!state)
 					channel->removeUserByNameFrom(OPERATOR_LIST, user->getNickname());
+				i++;
+				break ;
+			}
+			if (modes[modeIndex] == 'l') {	// if is mode 'l' set a new userLimit.
+
+				if (i + 1 < len)
+					channel->setUserLimit(atoi(this->_args[i + 1].c_str()));
+				i++;
 				break ;
 			}
 			channel->setMode(modeIndex, state);
