@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/14 18:25:22 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/16 05:51:13 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ private:
 	void	join(User &actual);
 	void	nick(User &actual);
 	void	pass(User &actual);
+	void    invite(User &actual);
 	void	privmsg(User &actual);
 	void	user(User &actual);
 	void    kick(User &actual);
