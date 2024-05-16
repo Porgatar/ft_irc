@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/14 17:47:23 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/16 06:49:46 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ class Channel {
 private:
 
 	std::string		_name;
+	std::string		_key;
 	std::string		_topic;
-	bool			_modes[5];
+	bool			_modes[2];
 	std::list<User>	_users[3];
-	
+	size_t			_userLimit;
+
 public:
 
 	Channel(void);
@@ -34,15 +36,19 @@ public:
 	Channel	&operator=(const Channel &rhs);
 	
 	const std::string	&getName(void) const ;
+	const std::string	&getKey(void) const ;
 	const std::string	&getTopic(void) const ;
-	const bool			&getMode(const int &mode) const ;
-	bool				isIn(const int &list, const std::string &nick);
+	bool				getMode(const int &mode) const ;
+	User				*getUserByNameFrom(const int &list, const std::string &nick);
+	const size_t		&getUserLimit(void) const ;
 
+	void	setKey(const std::string &key);
 	void	setTopic(const std::string &name);
 	void	setMode(const int &mode, const bool &state);
-	void	addTo(const int &list, const User &user);
+	void	addUserTo(const int &list, const User &user);
+	void	setUserLimit(const size_t &userLimit);
 
 	void	sendGroupMsg(const std::string &msg);
-	void	removeFrom(const int &list, const std::string &nick);
+	void	removeUserByNameFrom(const int &list, const std::string &nick);
 	void	kickuser(const std::string &nick, const std::string &msg);
 };
