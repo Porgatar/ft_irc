@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 05:51:13 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/16 06:05:37 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ private:
 	Irc(void);
 /*	-	-	-	-	-	Private Functions	-	-	-	-	*/
 	bool							checkExistingChannel(std::string channels_name);
+	bool							checkExistingUser(std::string nickname);
 	void							AddUserInChannel(User &user, std::string channels_name);
 	std::list<Channel>::iterator	getChannelIteratorByName(const std::string &channelName);
 	void							log(int log, const std::string &str);

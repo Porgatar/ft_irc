@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/13 14:40:43 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/16 06:07:55 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,19 @@ int Irc::setSockets(fd_set *set) {
 	}
 	return (max);
 }
+
+bool	Irc::checkExistingUser(std::string nickname) {
+	
+	std::list<User>::iterator it;
+		
+    for (it = _users.begin(); it != _users.end(); it++) {
+		if (it->getNickname().compare(_args[1].c_str()) == 0) {
+			return (true);
+		}
+	}
+	return (false); 
+}
+
 
 std::list<Channel>::iterator	Irc::getChannelIteratorByName(const std::string &channelName)
 {
