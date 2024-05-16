@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
+#    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/05/08 15:27:04 by mdesrose         ###   ########.fr        #
+#    Updated: 2024/05/16 05:49:05 by maxime           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRC=		srcs/main.cpp \
 			srcs/server/cmd/user.cpp \
 			srcs/server/cmd/nick.cpp \
 			srcs/server/cmd/privMsg.cpp \
+			srcs/server/cmd/invite.cpp \
 			srcs/server/cmd/join.cpp \
 			srcs/server/cmd/kick.cpp \
 			srcs/server/cmd/mode.cpp \
