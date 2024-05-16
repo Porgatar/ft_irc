@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 05:48:31 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/16 06:45:29 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	Irc::join(User &user) {
 		user.sendMsg("Channel begin with & or #");
         return;
 	}
+	// boucle qui parse les channel separer par une virgule
     while (end < _args[1].size()) {
 		
         while (end < _args[1].size() && _args[1][end] != '&' && _args[1][end] != '#')
@@ -55,8 +56,11 @@ void	Irc::join(User &user) {
 			_channels.push_back(channel);
 			channel.sendGroupMsg(user.getNickname() + " is joining the channel " + channel.getName());
 		}
+		else if (getChannelIteratorByName(*it)->getMode(I) == true && getChannelIteratorByName(*it)->isIn(INVITE, user.getNickname()) == false)
+			user.sendMsg("user pas sur liste d'invite");
 		else
 			AddUserInChannel(user, *it);
+						
 	}
 	// if (_args.size() >= 3) {
 		
