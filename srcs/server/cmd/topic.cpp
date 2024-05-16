@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:42:01 by mdesrose          #+#    #+#             */
-/*   Updated: 2024/05/14 17:55:06 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/16 06:51:26 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ void    Irc::topic(User &user) {
         return ;   
     }
     it = getChannelIteratorByName(_args[1]);
-    if ((it->getMode(T) && it->isIn(OPERATOR, user.getNickname())) || it->getMode(T) == false) {
+    if ((it->getMode(T) && it->isIn(OPERATOR_LIST, user.getNickname())) || it->getMode(T) == false) {
         if (_args.size() < 3 && it->getTopic() == "")
             user.sendMsg(_args[1] + " :No topic is set");
         else if (_args.size() < 3)
             user.sendMsg(_args[1] + " : " + it->getTopic());
-        else if (_args.size() == 3 && _args[2] == ":" && it->isIn(USER, user.getNickname()))
+        else if (_args.size() == 3 && _args[2] == ":" && it->getUserByNameFrom(USER_LIST, user.getNickname()))
             it->setTopic("");
-        else if (_args.size() == 3 && it->isIn(USER, user.getNickname()))
+        else if (_args.size() == 3 && it->getUserByNameFrom(USER_LIST, user.getNickname()))
             it->setTopic(_args[2]);
     }
     else 
