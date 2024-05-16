@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 05:52:04 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/16 07:08:52 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ void	Irc::exec_cmd(User &user) {
 void	Irc::clearUserFromChan(const std::string &nick) {
 	std::list<Channel>::iterator it;
 	for (it = _channels.begin(); it != _channels.end(); it++) {
-		it->removeFrom(OPERATOR, nick);
-		it->removeFrom(USER, nick);
-		it->removeFrom(INVITE, nick);
+		it->removeUserByNameFrom(OPERATOR_LIST, nick);
+		it->removeUserByNameFrom(USER_LIST, nick);
+		it->removeUserByNameFrom(INVITE_LIST, nick);
 	}
 }
 

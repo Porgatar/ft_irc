@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 06:50:00 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/16 07:18:58 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,3 +106,14 @@ void	Channel::addUserTo(const int &list, const User &user) {
 }
 
 void	Channel::setUserLimit(const size_t &userLimit) {this->_userLimit = userLimit;}
+
+bool	Channel::isIn(const int &list, const std::string &nick) {
+	
+	std::list<User>::iterator it;
+
+	for (it = _users[list].begin(); it != _users[list].end(); it++) {
+		if (nick == it->getNickname())
+			return (true);
+	}
+	return (false);
+}

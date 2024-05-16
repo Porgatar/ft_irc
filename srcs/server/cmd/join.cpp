@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 06:45:29 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/16 07:32:01 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	Irc::join(User &user) {
 				user.sendMsg("no comma allowed");
 				return ;
 			}
-			if (_args[1][0 + start] != '&' && _args[1][0 + start] != '#') {
+			if (_args[1][start] != '&' && _args[1][start] != '#') {
        			user.sendMsg("Channel begin with & or #");
         		return;
    			}
@@ -56,13 +56,12 @@ void	Irc::join(User &user) {
 			_channels.push_back(channel);
 			channel.sendGroupMsg(user.getNickname() + " is joining the channel " + channel.getName());
 		}
-		else if (getChannelIteratorByName(*it)->getMode(I) == true && getChannelIteratorByName(*it)->isIn(INVITE, user.getNickname()) == false)
+		else if (getChannelIteratorByName(*it)->getMode(I) == true \
+		&& getChannelIteratorByName(*it)->isIn(INVITE_LIST, user.getNickname()) == false)
 			user.sendMsg("user pas sur liste d'invite");
 		else
 			AddUserInChannel(user, *it);
 						
 	}
-	// if (_args.size() >= 3) {
-		
-	// }
+
 }
