@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 06:48:03 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/16 07:07:25 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ bool	Irc::checkExistingUser(std::string nickname) {
 	std::list<User>::iterator it;
 		
     for (it = _users.begin(); it != _users.end(); it++) {
-		if (it->getNickname().compare(_args[1].c_str()) == 0) {
+		if (it->getNickname() == nickname) {
 			return (true);
 		}
 	}
