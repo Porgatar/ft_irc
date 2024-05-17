@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   UserManagement.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 00:05:32 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/14 16:32:36 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/17 14:40:01 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	Channel::removeUserByNameFrom(const int &list, const std::string &nick) {
 		for (it = this->_users[list].begin(); it != this->_users[list].end(); it++) {
 
 			if (nick == it->getNickname()) {
-
+				if (list == USER_LIST)
+					decrementNbUser();
 				this->_users[list].erase(it);
 				return ;
 			}
@@ -47,6 +48,7 @@ void	Channel::kickuser(const std::string &nick, const std::string &message) {
 
 			this->sendGroupMsg(it->getNickname() + " " + message + "\n");
 			this->_users[USER_LIST].erase(it);
+			decrementNbUser();
 			//	le user doit aussi etre remove des operateur?
 			this->removeUserByNameFrom(OPERATOR_LIST, nick);
 			return ;

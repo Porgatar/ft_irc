@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 07:18:58 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/17 15:48:24 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 
-Channel::Channel(void) : _name(""), _key(""), _topic(""), _userLimit(0) {
+Channel::Channel(void) : _name(""), _key(""), _topic(""), _userLimit(0), _nbUser(0) {
 
 	for (int i = 0; i < 2; i++)
 		this->_modes[i] = false;
@@ -31,7 +31,7 @@ Channel::Channel(const Channel &src) : \
 }
 
 Channel::Channel(const std::string &name, const User &user) : \
-	_name(name), _key("") , _topic(""), _userLimit(0) {
+	_name(name), _key("") , _topic(""), _userLimit(0), _nbUser(1) {
 
 	for (int i = 0; i < 2; i++)
 		this->_modes[i] = false;
@@ -56,6 +56,7 @@ Channel	&Channel::operator=(const Channel &rhs) {
 	this->_users[OPERATOR_LIST] = rhs._users[OPERATOR_LIST];
 	this->_users[INVITE_LIST] = rhs._users[INVITE_LIST];
 	this->_userLimit = rhs._userLimit;
+	this->_nbUser = rhs._nbUser;
 	return (*this);
 }
 
@@ -87,9 +88,16 @@ User	*Channel::getUserByNameFrom(const int &list, const std::string &nick) {
 
 const size_t	&Channel::getUserLimit(void) const {return (this->_userLimit);}
 
+const size_t	&Channel::getNbUser(void) const {return (this->_nbUser);}
+
 /*	-	-	-	-	-	Setters	-	-	-	-	-	*/
 
 void	Channel::setKey(const std::string &key) {this->_key = key;}
+
+void	Channel::incrementNbUser() {this->_nbUser++;}
+
+void	Channel::decrementNbUser() {this->_nbUser--;}
+
 
 void	Channel::setTopic(const std::string &topic) {this->_topic = topic;}
 

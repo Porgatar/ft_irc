@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 07:02:26 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/17 14:24:07 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ private:
 	bool			_modes[2];
 	std::list<User>	_users[3];
 	size_t			_userLimit;
+	size_t			_nbUser;
 
 public:
 
@@ -42,12 +43,16 @@ public:
 	User				*getUserByNameFrom(const int &list, const std::string &nick);
 	bool				isIn(const int &list, const std::string &nick);
 	const size_t		&getUserLimit(void) const ;
+	const size_t		&getNbUser(void) const ;
+	
 
 	void	setKey(const std::string &key);
 	void	setTopic(const std::string &name);
 	void	setMode(const int &mode, const bool &state);
 	void	addUserTo(const int &list, const User &user);
 	void	setUserLimit(const size_t &userLimit);
+	void	incrementNbUser();
+	void	decrementNbUser();
 
 	void	sendGroupMsg(const std::string &msg);
 	void	removeUserByNameFrom(const int &list, const std::string &nick);
