@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 07:32:01 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/17 15:59:32 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,13 @@
 void	Irc::join(User &user) {
 
 	std::list<std::string>::iterator	it;
+	std::list<Channel>::iterator		chan;
     std::list<std::string> 				cmds;
+    std::vector<std::string> 			keys;
+	std::vector<std::string>::iterator	indexKey;
     size_t 								start = 0;
     size_t 								end = 0;
+	
 	if (_args.size() < 2) {
 		user.sendMsg("JOIN :Not enough parameters");
         return;
@@ -50,18 +54,46 @@ void	Irc::join(User &user) {
         }
         end = start;
     }
+	start = 0;
+	end = 0;
+	if (_args.size() >= 3) {
+		while (end < _args[2].size()) {
+			while (end < _args[2].size() && _args[2][end] != ',') 
+				end++;
+			size_t next = end + 1;
+			if (_args[2][next] == ',') {
+				user.sendMsg("No consecutive commas allowed");
+				return;
+			}
+			std::string key_name = _args[2].substr(start, end - start);
+			keys.push_back(key_name);
+			end = next;
+			start = next;
+		}
+	}
+	int i = 0;
 	for (it = cmds.begin(); it != cmds.end(); it++) {
 		if (!(checkExistingChannel(*it))) {
 			Channel	channel(*it, user);
 			_channels.push_back(channel);
 			channel.sendGroupMsg(user.getNickname() + " is joining the channel " + channel.getName());
+			channel.incrementNbUser();
 		}
-		else if (getChannelIteratorByName(*it)->getMode(I) == true \
-		&& getChannelIteratorByName(*it)->isIn(INVITE_LIST, user.getNickname()) == false)
-			user.sendMsg("user pas sur liste d'invite");
-		else
-			AddUserInChannel(user, *it);
-						
+		else {
+			chan = getChannelIteratorByName(*it);
+			if (chan->getMode(I) == true && chan->isIn(INVITE_LIST, user.getNickname()) == false)
+				user.sendMsg("user pas sur liste d'invite");
+			else if (chan->getKey().empty() == false && _args.size() < 3)
+				user.sendMsg("need a key");
+			else if (chan->getKey().empty() == false && chan->getKey() != keys[i]) {
+				user.sendMsg(chan->getKey() + " "+ keys[i]);
+				user.sendMsg("bad key");
+			}
+			else if (chan->getUserLimit() != 0 && chan->getNbUser() >= chan->getUserLimit())
+				user.sendMsg("trop de gens deja co");
+			else
+				AddUserInChannel(user, *it);
+		}
+		i++;
 	}
-
 }

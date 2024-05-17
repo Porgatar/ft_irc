@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:52:42 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/14 18:37:01 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/17 15:16:12 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	Irc::nick(User &actual) {
 		actual.sendMsg("Enter password first");
 		return ;
 	}
-	if (_args[1].empty()) {
+	if (_args.size() < 2) {
 
 		actual.sendMsg(" :No nickname given");
 		return ;

@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 06:49:56 by maxime           ###   ########.fr       */
+/*   Updated: 2024/05/17 14:10:12 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,13 @@
 #define USER_LIST		0
 #define OPERATOR_LIST	1
 #define INVITE_LIST		2
+
+// channel mode
 #define I				0
 #define T				1
+#define K				2
+#define L				3
+#define O				4
 
 //	Reply Macros
 //	WELCOME_RPL
