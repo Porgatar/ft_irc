@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/08 17:22:53 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/21 22:52:32 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,13 @@ void	User::setMessage(std::string str) {
 
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
 
-void	User::sendMsg(std::string msg) {
+void	User::sendMsg(std::string msg) const {
 
 	msg += "\r\n";
 	write(this->_socket, msg.c_str(), msg.length());
 }
 
-bool	User::isRegistered(void) {
+bool	User::isRegistered(void) const {
 
 	if (this->_registered == REGISTERED)
 		return (true);

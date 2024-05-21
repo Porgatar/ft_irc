@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:37:48 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/15 21:35:14 by parinder         ###   ########.fr       */
+/*   Updated: 2024/05/22 01:48:01 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	Irc::mode(User &actual) {
 
 	std::list<Channel>::iterator	channel;
 	std::string						modes("itklo");
-	std::string						tmp;
+	std::string						tmp("");
 	size_t							len;
 	bool							state;
 	int								modeIndex;
@@ -28,38 +28,30 @@ void	Irc::mode(User &actual) {
 	if (len == 1 || channel == this->_channels.end()) {
 
 		if (len == 1)
-			tmp = actual.getNickname() + "  :No such channel";
+			this->reply(NOSUCHCHANNEL(actual, ""));
 		else
-			tmp = actual.getNickname() + " " + this->_args[1] + " :No such channel";
-		actual.sendMsg(tmp);
-		this->log(WARNING, std::string("reply to ") + actual.getStringId() +" " + tmp);
+			this->reply(NOSUCHCHANNEL(actual, this->_args[1]));
 		return ;
 	}
 	else if (len == 2) {
 
-		std::string c;
-
-		tmp = actual.getNickname() + " " + this->_args[1] + " ";
-		c = "+";
+		tmp = "+";
 		if (channel->getMode(I))
-			c += "i";
+			tmp += "i";
 		if (channel->getMode(T))
-			c += "t";
+			tmp += "t";
 		if (!channel->getKey().empty())
-			c += "k";
+			tmp += "k";
 		if (channel->getUserLimit())
-			c += "l";
-		if (c.length() > 1)
-			tmp += c;
-		actual.sendMsg(tmp);
-		this->log(WARNING, std::string("reply to ") + actual.getStringId() + " " + tmp);
+			tmp += "l";
+		if (tmp.length() == 1)
+			tmp.clear();
+		this->reply(MODE_RPL(actual, this->_args[1], tmp));
 		return ;
 	}
 	if (!channel->getUserByNameFrom(OPERATOR_LIST, actual.getNickname())) {
 
-		tmp = actual.getNickname() + " " + this->_args[1] + " :You're not channel operator";
-		actual.sendMsg(tmp);
-		this->log(WARNING, std::string("reply to ") + actual.getStringId() + " " + tmp);
+		this->reply(CHANOPRIVSNEEDED(actual, this->_args[1]));
 		return ;
 	}
 	for (size_t i = 2; i < len; i++) {
@@ -73,10 +65,7 @@ void	Irc::mode(User &actual) {
 			modeIndex = modes.find(this->_args[i][j + 1], 0);
 			if (modeIndex == -1) {
 
-				tmp = actual.getNickname() + " " + this->_args[1][j + 1] + \
-					" :is unknown mode char to me";
-				actual.sendMsg(tmp);
-				this->log(WARNING, std::string("reply to ") + actual.getStringId() + " " + tmp);
+				this->reply(UNKNOWNMODE(actual, this->_args[1][j + 1]));
 				return ;
 			}
 			if (modes[modeIndex] == 'k') {	// if is mode 'l' set a new userLimit.
@@ -94,12 +83,8 @@ void	Irc::mode(User &actual) {
 				if (!user) {
 
 					if (i + 1 < len)
-						tmp = actual.getNickname() + " " + this->_args[i + 1] + " :Unknown user";
-					else
-						tmp = actual.getNickname() + "  :Unknown user";
-					actual.sendMsg(tmp);
-					this->log(WARNING, std::string("reply to ") + actual.getStringId() + \
-						" " + tmp);
+						tmp = this->_args[i + 1];
+					this->reply(UNKNOWNUSER(actual, tmp));
 					return ;
 				}
 				else if (state)
