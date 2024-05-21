@@ -6,7 +6,7 @@
 #    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/05/08 15:27:04 by mdesrose         ###   ########.fr        #
+#    Updated: 2024/05/21 19:43:02 by parinder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ OBJ=		$(SRC:.cpp=.o)
 SRC=		srcs/main.cpp \
 			srcs/server/Irc.cpp \
 			srcs/server/Irc_run.cpp \
-			srcs/server/Irc_log.cpp \
+			srcs/server/Irc_reply.cpp \
 			srcs/server/cmd/cap.cpp \
 			srcs/server/cmd/pass.cpp \
 			srcs/server/cmd/user.cpp \

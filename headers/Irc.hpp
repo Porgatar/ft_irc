@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:27:50 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/05/21 21:29:50 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ private:
 /*	-	-	-	-	-	Private Functions	-	-	-	-	*/
 	bool							checkExistingChannel(std::string channels_name);
 	void							AddUserInChannel(User &user, std::string channels_name);
-	void							log(int log, const std::string &str);
+	void							log(const int log, const std::string &str);
+	void							reply(const User &user, const int log, const std::string &str);
 	int								setSockets(fd_set *set);
 	void							checkClientRequest(void);
 	void							exec_cmd(User &user);
