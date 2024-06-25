@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/08 16:17:25 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:13:03 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ public:
 	void				setNickname(std::string nickname);
 	void				setBuffer(std::string buf);
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
-	void				sendMsg(std::string msg);
-	bool				isRegistered(void);
+	void				sendMsg(std::string msg) const;
+	bool				isRegistered(void) const;
 };
