@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 06:05:37 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/25 16:14:03 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ private:
 	bool							checkExistingChannel(std::string channels_name);
 	bool							checkExistingUser(std::string nickname);
 	void							AddUserInChannel(User &user, std::string channels_name);
+	void							log(const int log, const std::string &str);
 	std::list<Channel>::iterator	getChannelIteratorByName(const std::string &channelName);
-	void							log(int log, const std::string &str);
+	void							reply(const User &user, const int log, const std::string &str);
 	int								setSockets(fd_set *set);
 	void							checkClientRequest(void);
 	void							exec_cmd(User &user);

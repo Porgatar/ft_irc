@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/16 07:08:52 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/25 16:12:47 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,26 +56,14 @@ void	Irc::exec_cmd(User &user) {
 	this->log(INFO, std::string("request from ") + user.getStringId() + " :" + str);
 	this->_args = split_space(str);
 	nb_cmd = is_command(this->_args[0]);
-	if (!user.isRegistered() && (nb_cmd == -1 || nb_cmd >= 4)) {
-
-		user.sendMsg(user.getNickname() + " :You have not registered");
-		this->log(WARNING, std::string("reply to ") + user.getStringId() + \
-			" :You have not registered");
-	}
-	else if (user.isRegistered() && (nb_cmd >= 0 && nb_cmd <= 3)) {
-
-		user.sendMsg(user.getNickname() + " :You may not reregister");
-		this->log(WARNING, std::string("reply to ") + user.getStringId() + \
-			" :You may not reregister");
-	}
+	if (!user.isRegistered() && (nb_cmd == -1 || nb_cmd >= 4))
+		this->reply(NOTREGISTERED(user));
+	else if (user.isRegistered() && (nb_cmd >= 0 && nb_cmd <= 3))
+		this->reply(ALREADYREGISTERED(user));
 	else if (nb_cmd > -1)
 		(this->*command[nb_cmd])(user);
-	else {
-
-		user.sendMsg(user.getNickname() + " " + this->_args[0] + " :Unknown command");
-		this->log(WARNING, std::string("reply to ") + user.getStringId() + \
-			" " + this->_args[0] + " :Unknown command");
-	}
+	else
+		this->reply(UNKNOWNCOMMAND(user));
 	this->exec_cmd(user);
 }
 
