@@ -16,11 +16,9 @@ void    Irc::invite(User &actual)
         return;
     else if (getChannelIteratorByName(_args[2])->isIn(USER_LIST, _args[1]) == true)
         return;
-    else {  
-        for (it = _users.begin(); it != _users.end(); it++) {
-            if (_args[1] == it->getNickname())
-                break;
-        }
-        getChannelIteratorByName(_args[2])->addUserTo(INVITE_LIST, *it);
+    for (it = _users.begin(); it != _users.end(); it++) {
+        if (_args[1] == it->getNickname())
+            break;
     }
+    getChannelIteratorByName(_args[2])->addUserTo(INVITE_LIST, *it);
 }
