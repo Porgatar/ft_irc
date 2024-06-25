@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/14 18:45:07 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/25 17:04:31 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ std::string	getWord(std::string argument) {
 
 void	Irc::privmsg(User &actual) {
 
-	std::list<User>::iterator 	it;
-	std::string					target;
+	std::list<User>::iterator 		it;
+	std::list<Channel>::iterator 	ite;
+	std::string						target;
 	
 	if (_args.size() == 1) {
 		actual.sendMsg(" :No recipient given");
@@ -45,12 +46,12 @@ void	Irc::privmsg(User &actual) {
 			return ;	
 		}
 	}
-	if (target[0] == '&' || target[0] == '#') {
-		for (_it = _channels.begin(); _it != _channels.end(); _it++) {
-			if (_it->getName().compare(target.c_str()) == 0) {
-				_it->sendGroupMsg(actual.getMessage());
-				return ;
-			}
+	for (_it = _channels.begin(); _it != _channels.end(); _it++) {
+		if (_it->getName().compare(target.c_str()) == 0) {
+			if (_it->isIn(USER_LIST, actual.getNickname()) == false)
+				actual.sendMsg(target + " :You are not in channel");
+			_it->sendGroupMsg(actual.getMessage());
+			return ;
 		}
 	}
 	actual.sendMsg(target + " :No such nick/channel");
