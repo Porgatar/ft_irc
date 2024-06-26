@@ -6,23 +6,23 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/25 17:04:31 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/26 14:05:01 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/Irc.hpp"
 
 /*Get the first <argument>'s word; who is separated by a isspace*/
-std::string	getWord(std::string argument) {
+// std::string	getWord(std::string argument) {
 
-	std::string target;
-	int			i = 0;
+// 	std::string target;
+// 	int			i = 0;
 
-	while (argument[i] && !((argument[i] >= 9 && argument[i] <= 13) || argument[i] == 32))
-		i++;
-	target = argument.substr(0, i);
-	return (target);
-}
+// 	while (argument[i] && !((argument[i] >= 9 && argument[i] <= 13) || argument[i] == 32))
+// 		i++;
+// 	target = argument.substr(0, i);
+// 	return (target);
+// }
 
 void	Irc::privmsg(User &actual) {
 
