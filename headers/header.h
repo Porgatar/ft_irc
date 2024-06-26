@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/25 16:13:07 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/26 14:12:25 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@
 #define UNKNOWNUSER(client, nickName)		client, WARNING, ":" + client.getNickname() + \
 												" " + nickName + " :Unknown user"
 
+#define NOTONCHANNEL_ERR(client, channel)            (": 442 " + client.getNickname() + " " + channel + " :Not on that channel")
 /*	momontanly unused Macros
 #define JOIN_RPL(nick, channel)                        (":" + nick + " JOIN " + channel)
 #define PART_RPL(client, channel)                    (":" + client + " PART " + channel)
@@ -111,7 +112,6 @@
 #define ERRONEUSNICKNAME_ERR(client, nickname)        (": 432 " + client + " " + nickname + " :Erroneus nickname")
 #define NICKNAMEINUSE_ERR(client, nick)                (": 433 * " + client + " " + nick + " :Nickname is already in use")
 #define USERNOTINCHANNEL_ERR(client, nick, channel)    (": 441 " + client + " " + nick + " " + channel + " :They aren't on that channel")
-#define NOTONCHANNEL_ERR(client, channel)            (": 442 " + client + " " + channel + " :Not on that channel")
 #define NEEDMOREPARAMS_ERR(client, cmd)                (": 461 " + client + " " + cmd + " :Not enough parameters")
 #define PASSWDMISMATCH_ERR(client)                    (": 464 " + client + " :Password incorrect")
 #define KEYSET_ERR(channel)                            (": 467 " + channel + " :Channel key already set")	//	a voir si on laisse la possibiliter  de remplacer le mdp.
