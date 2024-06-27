@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/17 15:59:32 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/27 13:53:22 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,13 @@ void	Irc::join(User &user) {
 		else {
 			chan = getChannelIteratorByName(*it);
 			if (chan->getMode(I) == true && chan->isIn(INVITE_LIST, user.getNickname()) == false)
-				user.sendMsg("user pas sur liste d'invite");
+				user.sendMsg(user.getNickname() + " " + chan->getName() + " :Cannot join channel (+i)");
 			else if (chan->getKey().empty() == false && _args.size() < 3)
-				user.sendMsg("need a key");
-			else if (chan->getKey().empty() == false && chan->getKey() != keys[i]) {
-				user.sendMsg(chan->getKey() + " "+ keys[i]);
-				user.sendMsg("bad key");
-			}
+				user.sendMsg("Need a key");
+			else if (chan->getKey().empty() == false && chan->getKey() != keys[i])
+				user.sendMsg(user.getNickname() + " " + chan->getName() + " :Cannot join channel (+k)");
 			else if (chan->getUserLimit() != 0 && chan->getNbUser() >= chan->getUserLimit())
-				user.sendMsg("trop de gens deja co");
+				user.sendMsg(user.getNickname() + " " + chan->getName() + " :Cannot join channel (+l)");
 			else
 				AddUserInChannel(user, *it);
 		}

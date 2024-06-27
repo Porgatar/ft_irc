@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/06/25 17:13:41 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/27 13:25:08 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void    Irc::kick(User &actual) {
         actual.sendMsg(":You are not operator");
     else if (_args.size() >= 4 && _args[3][0] != ':')
         actual.sendMsg("kick message begin with \':\'");
+    else if (_args[2] == actual.getNickname())
+        actual.sendMsg("You cannot kick yourself");
     else {
         if (_args[3] != "") {
             actual.setMessage(skip_words(3, actual.getMessage()));
