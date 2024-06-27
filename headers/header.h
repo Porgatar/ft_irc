@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/26 14:12:25 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/27 21:11:51 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,15 @@
 												" " + mode + " :Is unknown mode char to me"
 #define UNKNOWNUSER(client, nickName)		client, WARNING, ":" + client.getNickname() + \
 												" " + nickName + " :Unknown user"
-
-#define NOTONCHANNEL_ERR(client, channel)            (": 442 " + client.getNickname() + " " + channel + " :Not on that channel")
+#define NOTONCHANNEL_ERR(client, channel)   client, WARNING, ": 442 " + client.getNickname() + " " + channel + " :Not on that channel"
+#define ERR_CHANOPRIVSNEEDED(client, channel) client, WARNING, ": 482 " + client.getNickname() + " " + channel + " :You're not channel operator"
+#define ERR_USERONCHANNEL(client, nick, channel) client, WARNING, ": 443 " + client.getNickname() + " " + nick + " " +  channel + " :is already on channel"
 /*	momontanly unused Macros
 #define JOIN_RPL(nick, channel)                        (":" + nick + " JOIN " + channel)
 #define PART_RPL(client, channel)                    (":" + client + " PART " + channel)
 #define KICK_RPL(client, channel, target)            (":" + client + " KICK " + channel + " " + target)
-#define INVITERCVR_RPL(client, invitee, channel)    (":" + client + " INVITE " + invitee + " " + channel)
 #define NICK_RPL(oldNick, newNick)                    (":" + oldNick + " NICK " + newNick)
+#define INVITERCVR_RPL(client, invitee, channel) client, WARNING, ":" + client + " INVITE " + invitee + " " + channel
 #define TOPIC_RPL(client, channel, topic)            (":" + client + " TOPIC " + channel + " :" + topic)
 #define WELCOME_RPL(client)                            (": 001 " + client + " :Welcome to The Internet Relay Chat world, " + client)
 #define NOTOPIC_RPL(client, channel)                (": 331 " + client + " " + channel + " :No topic is set")
