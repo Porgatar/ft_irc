@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 00:05:32 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/17 14:40:01 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/27 13:18:49 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	Channel::kickuser(const std::string &nick, const std::string &message) {
 
 		if (nick == it->getNickname()) {
 
-			this->sendGroupMsg(it->getNickname() + " " + message + "\n");
+			this->sendGroupMsg(it->getNickname() + " " + message);
 			this->_users[USER_LIST].erase(it);
 			decrementNbUser();
 			//	le user doit aussi etre remove des operateur?
