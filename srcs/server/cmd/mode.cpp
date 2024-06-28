@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:37:48 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/25 16:12:23 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/28 17:19:47 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,12 @@ void	Irc::mode(User &actual) {
 				this->reply(UNKNOWNMODE(actual, this->_args[1][j + 1]));
 				return ;
 			}
-			if (modes[modeIndex] == 'k') {	// if is mode 'l' set a new userLimit.
+			if (modes[modeIndex] == 'k') {	// if is mode 'k' set a new channel password
 
-				if (i + 1 < len)
+				if (state && i + 1 < len)
 					channel->setKey(this->_args[i + 1]);
+				else if (!state)
+					channel->setKey("");
 				i++;
 				break ;
 			}
@@ -96,8 +98,10 @@ void	Irc::mode(User &actual) {
 			}
 			if (modes[modeIndex] == 'l') {	// if is mode 'l' set a new userLimit.
 
-				if (i + 1 < len)
+				if (state && i + 1 < len)
 					channel->setUserLimit(atoi(this->_args[i + 1].c_str()));
+				else if (!state)
+					channel->setUserLimit(0);
 				i++;
 				break ;
 			}
