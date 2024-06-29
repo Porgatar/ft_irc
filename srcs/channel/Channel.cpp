@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/17 15:48:24 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/29 13:57:08 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ Channel::Channel(const Channel &src) : \
 }
 
 Channel::Channel(const std::string &name, const User &user) : \
-	_name(name), _key("") , _topic(""), _userLimit(0), _nbUser(1) {
+	_name(name), _key("") , _topic(""), _userLimit(0) {
 
+	this->_nbUser = 1;
 	for (int i = 0; i < 2; i++)
 		this->_modes[i] = false;
 	this->addUserTo(USER_LIST, user);

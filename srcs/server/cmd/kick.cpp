@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/06/29 13:19:37 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/29 13:24:00 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void    Irc::kick(User &actual) {
             break ;
     }
     if (it == _channels.end())
-        actual.sendMsg(_args[1] + " :No such channel\n");
+        actual.sendMsg(_args[1] + " :No such channel");
     else if (!it->getUserByNameFrom(USER_LIST, _args[2]))
-        actual.sendMsg(_args[2] + " " + it->getName() + " :They aren't on that channel\n");
+        actual.sendMsg(_args[2] + " " + it->getName() + " :They aren't on that channel");
     else if (!it->isIn(OPERATOR_LIST, actual.getNickname()))
         actual.sendMsg(":You are not operator");
     else if (_args.size() >= 4 && _args[3][0] != ':')
@@ -36,7 +36,7 @@ void    Irc::kick(User &actual) {
     else if (_args[2] == actual.getNickname())
         actual.sendMsg("You cannot kick yourself");
     else {
-        if (_args[3] != "") {
+        if (_args.size() >= 4) {
             actual.setMessage(skip_words(3, actual.getMessage()));
             actual.setMessage(actual.getMessage().substr(1));
         }
