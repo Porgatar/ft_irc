@@ -1,6 +1,5 @@
 #include "../../../headers/Irc.hpp"
 
-//TODO : messages d'erreurs
 void    Irc::invite(User &actual)
 {
     std::list<User>::iterator it;
