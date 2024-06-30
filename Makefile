@@ -6,7 +6,7 @@
 #    By: maxime <maxime@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/06/25 16:12:57 by maxime           ###   ########.fr        #
+#    Updated: 2024/06/30 12:57:26 by maxime           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME=		ircserv
 
 CC=			c++
 
-CFLAGS=		-Wall -Werror -Wextra -std=c++98
+CFLAGS=		-Wall -Werror -Wextra -g -std=c++98
 
 ifdef DEBUG
 CFLAGS +=	-g

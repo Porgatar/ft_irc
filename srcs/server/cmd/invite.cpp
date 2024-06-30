@@ -17,7 +17,7 @@ void    Irc::invite(User &actual)
     else if (chan->isIn(OPERATOR_LIST, actual.getNickname()) == false)
         reply(ERR_CHANOPRIVSNEEDED(actual, chan->getName()));
     else if (chan->isIn(USER_LIST, _args[1]) == true)
-        reply(ERR_USERONCHANNEL(actual, _args[1], chan->getName()));
+        reply(ERR_USERONCHANNEL(actual, chan->getName()));
     else {
         for (it = _users.begin(); it != _users.end(); it++) {
             if (_args[1] == it->getNickname())
