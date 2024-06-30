@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/29 14:00:49 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/30 13:33:28 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	Irc::join(User &user) {
 
 	std::list<std::string>::iterator	it;
 	std::list<Channel>::iterator		chan;
-    std::list<std::string> 				cmds;
+    std::list<std::string> 				channelsName;
     std::vector<std::string> 			keys;
 	std::vector<std::string>::iterator	indexKey;
     size_t 								start = 0;
@@ -49,7 +49,7 @@ void	Irc::join(User &user) {
         		return;
    			}
             std::string channel_name = _args[1].substr(start, next - start);
-            cmds.push_back(channel_name);
+            channelsName.push_back(channel_name);
             start = next + 1;
         }
         end = start;
@@ -72,27 +72,30 @@ void	Irc::join(User &user) {
 		}
 	}
 	int i = 0;
-	for (it = cmds.begin(); it != cmds.end(); it++) {
+	for (it = channelsName.begin(); it != channelsName.end(); it++) {
 		if (!(checkExistingChannel(*it))) {
 			Channel	channel(*it, user);
-			channel.incrementNbUser();
 			channel.sendGroupMsg(user.getNickname() + " is joining the channel " + channel.getName());
 			_channels.push_back(channel);
 		}
 		else {
 			chan = getChannelIteratorByName(*it);
-			std::cerr << "chan userlimit" << chan->getUserLimit() << " nb user: " << chan->getNbUser();
-			if (chan->getMode(I) == true && chan->isIn(INVITE_LIST, user.getNickname()) == false)
+			if (chan->isIn(USER_LIST, user.getNickname()) == true)
+        		reply(ERR_USERONCHANNEL(user, chan->getName()));
+			else if (chan->getMode(I) == true && chan->isIn(INVITE_LIST, user.getNickname()) == false)
 				user.sendMsg(user.getNickname() + " " + chan->getName() + " :Cannot join channel (+i)");
 			else if (chan->getKey().empty() == false && _args.size() < 3)
 				user.sendMsg("Need a key");
 			else if (chan->getKey().empty() == false && chan->getKey() != keys[i])
 				user.sendMsg(user.getNickname() + " " + chan->getName() + " :Cannot join channel (+k)");
-			else if (chan->getUserLimit() != 0 && chan->getNbUser() >= chan->getUserLimit()){
+			else if (chan->getUserLimit() != 0 && chan->getNbUser() >= chan->getUserLimit())
 				user.sendMsg(user.getNickname() + " " + chan->getName() + " :Cannot join channel (+l)");
+			else {
+				std::cerr << "chan userlimit" << chan->getUserLimit() << " nb user: " 	<< chan->getNbUser();
+				chan->addUserTo(USER_LIST, user);
+				chan->sendGroupMsg(user.getNickname() + " is joining the channel " + chan->getName());
+				chan->incrementNbUser();
 			}
-			else
-				AddUserInChannel(user, *it);
 		}
 		i++;
 	}

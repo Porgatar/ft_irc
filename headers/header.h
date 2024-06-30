@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/27 21:11:51 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/30 13:26:01 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@
 												" " + nickName + " :Unknown user"
 #define NOTONCHANNEL_ERR(client, channel)   client, WARNING, ": 442 " + client.getNickname() + " " + channel + " :Not on that channel"
 #define ERR_CHANOPRIVSNEEDED(client, channel) client, WARNING, ": 482 " + client.getNickname() + " " + channel + " :You're not channel operator"
-#define ERR_USERONCHANNEL(client, nick, channel) client, WARNING, ": 443 " + client.getNickname() + " " + nick + " " +  channel + " :is already on channel"
+#define ERR_USERONCHANNEL(client, channel) client, WARNING, ": 443 " + client.getNickname() + " " +  channel + " :is already on channel"
 /*	momontanly unused Macros
 #define JOIN_RPL(nick, channel)                        (":" + nick + " JOIN " + channel)
 #define PART_RPL(client, channel)                    (":" + client + " PART " + channel)

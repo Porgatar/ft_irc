@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/25 16:12:47 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/30 12:47:12 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ void	Irc::checkClientRequest(void) {
 			actual = _users.erase(actual);
 			actual--;
 		}
+		else if (buf[0] == '\n')
+			continue;
 		else {
 
 			actual->setBuffer(actual->getBuffer() + std::string(buf));
