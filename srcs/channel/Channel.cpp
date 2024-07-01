@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/17 15:48:24 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/30 13:51:44 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ Channel::Channel(const Channel &src) : \
 }
 
 Channel::Channel(const std::string &name, const User &user) : \
-	_name(name), _key("") , _topic(""), _userLimit(0), _nbUser(1) {
+	_name(name), _key("") , _topic("") {
 
+	this->_nbUser = 1;
+	this->_userLimit = 0;
 	for (int i = 0; i < 2; i++)
 		this->_modes[i] = false;
 	this->addUserTo(USER_LIST, user);
@@ -94,9 +96,9 @@ const size_t	&Channel::getNbUser(void) const {return (this->_nbUser);}
 
 void	Channel::setKey(const std::string &key) {this->_key = key;}
 
-void	Channel::incrementNbUser() {this->_nbUser++;}
+void	Channel::incrementNbUser() {this->_nbUser += 1;}
 
-void	Channel::decrementNbUser() {this->_nbUser--;}
+void	Channel::decrementNbUser() {this->_nbUser -= 1;}
 
 
 void	Channel::setTopic(const std::string &topic) {this->_topic = topic;}
