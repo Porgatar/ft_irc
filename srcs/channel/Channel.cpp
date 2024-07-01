@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/30 13:51:44 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/30 15:58:40 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Channel::Channel(void) : _name(""), _key(""), _topic(""), _userLimit(0), _nbUser
 };
 
 Channel::Channel(const Channel &src) : \
-	_name(src._name), _key(src._key) , _topic(src._topic), _userLimit(src._userLimit) {
+	_name(src._name), _key(src._key) , _topic(src._topic), _userLimit(src._userLimit), _nbUser(src._nbUser) {
 
 	for (int i = 0; i < 2; i++)
 		this->_modes[i] = src._modes[i];

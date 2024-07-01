@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/30 13:33:28 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/30 15:49:12 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	Irc::join(User &user) {
 			end = next;
 			start = next;
 		}
-	}
+	}	
 	int i = 0;
 	for (it = channelsName.begin(); it != channelsName.end(); it++) {
 		if (!(checkExistingChannel(*it))) {
@@ -91,7 +91,6 @@ void	Irc::join(User &user) {
 			else if (chan->getUserLimit() != 0 && chan->getNbUser() >= chan->getUserLimit())
 				user.sendMsg(user.getNickname() + " " + chan->getName() + " :Cannot join channel (+l)");
 			else {
-				std::cerr << "chan userlimit" << chan->getUserLimit() << " nb user: " 	<< chan->getNbUser();
 				chan->addUserTo(USER_LIST, user);
 				chan->sendGroupMsg(user.getNickname() + " is joining the channel " + chan->getName());
 				chan->incrementNbUser();
