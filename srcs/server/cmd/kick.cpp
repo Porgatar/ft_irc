@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/06/29 13:24:00 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/30 16:02:22 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ void    Irc::kick(User &actual) {
         if (_args.size() >= 4) {
             actual.setMessage(skip_words(3, actual.getMessage()));
             actual.setMessage(actual.getMessage().substr(1));
+            it->kickuser(_args[2], actual.getMessage());
         }
-        it->kickuser(_args[2], msg);
+        else
+            it->kickuser(_args[2], msg);
     }
 }

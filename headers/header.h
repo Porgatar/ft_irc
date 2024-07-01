@@ -6,11 +6,12 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/30 13:26:01 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/30 14:22:03 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef HEADER
+#define HEADER
 
 //	std::string & print redirection dependency
 #include <iostream>
@@ -123,3 +124,4 @@
 
 std::string	skip_words(int n, const std::string &str);
     
+#endif // !HEADER
