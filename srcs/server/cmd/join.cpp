@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/30 13:33:28 by maxime           ###   ########.fr       */
+/*   Updated: 2024/07/01 18:54:54 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	Irc::join(User &user) {
 		else {
 			chan = getChannelIteratorByName(*it);
 			if (chan->isIn(USER_LIST, user.getNickname()) == true)
-        		reply(ERR_USERONCHANNEL(user, chan->getName()));
+        		reply(USERONCHANNEL(user, user.getNickname(), chan->getName()));
 			else if (chan->getMode(I) == true && chan->isIn(INVITE_LIST, user.getNickname()) == false)
 				user.sendMsg(user.getNickname() + " " + chan->getName() + " :Cannot join channel (+i)");
 			else if (chan->getKey().empty() == false && _args.size() < 3)
