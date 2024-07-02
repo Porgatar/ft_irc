@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/01 18:54:54 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:46:04 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,33 +22,38 @@ void	Irc::join(User &user) {
     size_t 								start = 0;
     size_t 								end = 0;
 	
-	if (_args.size() < 2) {
-		user.sendMsg("JOIN :Not enough parameters");
+	if (this->_args.size() < 2) {
+
+		this->reply(NEEDMOREPARAMS(user, "PASS"));
         return;
 	}
-	if (_args[1][end] != '&' && _args[1][end] != '#') {
-		user.sendMsg("Channel begin with & or #");
+	if (this->_args[1][end] != '&' && this->_args[1][end] != '#') {
+
+		this->reply(BADCHANMASK(user, this->_args[1]));
         return;
 	}
 	// boucle qui parse les channel separer par une virgule
-    while (end < _args[1].size()) {
-		
-        while (end < _args[1].size() && _args[1][end] != '&' && _args[1][end] != '#')
-            end++;
-        if (end < _args[1].size()) {
-            size_t next = end + 1;
-            while (next < _args[1].size() && _args[1][next] != ',')
-                next++;
-			if (_args[1][next] == ',' && _args[1][next + 1] != '&' && _args[1][next + 1] != '#') {
+    while (end < this->_args[1].size()) {
 
-				user.sendMsg("no comma allowed");
+        while (end < this->_args[1].size() && this->_args[1][end] != '&' \
+		&& this->_args[1][end] != '#')
+            end++;
+        if (end < this->_args[1].size()) {
+            size_t next = end + 1;
+            while (next < this->_args[1].size() && this->_args[1][next] != ',')
+                next++;
+			if (this->_args[1][next] == ',' && this->_args[1][next + 1] != '&' \
+			&& this->_args[1][next + 1] != '#') {
+
+				this->reply(BADCHANMASK(user, this->_args[1]));
 				return ;
 			}
-			if (_args[1][start] != '&' && _args[1][start] != '#') {
-       			user.sendMsg("Channel begin with & or #");
+			if (this->_args[1][start] != '&' && this->_args[1][start] != '#') {
+
+				this->reply(BADCHANMASK(user, this->_args[1]));
         		return;
    			}
-            std::string channel_name = _args[1].substr(start, next - start);
+            std::string channel_name = this->_args[1].substr(start, next - start);
             channelsName.push_back(channel_name);
             start = next + 1;
         }
@@ -56,16 +61,19 @@ void	Irc::join(User &user) {
     }
 	start = 0;
 	end = 0;
-	if (_args.size() >= 3) {
-		while (end < _args[2].size()) {
-			while (end < _args[2].size() && _args[2][end] != ',') 
+	if (this->_args.size() >= 3) {
+
+		while (end < this->_args[2].size()) {
+
+			while (end < this->_args[2].size() && this->_args[2][end] != ',') 
 				end++;
 			size_t next = end + 1;
-			if (_args[2][next] == ',') {
-				user.sendMsg("No consecutive commas allowed");
+			if (this->_args[2][next] == ',') {
+
+				this->reply(user, WARNING, "No consecutive commas allowed");
 				return;
 			}
-			std::string key_name = _args[2].substr(start, end - start);
+			std::string key_name = this->_args[2].substr(start, end - start);
 			keys.push_back(key_name);
 			end = next;
 			start = next;
@@ -81,19 +89,22 @@ void	Irc::join(User &user) {
 		else {
 			chan = getChannelIteratorByName(*it);
 			if (chan->isIn(USER_LIST, user.getNickname()) == true)
-        		reply(USERONCHANNEL(user, user.getNickname(), chan->getName()));
-			else if (chan->getMode(I) == true && chan->isIn(INVITE_LIST, user.getNickname()) == false)
-				user.sendMsg(user.getNickname() + " " + chan->getName() + " :Cannot join channel (+i)");
+        		reply(USERONCHAN(user, user.getNickname(), chan->getName()));
+			else if (chan->getMode(I) == true \
+			&& chan->isIn(INVITE_LIST, user.getNickname()) == false)
+				this->reply(INVITEONLYCHAN(user, chan->getName()));
 			else if (chan->getKey().empty() == false && _args.size() < 3)
-				user.sendMsg("Need a key");
+				this->reply(BADCHANKEY(user, chan->getName()));
 			else if (chan->getKey().empty() == false && chan->getKey() != keys[i])
-				user.sendMsg(user.getNickname() + " " + chan->getName() + " :Cannot join channel (+k)");
+				this->reply(BADCHANKEY(user, chan->getName()));
 			else if (chan->getUserLimit() != 0 && chan->getNbUser() >= chan->getUserLimit())
-				user.sendMsg(user.getNickname() + " " + chan->getName() + " :Cannot join channel (+l)");
+				this->reply(CHANISFULL(user, chan->getName()));
 			else {
-				std::cerr << "chan userlimit" << chan->getUserLimit() << " nb user: " 	<< chan->getNbUser();
+//				std::cerr << "chan userlimit" << chan->getUserLimit() << " nb user: "
+//				<< chan->getNbUser(); // debug infos?
 				chan->addUserTo(USER_LIST, user);
-				chan->sendGroupMsg(user.getNickname() + " is joining the channel " + chan->getName());
+				chan->sendGroupMsg(user.getNickname() + " is joining the channel " \
+				+ chan->getName());
 				chan->incrementNbUser();
 			}
 		}
