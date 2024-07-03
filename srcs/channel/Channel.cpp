@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/30 13:51:44 by maxime           ###   ########.fr       */
+/*   Updated: 2024/07/03 17:50:21 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,21 @@ bool	Channel::getMode(const int &mode) const {
 	if (mode >= 0 && mode <= 1)
 		return (this->_modes[mode]);
 	return (false);
+}
+
+std::string	Channel::getUsersString(void) {
+
+	std::list<User>::iterator	it, ite;
+	std::string					names;
+
+	ite = this->_users[OPERATOR_LIST].end();
+	for (it = this->_users[OPERATOR_LIST].begin(); it != ite; it++)
+		names = names + "@" + it->getNickname() + ", ";
+	ite = this->_users[USER_LIST].end();
+	for (it = this->_users[USER_LIST].begin(); it != ite; it++)
+		names = names + it->getNickname() + ", ";
+	names.erase(names.size() - 2);
+	return (names);
 }
 
 User	*Channel::getUserByNameFrom(const int &list, const std::string &nick) {

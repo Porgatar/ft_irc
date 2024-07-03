@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/02 17:41:51 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/03 17:06:19 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,16 @@
 #define UNKNOWNCOMMAND(client) \
 	client, WARNING, std::string(":") + client.getNickname() + " :Unkown command"
 
+#define JOIN(client, channel) \
+	client, INFO, std::string(":") + client.getNickname() + " JOIN " + channel
+
+#define JOIN_LOG(client, channel) \
+	INFO, std::string("reply to ") + client.getStringId() + " :" + client.getNickname() \
+	+ " is joining the channel " + channel
+
 #define WELCOME(client) \
 	client, INFO, std::string(": 001 ") + client.getNickname() \
-	+ " :Welcome to The Internet Relay Chat world, " + client.getNickname()
+	+ " : Welcome to The Internet Relay Chat world, " + client.getNickname()
 
 #define USERONCHAN(client, nick, channel) \
 	client, WARNING, std::string(": 303 ") + client.getNickname() + " " + nick \
@@ -92,6 +99,14 @@
 #define INVITE(client, invitee, channel) \
 	client, INFO, ": 341 " + client.getNickname() + " " + invitee + " " + channel
 
+#define NAMES(client, channel, nicknames) \
+	client, INFO, std::string(": 353 ") + client.getNickname() + " = " + channel \
+	+ " :" + nicknames
+
+#define ENDOFNAMES(client, channel) \
+	client, INFO, std::string(": 366 ") + client.getNickname() + " " + channel \
+	+ " :End of /NAMES list"
+
 #define NOSUCHNICK(client, nickname) \
 	client, WARNING, std::string(": 401 ") + client.getNickname() + " " + nickname \
 	+ " :No such nickname"
@@ -99,6 +114,18 @@
 #define NOSUCHCHAN(client, channel) \
 	client, WARNING, std::string(": 403 ") + client.getNickname() + " " + channel \
 	+ " :No such channel"
+
+#define NONICKNAMEGIVEN(client) \
+	client, WARNING, std::string(": 431 ") + client.getNickname() \
+	+ " :No nickname given"
+
+#define ERRONEUSNICKNAME(client, nick) \
+	client, WARNING, std::string(": 432 ") + client.getNickname() + " " + nick \
+	+ " :Erroneus nickname"
+
+#define NICKNAMEINUSE(client, nick) \
+	client, WARNING, std::string(": 433 ") + client.getNickname() + " " + nick \
+	+ " :Nickname is already in use"
 
 #define USERNOTINCHAN(client, nick, channel) \
 	client, WARNING, std::string(": 441 ") + client.getNickname() + " " + nick + " " \
@@ -152,26 +179,16 @@
 
 #define PART_RPL(client, channel)                    (":" + client + " PART " + channel)
 #define KICK_RPL(client, channel, target)            (":" + client + " KICK " + channel + " " + target)
-#define NICK_RPL(oldNick, newNick)                    (":" + oldNick + " NICK " + newNick)
-#define INVITERCVR_RPL(client, invitee, channel) client, WARNING, ":" + client + " INVITE " + invitee + " " + channel
 #define TOPIC_RPL(client, channel, topic)            (":" + client + " TOPIC " + channel + " :" + topic)
 
 #define SEETOPIC_RPL(client, channel, topic)        (": 332 " + client + " " + channel + " :" + topic)
 
-#define NAMEREPLY_RPL(nick, channel, nicknames)        (": 353 " + nick + " = " + channel + " :" + nicknames)
+
 
 #define TOOMUCHPARAMS_ERR(client, cmd)                (client + " " + cmd + " :Too much parameters")
 
 #define CANNOTSENDTOCHAN_ERR(client, channel)        (": 404 " + client + " " + channel + " :Cannot send to channel")
 #define NOTEXTTOSEND_ERR(client)                    (": 412 " + client + " :No text to send")
-#define NONICKNAMEGIVEN_ERR(client, nick)            (": 431 " + client + " " + nick + " :No nickname given")
-#define ERRONEUSNICKNAME_ERR(client, nickname)        (": 432 " + client + " " + nickname + " :Erroneus nickname")
-#define NICKNAMEINUSE_ERR(client, nick)                (": 433 * " + client + " " + nick + " :Nickname is already in use")
-
-
-#define KEYSET_ERR(channel)                            (": 467 " + channel + " :Channel key already set")	//	a voir si on laisse la possibiliter  de remplacer le mdp.
-
-
 
 */
 

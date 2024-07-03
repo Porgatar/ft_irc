@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/07/02 17:39:39 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/03 13:44:28 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void    Irc::kick(User &actual) {
     std::list<Channel>::iterator it;
     std::string msg = " :has been kicked"; 
 
-    if (_args.size() < 3) {
+    if (this->_args.size() < 3) {
 
 		this->reply(NEEDMOREPARAMS(actual, "KICK"));
         return ;    
