@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:30:21 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/01 18:48:55 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/03 18:20:50 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	Irc::pass(User &actual)
 		if (actual.getRegisteredLevel() == 0) {
 
 			actual.setHigherRegisteredLevel();
-			this->reply(WELCOME(actual));
+//			this->reply(WELCOME(actual));
 		}
 	}
 	else {

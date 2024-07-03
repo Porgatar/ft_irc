@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/02 17:46:04 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/03 18:36:00 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	Irc::join(User &user) {
         		return;
    			}
             std::string channel_name = this->_args[1].substr(start, next - start);
+
             channelsName.push_back(channel_name);
             start = next + 1;
         }
@@ -81,12 +82,18 @@ void	Irc::join(User &user) {
 	}
 	int i = 0;
 	for (it = channelsName.begin(); it != channelsName.end(); it++) {
+
 		if (!(checkExistingChannel(*it))) {
+
 			Channel	channel(*it, user);
-			channel.sendGroupMsg(user.getNickname() + " is joining the channel " + channel.getName());
-			_channels.push_back(channel);
+
+			this->reply(JOIN(user, channel.getName()));
+			this->reply(NAMES(user, channel.getName(), channel.getUsersString()));
+			this->reply(ENDOFNAMES(user, channel.getName()));
+			this->_channels.push_back(channel);
 		}
 		else {
+
 			chan = getChannelIteratorByName(*it);
 			if (chan->isIn(USER_LIST, user.getNickname()) == true)
         		reply(USERONCHAN(user, user.getNickname(), chan->getName()));
@@ -100,11 +107,13 @@ void	Irc::join(User &user) {
 			else if (chan->getUserLimit() != 0 && chan->getNbUser() >= chan->getUserLimit())
 				this->reply(CHANISFULL(user, chan->getName()));
 			else {
-//				std::cerr << "chan userlimit" << chan->getUserLimit() << " nb user: "
-//				<< chan->getNbUser(); // debug infos?
-				chan->addUserTo(USER_LIST, user);
+
 				chan->sendGroupMsg(user.getNickname() + " is joining the channel " \
 				+ chan->getName());
+				this->reply(JOIN(user, chan->getName()));
+				this->reply(NAMES(user, chan->getName(), chan->getUsersString()));
+				this->reply(ENDOFNAMES(user, chan->getName()));
+				chan->addUserTo(USER_LIST, user);
 				chan->incrementNbUser();
 			}
 		}
