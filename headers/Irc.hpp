@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/30 14:21:36 by maxime           ###   ########.fr       */
+/*   Updated: 2024/07/03 16:20:44 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ private:
 	void 	cap(User &actual);
 	void	join(User &actual);
 	void	nick(User &actual);
+	void	part(User &actual);
 	void	pass(User &actual);
 	void    invite(User &actual);
 	void	privmsg(User &actual);
