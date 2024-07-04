@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/30 15:58:43 by maxime           ###   ########.fr       */
+/*   Updated: 2024/07/04 14:35:44 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ public:
 	const std::string	&getName(void) const ;
 	const std::string	&getKey(void) const ;
 	const std::string	&getTopic(void) const ;
+	std::string			getUsersString(void);
 	bool				getMode(const int &mode) const ;
 	User				*getUserByNameFrom(const int &list, const std::string &nick);
 	bool				isIn(const int &list, const std::string &nick);

@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/06/25 16:12:53 by maxime           ###   ########.fr       */
+/*   Updated: 2024/07/03 18:07:51 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	User::setMessage(std::string str) {
 void	User::sendMsg(std::string msg) const {
 
 	msg += "\r\n";
-	write(this->_socket, msg.c_str(), msg.length());
+	send(this->_socket, msg.c_str(), msg.length(), 0);
 }
 
 bool	User::isRegistered(void) const {
