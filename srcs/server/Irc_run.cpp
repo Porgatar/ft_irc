@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc_run.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/30 12:47:12 by maxime           ###   ########.fr       */
+/*   Updated: 2024/07/03 16:46:57 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ std::vector<std::string>	split_space(std::string str) {
 
 static int	is_command(const std::string &buf) {
 
-	std::string	cmd[10] = {"CAP", "PASS", "USER", "NICK", "INVITE","PRIVMSG", "JOIN", "KICK", "TOPIC", "MODE"};
+	std::string	cmd[11] = {"CAP", "PASS", "USER", "NICK", "INVITE","PRIVMSG", "JOIN", "KICK", "TOPIC", "MODE", "PART"};
 	std::string	command;
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 11; i++) {
 
 		if (cmd[i].compare(buf) == 0)
 			return (i);
@@ -42,8 +42,8 @@ void	Irc::exec_cmd(User &user) {
 	std::string	tmp;
 	size_t		len;
 	int			nb_cmd;
-	function_p 	command[10] = {	&Irc::cap, &Irc::pass, &Irc::user, &Irc::nick, &Irc::invite, \
-								&Irc::privmsg, &Irc::join, &Irc::kick, &Irc::topic, &Irc::mode};
+	function_p 	command[11] = {	&Irc::cap, &Irc::pass, &Irc::user, &Irc::nick, &Irc::invite, \
+								&Irc::privmsg, &Irc::join, &Irc::kick, &Irc::topic, &Irc::mode, &Irc::part};
 
 	str = user.getBuffer();
 	len = str.find("\n", 0);
