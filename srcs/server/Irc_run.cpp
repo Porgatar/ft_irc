@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Irc_run.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 17:14:19 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 17:20:27 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ std::vector<std::string>	split_space(std::string str) {
 
 static int	is_command(const std::string &buf) {
 
-	std::string	cmd[10] = {"CAP", "PASS", "USER", "NICK", "INVITE","PRIVMSG", "JOIN", "KICK", "TOPIC", "MODE"};
+	std::string	cmd[12] = {	"CAP", "PASS", "USER", "NICK", \
+							"INVITE", "PRIVMSG", "JOIN", "KICK", \
+							"TOPIC", "MODE", "PART", "WHO"};
 	std::string	command;
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 12; i++) {
 
 		if (cmd[i].compare(buf) == 0)
 			return (i);
@@ -42,8 +44,9 @@ void	Irc::exec_cmd(User &user) {
 	std::string	tmp;
 	size_t		len;
 	int			nb_cmd;
-	function_p 	command[10] = {	&Irc::cap, &Irc::pass, &Irc::user, &Irc::nick, &Irc::invite, \
-								&Irc::privmsg, &Irc::join, &Irc::kick, &Irc::topic, &Irc::mode};
+	function_p 	command[12] = {	&Irc::cap, &Irc::pass, &Irc::user, &Irc::nick, \
+								&Irc::invite, &Irc::privmsg, &Irc::join, &Irc::kick, \
+								&Irc::topic, &Irc::mode, &Irc::part, &Irc::who};
 
 	str = user.getBuffer();
 	len = str.find("\n", 0);
@@ -68,8 +71,10 @@ void	Irc::exec_cmd(User &user) {
 }
 
 void	Irc::clearUserFromChan(const std::string &nick) {
+
 	std::list<Channel>::iterator it;
 	for (it = _channels.begin(); it != _channels.end(); it++) {
+
 		it->removeUserByNameFrom(OPERATOR_LIST, nick);
 		it->removeUserByNameFrom(USER_LIST, nick);
 		it->removeUserByNameFrom(INVITE_LIST, nick);
@@ -89,8 +94,8 @@ void	Irc::checkClientRequest(void) {
 		if (readed == 0) {
 
 			close(actual->getSocket());
-			this->log(INFO, std::string("request from ") + actual->getStringId() + \
-				" :Disconnected");
+			this->log(INFO, std::string("request from ") + actual->getStringId() \
+			+ " :Disconnected");
 			clearUserFromChan(actual->getNickname());
 			actual = _users.erase(actual);
 			actual--;

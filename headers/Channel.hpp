@@ -6,11 +6,12 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/03 17:12:00 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 14:35:44 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef CHANNEL
+#define CHANNEL
 
 #include "header.h"
 #include "User.hpp"
@@ -59,3 +60,5 @@ public:
 	void	removeUserByNameFrom(const int &list, const std::string &nick);
 	void	kickuser(const std::string &nick, const std::string &msg);
 };
+
+#endif // !CHANNEL

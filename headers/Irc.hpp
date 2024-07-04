@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Irc.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/30 13:11:16 by maxime           ###   ########.fr       */
+/*   Updated: 2024/07/04 17:29:19 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef IRC
+#define IRC
 
 #include "header.h"
 #include "User.hpp"
@@ -25,7 +26,6 @@ private:
 	std::string						_password;
 	std::list<User>					_users;
 	std::list<Channel>				_channels;
-	std::list<Channel>::iterator	_it;
 	std::vector<std::string>		_args;
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 	Irc(void);
@@ -44,12 +44,14 @@ private:
 	void 	cap(User &actual);
 	void	join(User &actual);
 	void	nick(User &actual);
+	void	part(User &actual);
 	void	pass(User &actual);
 	void    invite(User &actual);
 	void	privmsg(User &actual);
 	void	user(User &actual);
 	void    kick(User &actual);
 	void	mode(User &actual);
+	void	who(User &actual);
 	void	topic(User &actual);
 public:
 
@@ -69,3 +71,5 @@ public:
 extern Irc	*g_IrcPtr;
 
 typedef void (Irc::*function_p)(User &);
+
+#endif // !IRC

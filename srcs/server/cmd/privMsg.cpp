@@ -6,23 +6,11 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 15:53:48 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 17:28:32 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/Irc.hpp"
-
-/*Get the first <argument>'s word; who is separated by a isspace*/
-// std::string	getWord(std::string argument) {
-
-// 	std::string target;
-// 	int			i = 0;
-
-// 	while (argument[i] && !((argument[i] >= 9 && argument[i] <= 13) || argument[i] == 32))
-// 		i++;
-// 	target = argument.substr(0, i);
-// 	return (target);
-// }
 
 void	Irc::privmsg(User &actual) {
 
@@ -51,13 +39,16 @@ void	Irc::privmsg(User &actual) {
 			return ;	
 		}
 	}
-	for (this->_it = this->_channels.begin(); this->_it != this->_channels.end(); this->_it++) {
+	for (ite = this->_channels.begin(); ite != this->_channels.end(); ite++) {
 
-		if (this->_it->getName().compare(target.c_str()) == 0) {
+		if (ite->getName().compare(target.c_str()) == 0) {
 
-			if (this->_it->isIn(USER_LIST, actual.getNickname()) == false)
+			if (ite->isIn(USER_LIST, actual.getNickname()) == false) {
+
 				this->reply(CANNOTSENDTOCHAN(actual, target));
-			this->_it->sendGroupMsg(actual.getMessage());
+				return ;
+			}
+			ite->sendGroupMsg(actual.getMessage());
 			this->log(PRIVMSG(actual, target, actual.getMessage()));
 			return ;
 		}

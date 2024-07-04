@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/30 13:11:10 by maxime           ###   ########.fr       */
+/*   Updated: 2024/06/30 15:46:07 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ std::list<Channel>::iterator	Irc::getChannelIteratorByName(const std::string &ch
 }
 
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
-
+	
 void	Irc::setSigintHandler(void (*handler)(int)) {
 
 	struct sigaction	sa;

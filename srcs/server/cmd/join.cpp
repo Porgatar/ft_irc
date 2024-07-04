@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 16:30:08 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 17:22:04 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	Irc::join(User &user) {
 		&& this->_args[1][end] != '#')
             end++;
         if (end < this->_args[1].size()) {
+
             size_t next = end + 1;
             while (next < this->_args[1].size() && this->_args[1][next] != ',')
                 next++;
@@ -79,7 +80,7 @@ void	Irc::join(User &user) {
 			end = next;
 			start = next;
 		}
-	}
+	}	
 	int i = 0;
 	for (it = channelsName.begin(); it != channelsName.end(); it++) {
 
