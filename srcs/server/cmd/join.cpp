@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/03 18:36:00 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 16:30:08 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ void	Irc::join(User &user) {
 			Channel	channel(*it, user);
 
 			this->reply(JOIN(user, channel.getName()));
-			this->reply(NAMES(user, channel.getName(), channel.getUsersString()));
-			this->reply(ENDOFNAMES(user, channel.getName()));
 			this->_channels.push_back(channel);
 		}
 		else {
@@ -111,8 +109,6 @@ void	Irc::join(User &user) {
 				chan->sendGroupMsg(user.getNickname() + " is joining the channel " \
 				+ chan->getName());
 				this->reply(JOIN(user, chan->getName()));
-				this->reply(NAMES(user, chan->getName(), chan->getUsersString()));
-				this->reply(ENDOFNAMES(user, chan->getName()));
 				chan->addUserTo(USER_LIST, user);
 				chan->incrementNbUser();
 			}

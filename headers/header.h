@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/03 17:06:19 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 15:54:40 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@
 
 /*	-	-	-	-	-	Reply Macros	-	-	-	-	-	*/
 
+#define	PRIVMSG(client, target, msg) \
+	INFO, std::string("message from ") + client.getNickname() + " to " + target + " :" + msg
+
 #define MODE(client, channel, mode)	\
 	client, INFO, std::string(":") + client.getNickname() + " " + channel \
 	+ " " + mode
@@ -86,7 +89,7 @@
 
 #define WELCOME(client) \
 	client, INFO, std::string(": 001 ") + client.getNickname() \
-	+ " : Welcome to The Internet Relay Chat world, " + client.getNickname()
+	+ " :Welcome to The Internet Relay Chat world, " + client.getNickname()
 
 #define USERONCHAN(client, nick, channel) \
 	client, WARNING, std::string(": 303 ") + client.getNickname() + " " + nick \
@@ -109,11 +112,21 @@
 
 #define NOSUCHNICK(client, nickname) \
 	client, WARNING, std::string(": 401 ") + client.getNickname() + " " + nickname \
-	+ " :No such nickname"
+	+ " :No such nick/channel"
 
 #define NOSUCHCHAN(client, channel) \
 	client, WARNING, std::string(": 403 ") + client.getNickname() + " " + channel \
 	+ " :No such channel"
+
+#define CANNOTSENDTOCHAN(client, channel) \
+	client, WARNING, std::string(": 404 ") + client.getNickname() + " " + channel \
+	+ " :Cannot send to channel"
+
+#define NORECIPIENT(client) \
+	client, WARNING, std::string(": 411 ") + client.getNickname() + " :No recipient given"
+
+#define NOTEXTTOSEND(client) \
+	client, WARNING, std::string(": 412 ") + client.getNickname() + " :No text to send"
 
 #define NONICKNAMEGIVEN(client) \
 	client, WARNING, std::string(": 431 ") + client.getNickname() \
@@ -176,20 +189,9 @@
 	+ " :You're not channel operator"
 
 /*	momontanly unused Macros
-
 #define PART_RPL(client, channel)                    (":" + client + " PART " + channel)
 #define KICK_RPL(client, channel, target)            (":" + client + " KICK " + channel + " " + target)
 #define TOPIC_RPL(client, channel, topic)            (":" + client + " TOPIC " + channel + " :" + topic)
-
 #define SEETOPIC_RPL(client, channel, topic)        (": 332 " + client + " " + channel + " :" + topic)
-
-
-
-#define TOOMUCHPARAMS_ERR(client, cmd)                (client + " " + cmd + " :Too much parameters")
-
-#define CANNOTSENDTOCHAN_ERR(client, channel)        (": 404 " + client + " " + channel + " :Cannot send to channel")
-#define NOTEXTTOSEND_ERR(client)                    (": 412 " + client + " :No text to send")
-
 */
-
 std::string	skip_words(int n, const std::string &str);

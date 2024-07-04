@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/03 17:50:21 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 16:08:39 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,13 @@ std::string	Channel::getUsersString(void) {
 	std::list<User>::iterator	it, ite;
 	std::string					names;
 
-	ite = this->_users[OPERATOR_LIST].end();
-	for (it = this->_users[OPERATOR_LIST].begin(); it != ite; it++)
-		names = names + "@" + it->getNickname() + ", ";
 	ite = this->_users[USER_LIST].end();
-	for (it = this->_users[USER_LIST].begin(); it != ite; it++)
-		names = names + it->getNickname() + ", ";
+	for (it = this->_users[USER_LIST].begin(); it != ite; it++) {
+
+		if (this->isIn(OPERATOR_LIST, it->getNickname()))
+			names += "@";
+		names += it->getNickname() + ", ";
+	}
 	names.erase(names.size() - 2);
 	return (names);
 }
