@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:38:59 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 14:35:44 by maxime           ###   ########.fr       */
+/*   Updated: 2024/07/04 20:13:17 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,8 @@ public:
 	void	incrementNbUser();
 	void	decrementNbUser();
 
-	void	sendGroupMsg(const std::string &msg);
+	void	sendGroupMsg(User& user, bool selfSend, const std::string &msg);
 	void	removeUserByNameFrom(const int &list, const std::string &nick);
-	void	kickuser(const std::string &nick, const std::string &msg);
 };
 
 #endif // !CHANNEL

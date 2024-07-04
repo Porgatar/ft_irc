@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 17:17:12 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:09:32 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ std::string	Channel::getUsersString(void) {
 
 		if (this->isIn(OPERATOR_LIST, it->getNickname()))
 			names += "@";
-		names += it->getNickname() + ", ";
+		names += it->getNickname() + " ";
 	}
-	names.erase(names.size() - 2);
+	names.erase(names.size() - 1);
 	return (names);
 }
 

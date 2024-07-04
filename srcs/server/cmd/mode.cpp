@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:37:48 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/02 17:46:29 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 19:32:46 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	Irc::mode(User &actual) {
 			tmp += "l";
 		if (tmp.length() == 1)
 			tmp.clear();
-		this->reply(MODE(actual, this->_args[1], tmp));
+		this->reply(CHANMODEIS(actual, this->_args[1], tmp));
 		return ;
 	}
 	if (!channel->getUserByNameFrom(OPERATOR_LIST, actual.getNickname())) {

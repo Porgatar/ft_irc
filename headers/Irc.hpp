@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 17:29:19 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:24:48 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ private:
 	void    kick(User &actual);
 	void	mode(User &actual);
 	void	who(User &actual);
+	void	quit(User &actual);
 	void	topic(User &actual);
 public:
 

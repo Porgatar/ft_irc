@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   part.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/04 20:02:07 by parinder          #+#    #+#             */
+/*   Updated: 2024/07/04 20:07:17 by parinder         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../headers/Irc.hpp"
 
 void	Irc::part(User &actual) {
@@ -5,16 +17,20 @@ void	Irc::part(User &actual) {
 	std::list<Channel>::iterator chan;
 
 	chan = getChannelIteratorByName(_args[1]);
-	if (_args.size() < 2)
+	if (this->_args.size() < 2) {
+
+		this->reply(NEEDMOREPARAMS(actual, "PART"));
 		return;
-	else if (chan == _channels.end())
-        reply(NOSUCHCHANNEL(actual, _args[1]));
+	}
+	else if (chan == this->_channels.end())
+        reply(NOSUCHCHAN(actual, this->_args[1]));
     else if (chan->isIn(USER_LIST, actual.getNickname()) == false)
-        reply(NOTONCHANNEL_ERR(actual, chan->getName()));
+        reply(NOTONCHAN(actual, chan->getName()));
 	else {
+
 		clearUserFromChan(actual.getNickname());
-		actual.sendMsg("leave channel \"" + chan->getName() + "\"");
+		chan->sendGroupMsg(PART(actual, chan->getName()));
 		if (chan->getNbUser() < 1)
-			_channels.erase(chan);
+			this->_channels.erase(chan);
 	}
 }

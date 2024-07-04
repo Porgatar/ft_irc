@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/07/04 14:35:48 by maxime           ###   ########.fr       */
+/*   Updated: 2024/07/04 20:24:18 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,12 @@ void    Irc::kick(User &actual) {
 
             actual.setMessage(skip_words(3, actual.getMessage()));
             actual.setMessage(actual.getMessage().substr(1));
-            it->kickuser(_args[2], actual.getMessage());
+            it->sendGroupMsg(KICK(actual, this->_args[1], this->_args[2]) + " " \
+			+ actual.getMessage());
         }
-<<<<<<< HEAD
-        else
-            it->kickuser(_args[2], msg);
-=======
-        it->kickuser(this->_args[2], msg);
->>>>>>> 3d628bf14606eee6534f1973e8824ce0528322fa
+		else
+            it->sendGroupMsg(KICK(actual, this->_args[1], this->_args[2]));
+		it->removeUserByNameFrom(USER_LIST, this->_args[2]);
+		it->removeUserByNameFrom(OPERATOR_LIST, this->_args[2]);
     }
 }

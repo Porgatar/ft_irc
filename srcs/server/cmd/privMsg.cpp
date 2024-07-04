@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 17:28:32 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 20:08:51 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ void	Irc::privmsg(User &actual) {
 
 		if (it->getNickname().compare(target.c_str()) == 0) {
 
-			it->sendMsg(actual.getMessage());
-			this->log(PRIVMSG(actual, target, actual.getMessage()));
+			it->sendMsg(PRIVMSG(actual, target, actual.getMessage()));
 			return ;	
 		}
 	}
@@ -48,8 +47,7 @@ void	Irc::privmsg(User &actual) {
 				this->reply(CANNOTSENDTOCHAN(actual, target));
 				return ;
 			}
-			ite->sendGroupMsg(actual.getMessage());
-			this->log(PRIVMSG(actual, target, actual.getMessage()));
+			ite->sendGroupMsg(GROUPPRIVMSG(actual, target, actual.getMessage()));
 			return ;
 		}
 	}

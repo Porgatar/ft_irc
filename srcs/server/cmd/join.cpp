@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 17:22:04 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 21:32:07 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	Irc::join(User &user) {
 
 			while (end < this->_args[2].size() && this->_args[2][end] != ',') 
 				end++;
-			size_t next = end + 1;
+			size_t next = end;
 			if (this->_args[2][next] == ',') {
 
 				this->reply(user, WARNING, "No consecutive commas allowed");
@@ -88,8 +88,8 @@ void	Irc::join(User &user) {
 
 			Channel	channel(*it, user);
 
-			this->reply(JOIN(user, channel.getName()));
 			this->_channels.push_back(channel);
+			channel.sendGroupMsg(JOIN(user, channel.getName()));
 		}
 		else {
 
@@ -107,11 +107,9 @@ void	Irc::join(User &user) {
 				this->reply(CHANISFULL(user, chan->getName()));
 			else {
 
-				chan->sendGroupMsg(user.getNickname() + " is joining the channel " \
-				+ chan->getName());
-				this->reply(JOIN(user, chan->getName()));
 				chan->addUserTo(USER_LIST, user);
 				chan->incrementNbUser();
+				chan->sendGroupMsg(JOIN(user, chan->getName()));
 			}
 		}
 		i++;

@@ -6,7 +6,7 @@
 #    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/07/03 16:19:15 by mdesrose         ###   ########.fr        #
+#    Updated: 2024/07/04 18:23:35 by parinder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,8 @@ SRC=		srcs/main.cpp \
 			srcs/server/cmd/join.cpp \
 			srcs/server/cmd/kick.cpp \
 			srcs/server/cmd/mode.cpp \
+			srcs/server/cmd/quit.cpp \
+			srcs/server/cmd/who.cpp \
 			srcs/server/cmd/topic.cpp \
 			srcs/user/User.cpp \
 			srcs/channel/Channel.cpp \

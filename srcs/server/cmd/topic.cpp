@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:42:01 by mdesrose          #+#    #+#             */
-/*   Updated: 2024/06/26 14:14:56 by maxime           ###   ########.fr       */
+/*   Updated: 2024/07/04 20:59:58 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,32 @@ void    Irc::topic(User &user) {
     
     std::list<Channel>::iterator it;
     
-    if (_args.size() < 2) {
-        user.sendMsg("TOPIC :Not enough parameters");
+    if (this->_args.size() < 2) {
+
+		this->reply(NEEDMOREPARAMS(user, "TOPIC"));
         return ;
     }
-    if (!(checkExistingChannel(_args[1]))) {
-        user.sendMsg(_args[1] + " :No such channel");
+    if (!(checkExistingChannel(this->_args[1]))) {
+
+		this->reply(NOSUCHCHAN(user, this->_args[1]));
         return ;   
     }
-    it = getChannelIteratorByName(_args[1]);
+    it = getChannelIteratorByName(this->_args[1]);
     if (!it->isIn(USER_LIST, user.getNickname())) {
-        user.sendMsg("you are not on that channel");
+
+		this->reply(NOTONCHAN(user, this->_args[1]));
         return;
     }
-    if (_args.size() < 3 && it->getTopic() == "")
-        user.sendMsg(_args[1] + " :No topic is set");
-    else if (_args.size() < 3)
-        user.sendMsg(_args[1] + " : " + it->getTopic());
-    else if ((it->getMode(T) && it->isIn(OPERATOR_LIST, user.getNickname())) || it->getMode(T) == false) {
-        if (_args.size() == 3 && _args[2] == ":" && it->getUserByNameFrom(USER_LIST, user.getNickname())){
-            it->setTopic("");
-            it->sendGroupMsg("clearing the topic on \"" + it->getName() + "\"");
-        }
-        else if (_args.size() == 3 && it->getUserByNameFrom(USER_LIST, user.getNickname())){
-            it->setTopic(_args[2]);
-            it->sendGroupMsg("Setting the topic on \"" + it->getName() + "\" to \"" + _args[2] + "\"");
-        }
+    if (this->_args.size() < 3 && it->getTopic() == "")
+		this->reply(NOTOPIC(user, this->_args[1]));
+    else if (this->_args.size() < 3)
+		this->reply(SEETOPIC(user, this->_args[1], it->getTopic()));
+    else if (!it->getMode(T) || (it->getMode(T) && it->isIn(OPERATOR_LIST, user.getNickname()))) {
+
+		this->_args[2].substr(1);
+		it->setTopic(this->_args[2]);
+		it->sendGroupMsg(TOPIC(user, it->getName(), this->_args[2]));
     }
     else 
-        user.sendMsg(it->getName() + " :You're not channel operator");
+		this->reply(CHANOPRIVSNEEDED(user, this->_args[1]));
 }

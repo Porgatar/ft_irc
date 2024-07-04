@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 17:16:48 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 20:49:02 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,22 +70,26 @@
 
 /*	-	-	-	-	-	Reply Macros	-	-	-	-	-	*/
 
-#define	PRIVMSG(client, target, msg) \
-	INFO, std::string("message from ") + client.getNickname() + " to " + target + " :" + msg
-
-#define MODE(client, channel, mode)	\
-	client, INFO, std::string(":") + client.getNickname() + " " + channel \
-	+ " " + mode
-
 #define UNKNOWNCOMMAND(client) \
 	client, WARNING, std::string(":") + client.getNickname() + " :Unkown command"
 
-#define JOIN(client, channel) \
-	client, INFO, std::string(":") + client.getNickname() + " JOIN " + channel
+#define TOPIC(client, channel, topic) \
+	client, true, std::string(":") + client.getNickname() + " TOPIC " + channel + " :" + topic
 
-#define JOIN_LOG(client, channel) \
-	INFO, std::string("reply to ") + client.getStringId() + " :" + client.getNickname() \
-	+ " is joining the channel " + channel
+#define KICK(client, channel, target) \
+	client, true, std::string(":") + client.getNickname() + " KICK " + channel + " " + target
+
+#define PART(client, channel) \
+	client, true, std::string(":") + client.getNickname() + " PART " + channel
+
+#define	PRIVMSG(client, target, msg) \
+	std::string(":") + client.getNickname() + " PRIVMSG " + target + " " + msg
+
+#define	GROUPPRIVMSG(client, target, msg) \
+	client, false, std::string(":") + client.getNickname() + " PRIVMSG " + target + " " + msg
+
+#define JOIN(client, channel) \
+	client, true, std::string(":") + client.getNickname() + " JOIN " + channel
 
 #define WELCOME(client) \
 	client, INFO, std::string(": 001 ") + client.getNickname() \
@@ -95,9 +99,16 @@
 	client, WARNING, std::string(": 303 ") + client.getNickname() + " " + nick \
 	+ " " +  channel + " :is already on channel"
 
+#define CHANMODEIS(client, channel, mode)	\
+	client, INFO, std::string(": 324 ") + client.getNickname() + " " + channel \
+	+ " " + mode
+
 #define NOTOPIC(client, channel) \
 	client, INFO, std::string(": 331 ") + client.getNickname() + " " + channel \
 	+ " :No topic is set"
+
+#define SEETOPIC(client, channel, topic) \
+	client, INFO, std::string(": 332 ") + client.getNickname() + " " + channel + " :" + topic
 
 #define INVITE(client, invitee, channel) \
 	client, INFO, ": 341 " + client.getNickname() + " " + invitee + " " + channel
@@ -188,10 +199,4 @@
 	client, WARNING, std::string(": 482 ") + client.getNickname() + " " + channel \
 	+ " :You're not channel operator"
 
-/*	momontanly unused Macros
-#define PART_RPL(client, channel)                    (":" + client + " PART " + channel)
-#define KICK_RPL(client, channel, target)            (":" + client + " KICK " + channel + " " + target)
-#define TOPIC_RPL(client, channel, topic)            (":" + client + " TOPIC " + channel + " :" + topic)
-#define SEETOPIC_RPL(client, channel, topic)        (": 332 " + client + " " + channel + " :" + topic)
-*/
 std::string	skip_words(int n, const std::string &str);

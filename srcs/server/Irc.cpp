@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/06/30 15:46:07 by maxime           ###   ########.fr       */
+/*   Updated: 2024/07/04 21:06:37 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ Irc::Irc(const std::string s_port, const std::string password) \
 	}
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
-	sin.sin_addr.s_addr = inet_addr("127.0.0.1"); /* inet return : network bytes order */
+//	sin.sin_addr.s_addr = inet_addr("127.0.0.1"); /* inet return : network bytes order */
+	sin.sin_addr.s_addr = INADDR_ANY;
 	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &sin, sizeof(int)) == -1)
 		this->log(ERROR, "Error\nCannot use address");
 	if (bind(this->_socket, (const struct sockaddr *)&sin, sizeof(sin)) == -1) {
@@ -111,14 +112,12 @@ int Irc::setSockets(fd_set *set) {
 }
 
 bool	Irc::checkExistingUser(std::string nickname) {
-	
+
 	std::list<User>::iterator it;
 		
-    for (it = _users.begin(); it != _users.end(); it++) {
-		if (it->getNickname() == nickname) {
+    for (it = _users.begin(); it != _users.end(); it++)
+		if (it->getNickname() == nickname)
 			return (true);
-		}
-	}
 	return (false); 
 }
 
@@ -150,35 +149,8 @@ bool	Irc::checkExistingChannel(std::string channels_name)
 {
 	std::list<Channel>::iterator		it;
 
-	for (it = _channels.begin(); it != _channels.end(); it++) {
+	for (it = _channels.begin(); it != _channels.end(); it++)
 		if (it->getName() == channels_name)
 			return (true);
-	}
 	return (false);
-}
-
-void	Irc::AddUserInChannel(User &user, std::string channels_name)
-{
-	std::list<Channel>::iterator		it;
-
-	for (it = _channels.begin(); it != _channels.end(); it++) {
-		if (it->getName() == channels_name) {
-			if (it->getUserByNameFrom(USER_LIST, user.getNickname()) == false) {
-				it->addUserTo(USER_LIST, user);
-				it->sendGroupMsg(user.getNickname() + " is joining the channel " + it->getName());
-				it->incrementNbUser();
-			}
-		}
-	}
-}
-
-Channel	Irc::getChannel(std::string name) {
-	
-	std::list<Channel>::iterator it;
-
-	for (it = _channels.begin(); it != _channels.end(); it++) {
-		if (it->getName() == name)
-			return (*it);
-	}
-	return (Channel());
 }
