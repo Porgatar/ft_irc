@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 11:41:52 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/02 17:40:23 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 16:06:06 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void    Irc::invite(User &actual)
                 break;
         }
         chan->addUserTo(INVITE_LIST, *it);
-		this->reply(INVITE(actual, this->_args[1], this->_args[2]));
+		it->sendMsg(INVITE(actual, this->_args[1], this->_args[2]));
+		this->reply(actual, INFO, INVITE(actual, this->_args[1], this->_args[2]));
     }
 }

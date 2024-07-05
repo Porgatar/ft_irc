@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:42:01 by mdesrose          #+#    #+#             */
-/*   Updated: 2024/07/04 20:59:58 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 16:14:58 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void    Irc::topic(User &user) {
     if (!(checkExistingChannel(this->_args[1]))) {
 
 		this->reply(NOSUCHCHAN(user, this->_args[1]));
-        return ;   
+        return ;
     }
     it = getChannelIteratorByName(this->_args[1]);
     if (!it->isIn(USER_LIST, user.getNickname())) {
@@ -40,7 +40,7 @@ void    Irc::topic(User &user) {
 
 		this->_args[2].substr(1);
 		it->setTopic(this->_args[2]);
-		it->sendGroupMsg(TOPIC(user, it->getName(), this->_args[2]));
+		it->sendGroupMsg(user, true, TOPIC(user, it->getName(), this->_args[2]));
     }
     else 
 		this->reply(CHANOPRIVSNEEDED(user, this->_args[1]));

@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:49:44 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 21:06:37 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 15:52:45 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ Irc::Irc(const std::string s_port, const std::string password) \
 	}
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
-//	sin.sin_addr.s_addr = inet_addr("127.0.0.1"); /* inet return : network bytes order */
 	sin.sin_addr.s_addr = INADDR_ANY;
 	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &sin, sizeof(int)) == -1)
 		this->log(ERROR, "Error\nCannot use address");

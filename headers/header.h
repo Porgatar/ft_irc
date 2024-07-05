@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 20:49:02 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 16:33:01 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@
 	client, WARNING, std::string(":") + client.getNickname() + " :Unkown command"
 
 #define TOPIC(client, channel, topic) \
-	client, true, std::string(":") + client.getNickname() + " TOPIC " + channel + " :" + topic
+	std::string(":") + client.getNickname() + " TOPIC " + channel + " :" + topic
 
 #define KICK(client, channel, target) \
 	client, true, std::string(":") + client.getNickname() + " KICK " + channel + " " + target
@@ -108,10 +108,10 @@
 	+ " :No topic is set"
 
 #define SEETOPIC(client, channel, topic) \
-	client, INFO, std::string(": 332 ") + client.getNickname() + " " + channel + " :" + topic
+	client, INFO, std::string(": 332 ") + client.getNickname() + " " + channel + " " + topic
 
 #define INVITE(client, invitee, channel) \
-	client, INFO, ": 341 " + client.getNickname() + " " + invitee + " " + channel
+	": 341 " + client.getNickname() + " " + invitee + " " + channel
 
 #define NAMES(client, channel, nicknames) \
 	client, INFO, std::string(": 353 ") + client.getNickname() + " = " + channel \

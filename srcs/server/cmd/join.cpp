@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 21:32:07 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 16:27:13 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	Irc::join(User &user) {
 
 			this->_channels.push_back(channel);
 			channel.sendGroupMsg(JOIN(user, channel.getName()));
+			this->reply(NOTOPIC(user, channel.getName()));
 		}
 		else {
 
@@ -110,6 +111,10 @@ void	Irc::join(User &user) {
 				chan->addUserTo(USER_LIST, user);
 				chan->incrementNbUser();
 				chan->sendGroupMsg(JOIN(user, chan->getName()));
+				if (chan->getTopic().empty())
+					this->reply(NOTOPIC(user, chan->getName()));
+				else
+					this->reply(SEETOPIC(user, chan->getName(), chan->getTopic()));
 			}
 		}
 		i++;
