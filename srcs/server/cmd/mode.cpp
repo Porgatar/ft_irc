@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:37:48 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 19:32:46 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 18:44:39 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	Irc::mode(User &actual) {
 					channel->setKey(this->_args[i + 1]);
 				else if (!state)
 					channel->setKey("");
+				channel->sendGroupMsg(MODE(actual, this->_args[1], this->_args[i][j] + \
+				modes[modeIndex], "*"));
 				i++;
 				break ;
 			}
@@ -86,26 +88,50 @@ void	Irc::mode(User &actual) {
 
 					if (i + 1 < len)
 						tmp = this->_args[i + 1];
-					this->reply(NOSUCHNICK(actual, tmp));
+					this->reply(NOSUCHNICK(actual, this->_args[1], tmp));
 					return ;
 				}
-				else if (state)
+				else if (state) {
+
 					channel->addUserTo(OPERATOR_LIST, *user);
-				else if (!state)
-					channel->removeUserByNameFrom(OPERATOR_LIST, user->getNickname());
+					channel->sendGroupMsg(MODE(actual, this->_args[1], this->_args[i][j] \
+					+ modes[modeIndex], user->getNickname()));
+				}
+				else if (!state) {
+
+					if (actual.getNickname() != user->getNickname()) {
+
+						channel->removeUserByNameFrom(OPERATOR_LIST, user->getNickname());
+						channel->sendGroupMsg(MODE(actual, this->_args[1], this->_args[i][j] \
+						+ modes[modeIndex], user->getNickname()));
+					}
+					else
+						this->reply(actual, WARNING, std::string(":") + channel->getName() \
+						+ " :you cannot remove oprivilege on yourself");
+				}
 				i++;
 				break ;
 			}
 			if (modes[modeIndex] == 'l') {	// if is mode 'l' set a new userLimit.
 
-				if (state && i + 1 < len)
+				if (state && i + 1 < len) {
+
 					channel->setUserLimit(atoi(this->_args[i + 1].c_str()));
-				else if (!state)
+					channel->sendGroupMsg(MODE(actual, this->_args[1], this->_args[i][j] \
+					+ modes[modeIndex], user->getNickname()));
+				}
+				else if (!state) {
+
 					channel->setUserLimit(0);
+					channel->sendGroupMsg(MODE(actual, this->_args[1], this->_args[i][j] \
+					+ modes[modeIndex], user->getNickname()));
+				}
 				i++;
 				break ;
 			}
 			channel->setMode(modeIndex, state);
+			channel->sendGroupMsg(MODE(actual, this->_args[1], this->_args[i][j] \
+			+ modes[modeIndex], ""));
 		}
 	}
 }

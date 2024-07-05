@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/05 16:33:01 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 18:32:10 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@
 #define TOPIC(client, channel, topic) \
 	std::string(":") + client.getNickname() + " TOPIC " + channel + " :" + topic
 
+#define MODE(client, channel, mode, target) \
+	client, true, std::string(":") + client.getNickname() + " MODE " + channel + " :" \
+	+ mode + " " + target
+
 #define KICK(client, channel, target) \
 	client, true, std::string(":") + client.getNickname() + " KICK " + channel + " " + target
 
@@ -121,9 +125,9 @@
 	client, INFO, std::string(": 366 ") + client.getNickname() + " " + channel \
 	+ " :End of /NAMES list"
 
-#define NOSUCHNICK(client, nickname) \
-	client, WARNING, std::string(": 401 ") + client.getNickname() + " " + nickname \
-	+ " :No such nick/channel"
+#define NOSUCHNICK(client, channel, nickname) \
+	client, WARNING, std::string(": 401 ") + client.getNickname() + " " + channel \
+	+ " " + nickname + " :No such nick/channel"
 
 #define NOSUCHCHAN(client, channel) \
 	client, WARNING, std::string(": 403 ") + client.getNickname() + " " + channel \

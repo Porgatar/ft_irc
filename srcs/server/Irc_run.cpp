@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 18:21:58 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 19:31:32 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,6 @@ void	Irc::exec_cmd(User &user) {
 	this->exec_cmd(user);
 }
 
-void	Irc::clearUserFromChan(const std::string &nick) {
-
-	std::list<Channel>::iterator it;
-	for (it = _channels.begin(); it != _channels.end(); it++) {
-
-		it->removeUserByNameFrom(OPERATOR_LIST, nick);
-		it->removeUserByNameFrom(USER_LIST, nick);
-		it->removeUserByNameFrom(INVITE_LIST, nick);
-	}
-}
-
 void	Irc::checkClientRequest(void) {
 
 	std::list<User>::iterator	actual;
@@ -96,7 +85,7 @@ void	Irc::checkClientRequest(void) {
 			close(actual->getSocket());
 			this->log(INFO, std::string("request from ") + actual->getStringId() \
 			+ " :Disconnected");
-			clearUserFromChan(actual->getNickname());
+			quit(*actual);
 			actual = _users.erase(actual);
 			actual--;
 		}

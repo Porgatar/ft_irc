@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 18:24:48 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 19:17:25 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ private:
 	int								setSockets(fd_set *set);
 	void							checkClientRequest(void);
 	void							exec_cmd(User &user);
-	void							clearUserFromChan(const std::string &nick);
 /*	-	-	-	-	-	Command Functions	-	-	-	-	*/
 	void 	cap(User &actual);
 	void	join(User &actual);

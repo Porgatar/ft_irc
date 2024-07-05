@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 11:41:52 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/05 16:06:06 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 18:38:33 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void    Irc::invite(User &actual)
     if (this->_args.size() < 3)
         this->reply(NEEDMOREPARAMS(actual, "INVITE"));
     else if (checkExistingUser(this->_args[1]) == false)
-        this->reply(NOSUCHNICK(actual, this->_args[1]));
+        this->reply(NOSUCHNICK(actual, this->_args[2], this->_args[1]));
     else if (chan == this->_channels.end())
         this->reply(NOSUCHCHAN(actual, this->_args[2]));
     else if (chan->isIn(USER_LIST, actual.getNickname()) == false)

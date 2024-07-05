@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 20:08:51 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 18:21:19 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,5 @@ void	Irc::privmsg(User &actual) {
 			return ;
 		}
 	}
-	this->reply(NOSUCHNICK(actual, target));
+	this->reply(NOSUCHNICK(actual, "", target));
 }

@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/07/04 20:24:18 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 18:30:12 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void    Irc::kick(User &actual) {
     if (it == this->_channels.end())
 		this->reply(NOSUCHCHAN(actual, this->_args[1]));
     else if (!it->getUserByNameFrom(USER_LIST, this->_args[2]))
-		this->reply(USERNOTINCHAN(actual, this->_args[2], this->_args[1]));
+		this->reply(USERNOTINCHAN(actual, this->_args[1], this->_args[2]));
     else if (!it->isIn(OPERATOR_LIST, actual.getNickname()))
 		this->reply(CHANOPRIVSNEEDED(actual, this->_args[1]));
     else if (this->_args.size() >= 4 && this->_args[3][0] != ':')

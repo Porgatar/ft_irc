@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:02:07 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/05 16:42:01 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 19:16:03 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	Irc::part(User &actual) {
 	else {
 
 		chan->sendGroupMsg(PART(actual, chan->getName()));
-		clearUserFromChan(actual.getNickname());
+		chan->removeUserByNameFrom(OPERATOR_LIST, actual.getNickname());
+		chan->removeUserByNameFrom(USER_LIST, actual.getNickname());
+		chan->removeUserByNameFrom(INVITE_LIST, actual.getNickname());
 		if (chan->getNbUser() < 1)
 			this->_channels.erase(chan);
 	}
