@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 21:32:07 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 16:30:14 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ void	Irc::join(User &user) {
 
 			while (end < this->_args[2].size() && this->_args[2][end] != ',') 
 				end++;
-			size_t next = end;
-			if (this->_args[2][next] == ',') {
+			size_t next = end + 1;
+			if (this->_args[2].size() > next && this->_args[2][next] == ',') {
 
 				this->reply(user, WARNING, "No consecutive commas allowed");
 				return;
@@ -99,14 +99,14 @@ void	Irc::join(User &user) {
 			else if (chan->getMode(I) == true \
 			&& chan->isIn(INVITE_LIST, user.getNickname()) == false)
 				this->reply(INVITEONLYCHAN(user, chan->getName()));
-			else if (chan->getKey().empty() == false && _args.size() < 3)
+			else if (!chan->getMode(I) && chan->getKey().empty() == false && _args.size() < 3)
 				this->reply(BADCHANKEY(user, chan->getName()));
-			else if (chan->getKey().empty() == false && chan->getKey() != keys[i])
+			else if (!chan->getMode(I) && chan->getKey().empty() == false && chan->getKey() != keys[i])
 				this->reply(BADCHANKEY(user, chan->getName()));
 			else if (chan->getUserLimit() != 0 && chan->getNbUser() >= chan->getUserLimit())
 				this->reply(CHANISFULL(user, chan->getName()));
 			else {
-
+				user.sendMsg(chan->getTopic());
 				chan->addUserTo(USER_LIST, user);
 				chan->incrementNbUser();
 				chan->sendGroupMsg(JOIN(user, chan->getName()));

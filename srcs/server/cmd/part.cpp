@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:02:07 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/04 20:07:17 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 16:01:10 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	Irc::part(User &actual) {
         reply(NOTONCHAN(actual, chan->getName()));
 	else {
 
-		clearUserFromChan(actual.getNickname());
 		chan->sendGroupMsg(PART(actual, chan->getName()));
+		clearUserFromChan(actual.getNickname());
 		if (chan->getNbUser() < 1)
 			this->_channels.erase(chan);
 	}
