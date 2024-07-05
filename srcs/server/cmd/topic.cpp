@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:42:01 by mdesrose          #+#    #+#             */
-/*   Updated: 2024/07/05 16:14:58 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 17:00:06 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,9 @@ void    Irc::topic(User &user) {
     else if (this->_args.size() < 3)
 		this->reply(SEETOPIC(user, this->_args[1], it->getTopic()));
     else if (!it->getMode(T) || (it->getMode(T) && it->isIn(OPERATOR_LIST, user.getNickname()))) {
-
-		this->_args[2].substr(1);
-		it->setTopic(this->_args[2]);
-		it->sendGroupMsg(user, true, TOPIC(user, it->getName(), this->_args[2]));
+		it->setTopic(skip_words(2, user.getBuffer()));
+		it->setTopic(it->getTopic().substr(1));
+		it->sendGroupMsg(user, true, TOPIC(user, it->getName(), it->getTopic()));
     }
     else 
 		this->reply(CHANOPRIVSNEEDED(user, this->_args[1]));

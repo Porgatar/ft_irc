@@ -6,7 +6,7 @@
 /*   By: parinder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 11:41:52 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/05 18:38:33 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 19:44:44 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void    Irc::invite(User &actual)
         this->reply(CHANOPRIVSNEEDED(actual, chan->getName()));
     else if (chan->isIn(USER_LIST, this->_args[1]) == true)
         this->reply(USERONCHAN(actual, this->_args[1], chan->getName()));
+	else if (chan->isIn(INVITE_LIST, this->_args[1]) == true)
+		return;
     else {
 
         for (it = this->_users.begin(); it != this->_users.end(); it++) {
