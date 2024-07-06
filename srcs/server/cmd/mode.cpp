@@ -6,7 +6,7 @@
 /*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:37:48 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/05 18:44:39 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/06 16:58:16 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,15 +116,22 @@ void	Irc::mode(User &actual) {
 
 				if (state && i + 1 < len) {
 
-					channel->setUserLimit(atoi(this->_args[i + 1].c_str()));
-					channel->sendGroupMsg(MODE(actual, this->_args[1], this->_args[i][j] \
-					+ modes[modeIndex], user->getNickname()));
+					std::stringstream	ss(this->_args[i + 1]);
+					int					limit;
+
+					ss >> limit;
+					ss.str("");
+					ss.clear();
+					ss << limit;
+					channel->setUserLimit(limit);
+					channel->sendGroupMsg(MODE(actual, this->_args[1], '+' \
+					+ modes[modeIndex], ss.str()));
 				}
 				else if (!state) {
 
 					channel->setUserLimit(0);
-					channel->sendGroupMsg(MODE(actual, this->_args[1], this->_args[i][j] \
-					+ modes[modeIndex], user->getNickname()));
+					channel->sendGroupMsg(MODE(actual, this->_args[1], '-' \
+					+ modes[modeIndex], ""));
 				}
 				i++;
 				break ;

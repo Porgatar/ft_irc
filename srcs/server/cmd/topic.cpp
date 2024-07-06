@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:42:01 by mdesrose          #+#    #+#             */
-/*   Updated: 2024/07/05 17:00:06 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/07/06 17:06:44 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ void    Irc::topic(User &user) {
     else if (this->_args.size() < 3)
 		this->reply(SEETOPIC(user, this->_args[1], it->getTopic()));
     else if (!it->getMode(T) || (it->getMode(T) && it->isIn(OPERATOR_LIST, user.getNickname()))) {
+
 		it->setTopic(skip_words(2, user.getBuffer()));
-		it->setTopic(it->getTopic().substr(1));
+		if (it->getTopic()[0] == ':')
+			it->setTopic(it->getTopic().substr(1));
 		it->sendGroupMsg(user, true, TOPIC(user, it->getName(), it->getTopic()));
     }
     else 
