@@ -3,55 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   privMsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:50:04 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:23:07 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/07/05 18:21:19 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/Irc.hpp"
 
-/*Get the first <argument>'s word; who is separated by a isspace*/
-std::string	getWord(std::string argument) {
-
-	std::string target;
-	int			i = 0;
-
-	while (argument[i] && !((argument[i] >= 9 && argument[i] <= 13) || argument[i] == 32))
-		i++;
-	target = argument.substr(0, i);
-	return (target);
-}
-
 void	Irc::privmsg(User &actual) {
 
-	std::list<User>::iterator 	it;
-	std::string					target;
+	std::list<User>::iterator 		it;
+	std::list<Channel>::iterator 	ite;
+	std::string						target;
 	
-	if (_args.size() == 1) {
-		actual.sendMsg(" :No recipient given\n");
+	if (this->_args.size() == 1) {
+
+		this->reply(NORECIPIENT(actual));
 		return ;
 	}
-	if (_args.size() == 2) {
-		actual.sendMsg(" :No text to send\n");
+	if (this->_args.size() == 2) {
+
+		this->reply(NOTEXTTOSEND(actual));
 		return ;
 	}
-	target = _args[1];
+	target = this->_args[1];
 	actual.setMessage(skip_words(2, actual.getMessage()));
-	for (it = _users.begin(); it != _users.end(); it++) {
+	for (it = this->_users.begin(); it != this->_users.end(); it++) {
+
 		if (it->getNickname().compare(target.c_str()) == 0) {
-			it->sendMsg(actual.getMessage());
+
+			it->sendMsg(PRIVMSG(actual, target, actual.getMessage()));
 			return ;	
 		}
 	}
-	if (target[0] == '&' || target[0] == '#') {
-		for (_it = _channels.begin(); _it != _channels.end(); _it++) {
-			if (_it->getName().compare(target.c_str()) == 0) {
-				_it->sendGroupMsg(actual.getMessage());
+	for (ite = this->_channels.begin(); ite != this->_channels.end(); ite++) {
+
+		if (ite->getName().compare(target.c_str()) == 0) {
+
+			if (ite->isIn(USER_LIST, actual.getNickname()) == false) {
+
+				this->reply(CANNOTSENDTOCHAN(actual, target));
 				return ;
 			}
+			ite->sendGroupMsg(GROUPPRIVMSG(actual, target, actual.getMessage()));
+			return ;
 		}
 	}
-	actual.sendMsg(target + " :No such nick/channel\n");
+	this->reply(NOSUCHNICK(actual, "", target));
 }

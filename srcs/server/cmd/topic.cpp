@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:42:01 by mdesrose          #+#    #+#             */
-/*   Updated: 2024/05/14 16:28:02 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/06 17:06:44 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,33 @@ void    Irc::topic(User &user) {
     
     std::list<Channel>::iterator it;
     
-    if (_args.size() < 2) {
-        user.sendMsg("TOPIC :Not enough parameters");
+    if (this->_args.size() < 2) {
+
+		this->reply(NEEDMOREPARAMS(user, "TOPIC"));
         return ;
     }
-    if (!(checkExistingChannel(_args[1]))) {
-        user.sendMsg(_args[1] + " :No such channel");
-        return ;   
+    if (!(checkExistingChannel(this->_args[1]))) {
+
+		this->reply(NOSUCHCHAN(user, this->_args[1]));
+        return ;
     }
-    for (it = _channels.begin(); it != _channels.end(); it++) {
-		if (it->getName() == _args[1])
-            break ;
+    it = getChannelIteratorByName(this->_args[1]);
+    if (!it->isIn(USER_LIST, user.getNickname())) {
+
+		this->reply(NOTONCHAN(user, this->_args[1]));
+        return;
     }
-    if (_args.size() < 3 && it->getTopic() == "")
-        user.sendMsg(_args[1] + " :No topic is set");
-    else if (_args.size() < 3)
-        user.sendMsg(_args[1] + " : " + it->getTopic());
-    else if (_args.size() == 3 && _args[2] == ":" && it->getUserByNameFrom(USER_LIST, user.getNickname()))
-        it->setTopic("");
-    else if (_args.size() == 3 && it->getUserByNameFrom(USER_LIST, user.getNickname()))
-        it->setTopic(_args[2]);
+    if (this->_args.size() < 3 && it->getTopic() == "")
+		this->reply(NOTOPIC(user, this->_args[1]));
+    else if (this->_args.size() < 3)
+		this->reply(SEETOPIC(user, this->_args[1], it->getTopic()));
+    else if (!it->getMode(T) || (it->getMode(T) && it->isIn(OPERATOR_LIST, user.getNickname()))) {
+
+		it->setTopic(skip_words(2, user.getBuffer()));
+		if (it->getTopic()[0] == ':')
+			it->setTopic(it->getTopic().substr(1));
+		it->sendGroupMsg(user, true, TOPIC(user, it->getName(), it->getTopic()));
+    }
+    else 
+		this->reply(CHANOPRIVSNEEDED(user, this->_args[1]));
 }

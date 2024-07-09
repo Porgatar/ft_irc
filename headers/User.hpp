@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:49:49 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/08 15:44:02 by parinder         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:21:12 by maxime           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef USER
+#define USER
 
 #include "header.h"
 
@@ -52,6 +53,8 @@ public:
 	void				setNickname(std::string nickname);
 	void				setBuffer(std::string buf);
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
-	void				sendMsg(std::string msg);
-	bool				isRegistered(void);
+	void				sendMsg(std::string msg) const;
+	bool				isRegistered(void) const;
 };
+
+#endif // !USER

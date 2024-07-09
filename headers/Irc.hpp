@@ -6,11 +6,12 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 20:10:03 by parinder          #+#    #+#             */
-/*   Updated: 2024/05/08 15:27:50 by mdesrose         ###   ########.fr       */
+/*   Updated: 2024/07/05 19:17:25 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef IRC
+#define IRC
 
 #include "header.h"
 #include "User.hpp"
@@ -25,27 +26,32 @@ private:
 	std::string						_password;
 	std::list<User>					_users;
 	std::list<Channel>				_channels;
-	std::list<Channel>::iterator	_it;
 	std::vector<std::string>		_args;
 /*	-	-	-	-	-	Constructors	-	-	-	-	-	*/
 	Irc(void);
 /*	-	-	-	-	-	Private Functions	-	-	-	-	*/
 	bool							checkExistingChannel(std::string channels_name);
+	bool							checkExistingUser(std::string nickname);
 	void							AddUserInChannel(User &user, std::string channels_name);
-	void							log(int log, const std::string &str);
+	void							log(const int log, const std::string &str);
+	std::list<Channel>::iterator	getChannelIteratorByName(const std::string &channelName);
+	void							reply(const User &user, const int log, const std::string &str);
 	int								setSockets(fd_set *set);
 	void							checkClientRequest(void);
 	void							exec_cmd(User &user);
-	std::list<Channel>::iterator	getChannelIteratorByName(const std::string &channelName);
 /*	-	-	-	-	-	Command Functions	-	-	-	-	*/
 	void 	cap(User &actual);
 	void	join(User &actual);
 	void	nick(User &actual);
+	void	part(User &actual);
 	void	pass(User &actual);
+	void    invite(User &actual);
 	void	privmsg(User &actual);
 	void	user(User &actual);
 	void    kick(User &actual);
 	void	mode(User &actual);
+	void	who(User &actual);
+	void	quit(User &actual);
 	void	topic(User &actual);
 public:
 
@@ -65,3 +71,5 @@ public:
 extern Irc	*g_IrcPtr;
 
 typedef void (Irc::*function_p)(User &);
+
+#endif // !IRC

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:37:08 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/14 16:24:08 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/05 18:30:12 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,36 @@ void    Irc::kick(User &actual) {
     std::list<Channel>::iterator it;
     std::string msg = " :has been kicked"; 
 
-    if (_args.size() < 3) {
-        actual.sendMsg("KICK :Not enough parameters");
+    if (this->_args.size() < 3) {
+
+		this->reply(NEEDMOREPARAMS(actual, "KICK"));
         return ;    
     }
-    for (it = _channels.begin(); it != _channels.end(); it++) {
-        if (it->getName() == _args[1])
+    for (it = this->_channels.begin(); it != this->_channels.end(); it++)
+        if (it->getName() == this->_args[1])
             break ;
-    }
-    if (it == _channels.end())
-        actual.sendMsg(_args[1] + " :No such channel\n");
-    else if (!it->getUserByNameFrom(USER_LIST, _args[2]))
-        actual.sendMsg(_args[2] + " " + it->getName() + " :They aren't on that channel\n");
-    else if (_args.size() >= 4 && _args[3][0] != ':')
-        actual.sendMsg("kick message begin with \':\'");
+    if (it == this->_channels.end())
+		this->reply(NOSUCHCHAN(actual, this->_args[1]));
+    else if (!it->getUserByNameFrom(USER_LIST, this->_args[2]))
+		this->reply(USERNOTINCHAN(actual, this->_args[1], this->_args[2]));
+    else if (!it->isIn(OPERATOR_LIST, actual.getNickname()))
+		this->reply(CHANOPRIVSNEEDED(actual, this->_args[1]));
+    else if (this->_args.size() >= 4 && this->_args[3][0] != ':')
+        this->reply(actual, WARNING, "kick message begin with \':\'");
+    else if (this->_args[2] == actual.getNickname())
+        this->reply(actual, WARNING, "You cannot kick yourself");
     else {
-        if (_args[3] != "") {
+
+        if (this->_args.size() >= 4) {
+
             actual.setMessage(skip_words(3, actual.getMessage()));
             actual.setMessage(actual.getMessage().substr(1));
+            it->sendGroupMsg(KICK(actual, this->_args[1], this->_args[2]) + " " \
+			+ actual.getMessage());
         }
-        it->kickuser(_args[2], msg);
+		else
+            it->sendGroupMsg(KICK(actual, this->_args[1], this->_args[2]));
+		it->removeUserByNameFrom(USER_LIST, this->_args[2]);
+		it->removeUserByNameFrom(OPERATOR_LIST, this->_args[2]);
     }
 }

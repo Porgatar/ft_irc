@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:54:12 by maxime            #+#    #+#             */
-/*   Updated: 2024/05/08 17:22:53 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:23:06 by parinder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,8 @@ const std::string	&User::getBuffer() const {
 	return (this->_buffer);
 }
 
-const std::string	&User::getMessage(void) const {
+const std::string	&User::getMessage() const { return this->_message; }
 
-	return this->_message;
-}
 
 /*	-	-	-	-	-	Setters	-	-	-	-	-	*/
 
@@ -119,13 +117,13 @@ void	User::setMessage(std::string str) {
 
 /*	-	-	-	-	-	Main Functions	-	-	-	-	-	*/
 
-void	User::sendMsg(std::string msg) {
+void	User::sendMsg(std::string msg) const {
 
 	msg += "\r\n";
-	write(this->_socket, msg.c_str(), msg.length());
+	send(this->_socket, msg.c_str(), msg.length(), 0);
 }
 
-bool	User::isRegistered(void) {
+bool	User::isRegistered(void) const {
 
 	if (this->_registered == REGISTERED)
 		return (true);
