@@ -3,16 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
+#    By: luhego <luhego@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/15 19:13:25 by parinder          #+#    #+#              #
-#    Updated: 2024/07/04 18:23:35 by parinder         ###   ########.fr        #
+#    Updated: 2024/07/09 17:19:07 by luhego           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 MAKEFLAGS=	--silent
 
 NAME=		ircserv
+
+BNAME=		bot
 
 CC=			c++
 
@@ -26,6 +28,8 @@ endif
 			${CC} ${CFLAGS} -c $< -o ${<:.cpp=.o}
 
 OBJ=		$(SRC:.cpp=.o)
+
+BOBJ=		$(BSRC:.cpp=.o)
 
 SRC=		srcs/main.cpp \
 			srcs/server/Irc.cpp \
@@ -48,7 +52,12 @@ SRC=		srcs/main.cpp \
 			srcs/channel/Channel.cpp \
 			srcs/channel/UserManagement.cpp \
 
+BSRC=		srcs/main_bonus.cpp \
+			srcs/bot/Bot.cpp
+
 all:		$(NAME)
+
+bonus:		$(BNAME)
 
 $(NAME):	$(OBJ)
 			$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
@@ -56,21 +65,27 @@ $(NAME):	$(OBJ)
 			echo $(On_IGreen)$(BGreen)"       project compiled!        "$(Color_Off)
 			echo $(On_IGreen)"                                 "$(Color_Off)
 
+$(BNAME):	$(BOBJ)
+			$(CC) $(CFLAGS) $(BOBJ) -o $(BNAME)
+			echo $(On_IGreen)"                                 "$(Color_Off)
+			echo $(On_IGreen)$(BGreen)"        bonus compiled!         "$(Color_Off)
+			echo $(On_IGreen)"                                 "$(Color_Off)
+
 clean:
-			rm -f $(OBJ)
+			rm -f $(OBJ) $(BOBJ)
 			echo $(On_IGreen)"                                 "$(Color_Off)
 			echo $(On_IGreen)$(BYellow)"       objects cleaned!         "$(Color_Off)
 			echo $(On_IGreen)"                                 "$(Color_Off)
 
 fclean:		clean
-			rm -f $(NAME)
+			rm -f $(NAME) $(BNAME)
 			echo $(On_IGreen)"                                 "$(Color_Off)
 			echo $(On_IGreen)$(BYellow)"    project fully cleaned!      "$(Color_Off)
 			echo $(On_IGreen)"                                 "$(Color_Off)
 
 re:			fclean all
 
-.PHONY:		all clean fclean re
+.PHONY:		all bonus clean fclean re
 
 #	-	-	-	-	-	Colors	-	-	-	-	-	-	#
 #														|
