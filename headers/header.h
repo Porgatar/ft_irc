@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:28:31 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/05 18:32:10 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:33:37 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef HEADER
+#define HEADER
 
 //	std::string & print redirection dependency
 #include <iostream>
@@ -204,3 +205,5 @@
 	+ " :You're not channel operator"
 
 std::string	skip_words(int n, const std::string &str);
+
+#endif
