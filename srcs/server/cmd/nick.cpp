@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 02:52:42 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/03 18:29:58 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:11:00 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../headers/Irc.hpp"
 
-/*return true if the nickname respect the norm*/
+/* return true if the nickname respect the norm */
 static bool rfc_nickname(const std::string& str) {
 
     const std::string set = "([{{|\\}}])";

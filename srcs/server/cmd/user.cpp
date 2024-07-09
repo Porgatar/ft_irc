@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 04:06:33 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/03 18:30:38 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:10:57 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	Irc::user(User &actual) {
 
-	//.	argument.erase(std::remove(argument.begin(), argument.end(), '\n'), argument.end());
 	if (actual.getRegisteredLevel() == 0) {
 		actual.sendMsg("Enter password first");
 		return ;

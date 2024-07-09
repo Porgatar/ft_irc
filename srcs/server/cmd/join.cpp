@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:21:05 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/05 16:41:49 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:08:41 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	Irc::join(User &user) {
 		this->reply(BADCHANMASK(user, this->_args[1]));
         return;
 	}
-	// boucle qui parse les channel separer par une virgule
     while (end < this->_args[1].size()) {
 
         while (end < this->_args[1].size() && this->_args[1][end] != '&' \

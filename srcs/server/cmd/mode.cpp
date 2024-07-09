@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxime <maxime@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 18:37:48 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/06 16:58:16 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/09 19:05:30 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	Irc::mode(User &actual) {
 				this->reply(UNKNOWNMODE(actual, this->_args[1][j + 1]));
 				return ;
 			}
-			if (modes[modeIndex] == 'k') {	// if is mode 'k' set a new channel password
+			if (modes[modeIndex] == 'k') {
 
 				if (state && i + 1 < len)
 					channel->setKey(this->_args[i + 1]);
@@ -79,7 +79,7 @@ void	Irc::mode(User &actual) {
 				i++;
 				break ;
 			}
-			if (modes[modeIndex] == 'o') {	// if is mode 'o' set a new channel operator.
+			if (modes[modeIndex] == 'o') {
 
 				user = 0;
 				if (i + 1 < len)
@@ -112,7 +112,7 @@ void	Irc::mode(User &actual) {
 				i++;
 				break ;
 			}
-			if (modes[modeIndex] == 'l') {	// if is mode 'l' set a new userLimit.
+			if (modes[modeIndex] == 'l') {
 
 				if (state && i + 1 < len) {
 

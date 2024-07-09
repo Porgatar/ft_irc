@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 03:52:02 by parinder          #+#    #+#             */
-/*   Updated: 2024/07/05 19:31:32 by parinder         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:11:27 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,7 @@ void	Irc::run(void) {
 		FD_ZERO(&set);
 		FD_SET(this->_socket, &set);
 		max = setSockets(&set);
-		ready_to_read = select(max + 1, &set, NULL, NULL, NULL);//	attente d'une connection
-																//	sur la socket
+		ready_to_read = select(max + 1, &set, NULL, NULL, NULL);
 		if (ready_to_read < 0) {
 
 			this->log(ERROR, "select failed");
